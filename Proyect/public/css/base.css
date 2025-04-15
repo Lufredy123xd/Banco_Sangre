@@ -1,0 +1,21 @@
+@import url('style.css');
+@import url('home.css');
+@import url('auth.css');
+:root {
+    --primary: #fff8f8;
+    --secondary: #d72d57;
+    --tertiary: #d4e6f1;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight:200;
+    font-style: normal;
+}

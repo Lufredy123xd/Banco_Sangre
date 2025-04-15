@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 // routes/web.php
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return view('login');
+})->name('login');
 
 Route::get('/about', function () {
     return view('about');
