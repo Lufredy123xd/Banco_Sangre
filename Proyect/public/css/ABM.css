@@ -1,0 +1,108 @@
+.section__registrar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+    width: 100%;
+}
+
+.registrar__formulario {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    background: #d4e6f1;
+    width: 70%;
+    height: 90%;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.contenedor__nombre__completo,
+.contenedor__datos__sangineos {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input__div {
+    width: 600px;
+    height: 50px;
+}
+
+input {
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    border: none;
+    padding: 10px;
+  
+}
+
+.block {
+    display: block;
+    padding-left: 5px;
+    font-size: 20px;
+}
+
+.contenedor__bottom {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.contenedor__checkbox
+{
+   display:flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-direction: column;
+}
+
+.contenedor__checkbox > div
+{
+    width: 100%;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.contenedor__bottom__input
+{
+    width:20px;
+    border-radius: 100px;
+}
+
+.contenedor__descripcion
+{
+display:flex;
+justify-content: space-between;
+flex-direction: column;
+width:80%;
+}
+
+.contenedor__descripcion > div
+{
+    display:flex;
+    justify-content: end;
+    padding:10px;
+}
+
+.contenedor__descripcion__porque
+{
+    width:100px;
+    height:50px;
+    background:white;
+    border:none;
+    border-radius: 10px;
+    margin:10px;
+}
+
+.guardar
+{
+    background:#42CDFF;
+}
