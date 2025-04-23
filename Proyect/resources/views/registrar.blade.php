@@ -4,67 +4,88 @@
 @section('content')
 <section class="section__registrar">
     <h2 class="section__registrar-title">Registrar donante</h2>
-    <form action="" method="post" class="registrar__formulario">
-        <div class="contenedor__nombre__completo">
-            <div>
-                <label class="block" for="nombre">Nombre</label>
-                <input class="input__div" type="text" name="nombre" id="txt__nombre">
+    <form class="registrar__formulario">
+        <div class="fila">
+            <div class="input__div">
+                <label>Nombre</label>
+                <input type="text" />
             </div>
-            <div>
-                <label class="block" for="apellido">Apellido</label>
-                <input class="input__div" type="text" name="apellido" id="txt__apellido">
-            </div>
-        </div>
-
-        <label class="block" for="cedula">Cedula</label>
-        <input type="text" name="cedula" id="txt__cedula">
-
-        <label class="block" for="telefono">telefono</label>
-        <input type="text" name="telefono" id="txt__telefono">
-
-        <label class="block" for="fecha">Fecha de nacimiento</label>
-        <input type="text" name="fecha" id="txt__fecha">
-
-        <label class="block" for="ultima__don">Ultimo donante</label>
-        <input type="text" name="ultima__don" id="txt__ultima__don">
-
-        <div class="contenedor__datos__sangineos">
-            <div>
-                <label class="block" for="ABO">ABO</label>
-                <input class="input__div" type="text" name="ABO" id="txt__abo">
-            </div>
-            <div>
-                <label class="block" for="RH">RH</label>
-                <input class="input__div" type="text" name="RH" id="txt__rh">
+            <div class="input__div">
+                <label>Apellido</label>
+                <input type="text" />
             </div>
         </div>
 
+        <div class="fila">
+            <div class="input__div">
+                <label>CI</label>
+                <input type="text" />
+            </div>
+            <div class="input__div">
+                <label>Teléfono</label>
+                <input type="text" />
+            </div>
+        </div>
+
+        <div class="fila">
+            <div class="input__div">
+                <label>Fecha nacimiento</label>
+                <input type="date" />
+            </div>
+            <div class="input__div">
+                <label>Última fecha donación</label>
+                <input type="date" />
+            </div>
+        </div>
+
+        <div class="fila">
+            <div class="input__div">
+                <label>ABO</label>
+                <input type="text" />
+            </div>
+            <div class="input__div">
+                <label>RH</label>
+                <input type="text" />
+            </div>
+        </div>
+
+        <div class="contenedor__checkbox">
+            <div class="contenedor__checkbox__fila">
+                <div class="radio-group">
+                    <label>¿Quiere y/o puede donar?</label>
+                    <div class="group__div">
+                    <input type="radio" name="puede_donar" /> Sí
+                    <input type="radio" name="puede_donar" /> No
+                    </div>
+                </div>
+
+                <div class="contenedor__descripcion">
+                    <label>¿Por qué?</label>
+                    <input type="text" class="contenedor__descripcion__porque" />
+                </div>
+            </div>
+
+            <div class="contenedor__checkbox__fila ultimo">
+                <div class="radio-group">
+                    <label>¿Pendiente?</label>
+                    <div class="group__div">
+                    <input type="radio" name="pendiente" /> Sí
+                    <input type="radio" name="pendiente" /> No
+                    </div>
+                </div>
+
+                <div class="radio-group">
+                    <label>Sexo</label>
+                    <div class="group__div">
+                    <input type="radio" name="sexo" /> M
+                    <input type="radio" name="sexo" /> F
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="contenedor__bottom">
-            <div class="contenedor__checkbox">
-                <h3>¿Quiere y/o puede donar?</h3>
-                <div>
-                    <label for="si">SI</label>
-                    <input class="contenedor__bottom__input" type="checkbox" name="si" id="ckb__si__donar">
-                    <label for="no">NO</label>
-                    <input class="contenedor__bottom__input" type="checkbox" name="no" id="ckb__no__donar">
-                </div>
-                <h3>¿Pendiente?</h3>
-                <div>
-                    <label for="si">SI</label>
-                    <input class="contenedor__bottom__input" type="checkbox" name="si" id="ckb__si__pendiente">
-                    <label for="no">NO</label>
-                    <input class="contenedor__bottom__input" type="checkbox" name="no" id="ckb__no__pendiente">
-                </div>
-            </div>
-
-            <div class="contenedor__descripcion">
-                <label class="block" for="porque">¿Porque?</label>
-                <input type="text" name="porque" id="txt__porque">
-                <div>
-                    <button class="contenedor__descripcion__porque">Cancelar</button>
-                    <button class="contenedor__descripcion__porque guardar">Guardar</button>
-                </div>
-            </div>
+            <button class="cancelar">Cancelar</button>
+            <button class="guardar">Guardar</button>
         </div>
     </form>
 </section>

@@ -10,6 +10,7 @@
         <label for="password">Contraseña</label>
         <input type="text" name="password" id="txt_usuario">
         </div>
+        <a href="">¿Has olvidado la contraseña?</a>
         <button id="btn__ingresar" class="btn">Ingresar</button>
     </form>
 

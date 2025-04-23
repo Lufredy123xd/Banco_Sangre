@@ -4,113 +4,160 @@
     width:100%;
     justify-content: space-evenly;
     flex-direction: column;
-    padding:20px;
+    padding:10px;
     height:100vh;
     
 
 }
 
-.content__main__top
-{
-    display:flex;
+/* Contenedor principal superior */
+.content__main__top {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    width:100%;
-    height:100px;
+    width: 100%;
+    height: 200px;
     margin-bottom: 10px;
-    padding-left: 40px;
-    padding-right: 40px;
 }
-
-.select
-{
-    width:120px;
-    height:50px;
-    background:var(--primary);
-    border:none;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius:20px;
-    border-top-right-radius: 20px;
-    background:var(--secondary);
+.dropdown-checkboxes {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-toggle {
+    background-color: var(--secondary, #ccc);
+    color: #000;
+    border: none;
+    padding: 10px 15px;
+    font-size: 15px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    z-index: 1000;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    min-width: 230px;
+  }
+  
+  .dropdown-menu label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+  }
+  
+  .dropdown-checkboxes.open .dropdown-menu {
+    display: block;
+  }
+  
+/* Estilo del select (dropdown) */
+.select {
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 0 20px 20px 20px; /* solo esquinas inferiores + esquina superior derecha */
+    background: var(--secondary);
     font-size: 15px;
 }
 
-.select option
-{
-    background:white;
-
-
+.select option {
+    background: white;
 }
 
-
-.content__main__top-text
-{
-    width:200px;
-    height:43px;
+/* Campo de texto del top */
+.content__main__top-text {
+    width: 200px;
+    height: 43px;
     border: 1px solid black;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 0px;
-    padding:20px;
- 
+    border-radius: 20px 0 0 20px; /* esquina superior izquierda e inferior izquierda */
+    padding: 10px;
 }
 
-.content__main__top-button
-{
-
-margin-right:30px;
-height:43px;
-transform: translateX(-5px);
-width:90px;
-border: 1px solid black;
-border-style: solid;
-border-top-right-radius: 20px;
-border-top-left-radius: 0px;
-border-bottom-left-radius: 0px;
-border-bottom-right-radius: 20px;
+/* Botón de acción en la parte superior */
+.content__main__top-button {
+    width: 90px;
+    height: 43px;
+    transform:translate(-5px, 0.1px);
+    border: 1px solid black;
+    border-radius: 0 20px 20px 0; /* esquina superior derecha e inferior derecha */
 }
 
-
-.content__main__center
-{
-    display:flex;
-    align-items: center;
+.content__main__center {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* evita que se centre verticalmente cuando hay scroll */
     flex-direction: column;
-    background:#D9D9D9;
-    width:100%;
-    height:100%;
+    background: #D9D9D9;
+    width: 100%;
+    height: 100%;
     border-radius: 50px;
+    overflow: auto; /* importante para activar scroll cuando sea necesario */
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-span
-{
-    background:var(--secondary);
- display:block;
+
+
+table {
+    margin-top:20px;
+    width: max-content;  
+    min-width: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    background-color:white;
+    border-collapse: collapse;
+    
+  }
+
+
+
+  thead th {
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  tbody td {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .fila-usuario {
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .icono-usuario {
+    font-size: 28px;
+  }
+
+  .estado {
+    background-color: #e14467;
+    color: white;
+    padding:10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: bold;
    
-}
-
-
-.fila
-{
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    width:95%;
-    padding:20px;
-    background:var(--primary);
-    margin-top:10px;
-    border-radius: 50px;
-
-}
+  }
 
 .content__main__bottom
 {
     width:100%;
-    height: 70px;
+    height: 90px;
     display:flex;
     justify-content: end;
     align-items: center;
+    padding:20px;
 }
 
 .btns
@@ -123,14 +170,130 @@ span
 
 .btn__bottom
 {
-    width:100px;
+    width:200px;
     height:50px;
     border:none;
     border-radius: 20px;
+    font-size: 20px;
 }
 
-.eliminar
-{
-
-background:var(--secondary);
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
+
+.pagination button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #cc0a4a;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.pagination button.active {
+    background-color: #a00739;
+}
+
+.pagination button:hover {
+    background-color: #b00942;
+}
+
+@media screen and (max-width: 900px) {
+
+
+    .content__main__top {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      gap: 15px;
+    }
+
+   form
+   {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    height:100px;
+   }
+  
+    .dropdown-checkboxes {
+      width: 100%;
+    }
+  
+    .dropdown-toggle {
+      width: 100%;
+      text-align: left;
+    }
+  
+    .dropdown-menu {
+      position: relative;
+      top: 0;
+      left: 0;
+      box-shadow: none;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+    }
+  
+    .content__main__top-text,
+    .content__main__top-button {
+      width: 100%;
+      border-radius: 20px;
+      transform: none;
+    }
+  
+    .content__main__top-button {
+      margin-top: -5px;
+    }
+  
+    .select {
+        margin-top:20px;
+      width: 100%;
+      border-radius: 20px;
+    }
+  
+    .content__main__bottom {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+      gap: 10px;
+    }
+  
+    .btns {
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .btn__bottom {
+      width: 90%;
+      font-size: 18px;
+    }
+  
+    table {
+        border-collapse: collapse;
+        width: max-content;
+        min-width: 1000px; /* o 700px o el valor que te funcione mejor */
+      font-size: 12px;
+    }
+  
+    thead th,
+    tbody td {
+        padding: 12px;
+        font-size: 14px;
+        white-space: nowrap;
+      padding: 10px;
+    }
+
+    .content__main__center
+    {
+       border-radius: 10px;
+    }
+  }
+  

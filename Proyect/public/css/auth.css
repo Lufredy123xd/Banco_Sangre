@@ -1,9 +1,14 @@
 body
 {
-   background:url('../imgs/background_login.png');
+   background:url('../imgs/background_login.png') no-repeat center center / cover;
    width: 100%;
-   object-fit: cover;
+   overflow: hidden;
+   font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight:400;
+    font-style: normal;
 }
+
 
 .header {
     display: flex;
@@ -19,8 +24,8 @@ body
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    height: 380px;
-    width: 400px;
+    height: 400px;
+    width: 420px;
     background: #d72d57;
     border-radius: 50px;
 }
@@ -66,4 +71,9 @@ img
     background:#d4e6f1;
     padding:30px;
     border-radius: 100%;
+}
+
+a
+{
+    color:white;
 }

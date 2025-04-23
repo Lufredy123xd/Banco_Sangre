@@ -1,3 +1,4 @@
+/* Sección del formulario completa */
 .section__registrar {
     display: flex;
     justify-content: space-around;
@@ -7,102 +8,184 @@
     width: 100%;
 }
 
+/* Caja principal del formulario */
 .registrar__formulario {
     display: flex;
-    justify-content: space-around;
     flex-direction: column;
+    justify-content: space-between;
     background: #d4e6f1;
-    width: 70%;
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     height: 90%;
-    border-radius: 10px;
-    padding: 10px;
 }
 
-.contenedor__nombre__completo,
-.contenedor__datos__sangineos {
-    width: 100%;
+/* Filas generales */
+.fila {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.input__div {
-    width: 600px;
-    height: 50px;
+.fila .input__div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-input {
-    height: 50px;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 20px;
+.input__div label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+
+.input__div input {
+    height: 40px;
+    border-radius: 8px;
     border: none;
     padding: 10px;
-  
+    font-size: 16px;
 }
 
-.block {
-    display: block;
-    padding-left: 5px;
-    font-size: 20px;
+/* Contenedor de secciones con radios e input de "¿por qué?" */
+.contenedor__checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.contenedor__bottom {
+/* Fila individual de radios */
+.contenedor__checkbox__fila {
     display: flex;
     align-items: center;
-    width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.contenedor__checkbox
-{
-   display:flex;
-   justify-content: space-between;
-   align-items: center;
-   flex-direction: column;
+/* Sección para "¿por qué?" */
+.contenedor__descripcion {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-.contenedor__checkbox > div
-{
+.contenedor__descripcion label {
+    font-size: 16px;
+    padding-left: 5px;
+    margin-bottom: 5px;
+}
+
+.contenedor__descripcion__porque {
     width: 100%;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-
-
-.contenedor__bottom__input
-{
-    width:20px;
-    border-radius: 100px;
-}
-
-.contenedor__descripcion
-{
-display:flex;
-justify-content: space-between;
-flex-direction: column;
-width:80%;
-}
-
-.contenedor__descripcion > div
-{
-    display:flex;
-    justify-content: end;
-    padding:10px;
-}
-
-.contenedor__descripcion__porque
-{
-    width:100px;
-    height:50px;
-    background:white;
-    border:none;
+    height: 40px;
     border-radius: 10px;
-    margin:10px;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
 }
 
-.guardar
+/* Agrupación de radios */
+.radio-group {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 16px;
+}
+
+/* Radios */
+input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+.ultimo
 {
-    background:#42CDFF;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.group__div input {
+    padding: 20px;
+    width:50px;
+}
+
+.group__div
+{
+    padding:20px;
+}
+
+/* Botones */
+.contenedor__bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top:0px;
+}
+
+.contenedor__bottom button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.cancelar {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.guardar {
+    background: #42cdff;
+    color: white;
+}
+
+/* Media query para tablets (<= 768px) */
+@media (max-width: 900px) {
+    .fila {
+        flex-direction: column;
+        gap: 15px;
+        width:100%;
+    }
+
+    .contenedor__checkbox__fila {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .radio-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .contenedor__descripcion {
+        width: 100%;
+    }
+
+    .contenedor__bottom {
+        gap: 10px;
+    }
+
+    .contenedor__bottom button {
+        width: 100%;
+    }
+
+    .registrar__formulario
+    {
+        height:100%;
+    }
+
+    .contenedor__checkbox {
+        width:100%;
+    }
 }
