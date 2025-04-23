@@ -4,7 +4,7 @@
             <img src="imgs/dropdown.png" alt="" class="header__dropdown-icon">
         </button>
         <nav class="header__nav">
-            <a href="{{ route('inicio') }}" class="header__nav-link">Inicio</a>
+            <a href="{{ route('home') }}" class="header__nav-link">Inicio</a>
             <a href="{{ route('registrar') }}" class="header__nav-link">Registrar</a>
             <a href="{{ route('modificar') }}"class="header__nav-link">Modificar</a>
             <a href="{{ route('eliminar') }}" class="header__nav-link">Eliminar</a>
