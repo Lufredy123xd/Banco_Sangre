@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
+    use HasFactory;
     // Atributos de la clase Agenda
     private \DateTime $fechaAgenda;
     private string $horario;
