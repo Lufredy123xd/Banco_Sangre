@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Donacion extends Model
 {
+    use HasFactory;
     // Atributos de la clase Donacion
     private int $donacionesRegistradas;
     private bool $reaccionesAdversas;

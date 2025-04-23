@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Donante extends Model
 {
+    use HasFactory;
     // Atributos de la clase Donante
     private string $nombre;
     private string $apellido;

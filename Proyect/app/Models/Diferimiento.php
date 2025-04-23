@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Diferimiento extends Model
 {
+    use HasFactory;
     // Atributos de la clase Diferimiento
     private string $motivo;
     private \DateTime $fechaDiferimiento;
