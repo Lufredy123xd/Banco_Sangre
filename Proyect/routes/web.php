@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgendaController;
 use Illuminate\Support\Facades\Route;
 
 // routes/web.php
@@ -22,3 +23,17 @@ Route::get('/eliminar', function () {
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
+
+
+
+Route::resource('agenda', AgendaController::class)
+    ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->names([
+        'index' => 'agenda.index',
+        'create' => 'agenda.create',
+        'store' => 'agenda.store',
+        'show' => 'agenda.show',
+        'edit' => 'agenda.edit',
+        'update' => 'agenda.update',
+        'destroy' => 'agenda.destroy',
+    ]);
