@@ -19,6 +19,19 @@ class Usuario extends Model
     private string $contrasena; // contraseña
     private string $estadoUser; // estadoUser
 
+     // Atributos asignables en masa
+     protected $fillable = [
+        'nombre',
+        'apellido',
+        'cedula',
+        'tipo',
+        'fecha_nacimiento',
+        'curso_hemoterapia',
+        'user_name',
+        'contrasena',
+        'estado_user',
+    ];
+    
     public function __construct()
     {
         // Constructor vacío

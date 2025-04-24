@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 // routes/web.php
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return view('administrador.home');
+})->name('administrador.home');
 
 Route::get('/registrar', function () {
     return view('registrar');
@@ -15,10 +15,19 @@ Route::get('/modificar', function () {
     return view('modificar');
 })->name('modificar');
 
-Route::get('/eliminar', function () {
-    return view('eliminar');
-})->name('eliminar');
+Route::get('/detalle', function () {
+    return view('detalle');
+})->name('detalle');
 
-Route::get('/faq', function () {
-    return view('faq');
-})->name('faq');
+Route::get('/gestionar', function () {
+    return view('gestionarDonante');
+})->name('gestionarDonante');
+
+
+Route::get('/registrar', function () {
+    return view('administrador.registrar');
+})->name('administrador.registrar');
+
+Route::get('/editar', function () {
+    return view('administrador.editar');
+})->name('administrador.editar');
