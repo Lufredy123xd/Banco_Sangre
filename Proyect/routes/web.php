@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\DiferimentoController;
+use App\Models\Diferimento;
 use Illuminate\Support\Facades\Route;
 
 // routes/web.php
@@ -36,4 +38,16 @@ Route::resource('agenda', AgendaController::class)
         'edit' => 'agenda.edit',
         'update' => 'agenda.update',
         'destroy' => 'agenda.destroy',
+    ]);
+
+Route::resource('diferimento', DiferimentoController::class)
+    ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->names([
+        'index' => 'diferimento.index',
+        'create' => 'diferimento.create',
+        'store' => 'diferimento.store',
+        'show' => 'diferimento.show',
+        'edit' => 'diferimento.edit',
+        'update' => 'diferimento.update',
+        'destroy' => 'diferimento.destroy',
     ]);

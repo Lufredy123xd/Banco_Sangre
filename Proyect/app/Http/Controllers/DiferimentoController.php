@@ -12,7 +12,8 @@ class DiferimentoController extends Controller
      */
     public function index()
     {
-        //
+        $datos['diferimentos'] = Diferimento::paginate(5);
+        return view('diferimento.index', $datos);
     }
 
     /**
@@ -20,7 +21,7 @@ class DiferimentoController extends Controller
      */
     public function create()
     {
-        //
+        return view(view: 'diferimento.create');
     }
 
     /**
@@ -28,7 +29,10 @@ class DiferimentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datosDiferimento = request()->except('_token');
+        Diferimento::insert($datosDiferimento);
+        
+        return redirect('diferimento/create')->with('mensaje', 'Se diferio correctamente');
     }
 
     /**
@@ -42,24 +46,30 @@ class DiferimentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Diferimento $diferimento)
+    public function edit($id)
     {
-        //
+        $diferimento = Diferimento::findOrFail($id);
+        return view('diferimento.edit', compact('diferimento'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Diferimento $diferimento)
+    public function update(Request $request, $id)
     {
-        //
+        $datosDiferimento = request()->except(['_token', '_method']);
+        Diferimento::where('id', '=', $id)->update($datosDiferimento);
+        
+        return redirect('diferimento')->with('mensaje', 'Se actualizo correctamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Diferimento $diferimento)
+    public function destroy($id)
     {
-        //
+        Diferimento::destroy($id);
+        
+        return redirect('diferimento')->with('mensaje', 'Se elimino correctamente');
     }
 }
