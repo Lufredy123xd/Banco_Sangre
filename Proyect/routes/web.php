@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DonacionController;
+use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\DiferimentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonanteController;
 
@@ -45,4 +47,29 @@ Route::resource('donacion', DonacionController::class)
         'edit' => 'donacion.edit',
         'update' => 'donacion.update',
         'destroy' => 'donacion.destroy',
+    ]);
+
+
+Route::resource('agenda', AgendaController::class)
+    ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->names([
+        'index' => 'agenda.index',
+        'create' => 'agenda.create',
+        'store' => 'agenda.store',
+        'show' => 'agenda.show',
+        'edit' => 'agenda.edit',
+        'update' => 'agenda.update',
+        'destroy' => 'agenda.destroy',
+    ]);
+
+Route::resource('diferimento', DiferimentoController::class)
+    ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->names([
+        'index' => 'diferimento.index',
+        'create' => 'diferimento.create',
+        'store' => 'diferimento.store',
+        'show' => 'diferimento.show',
+        'edit' => 'diferimento.edit',
+        'update' => 'diferimento.update',
+        'destroy' => 'diferimento.destroy',
     ]);
