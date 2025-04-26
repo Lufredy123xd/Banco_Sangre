@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donacion;
+use App\Models\Donante;
+use App\Enums\TipoSerologia;
+use App\Enums\TipoAnticuerposIrregulares;
+use App\Enums\TipoDonacion;
 use Illuminate\Http\Request;
 
 class DonacionController extends Controller
@@ -12,7 +16,7 @@ class DonacionController extends Controller
      */
     public function index()
     {
-        $datos['donaciones'] = Donacion::paginate(5);
+        $datos['donaciones'] = Donacion::with('donante')->paginate(5);
         return view('donacion.index', $datos);
     }
 
@@ -21,7 +25,8 @@ class DonacionController extends Controller
      */
     public function create()
     {
-        return view('donacion.create');
+        $donantes = Donante::all(); // Obtener todos los donantes
+        return view('donacion.create', compact('donantes'));
     }
 
     /**
@@ -29,10 +34,17 @@ class DonacionController extends Controller
      */
     public function store(Request $request)
     {
-        $datosDonacion = request()->except('_token');
-        Donacion::insert($datosDonacion);
-        
-        return redirect('donacion/create')->with('mensaje', 'Donación registrada correctamente');
+        $datosDonacion = $request->validate([
+            'id_donante' => 'required|exists:donantes,id',
+            'fecha' => 'required|date',
+            'clase_donacion' => 'required|in:' . implode(',', array_column(TipoDonacion::cases(), 'value')), // Validar enum
+            'serologia' => 'required|in:' . implode(',', array_column(TipoSerologia::cases(), 'value')), // Validar enum
+            'anticuerpos_irregulares' => 'required|in:' . implode(',', array_column(TipoAnticuerposIrregulares::cases(), 'value')), // Validar enum
+        ]);
+
+        Donacion::create($datosDonacion);
+
+        return redirect('donacion')->with('mensaje', 'Donación registrada correctamente');
     }
 
     /**
@@ -49,7 +61,8 @@ class DonacionController extends Controller
     public function edit($id)
     {
         $donacion = Donacion::findOrFail($id);
-        return view('donacion.edit', compact('donacion'));
+        $donantes = Donante::all(); // Obtener todos los donantes
+        return view('donacion.edit', compact('donacion', 'donantes'));
     }
 
     /**
@@ -57,9 +70,16 @@ class DonacionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $datosDonacion = request()->except(['_token', '_method']);
+        $datosDonacion = $request->validate([
+            'id_donante' => 'required|exists:donantes,id',
+            'fecha' => 'required|date',
+            'clase_donacion' => 'required|in:' . implode(',', array_column(TipoDonacion::cases(), 'value')), // Validar enum
+            'serologia' => 'required|in:' . implode(',', array_column(TipoSerologia::cases(), 'value')), // Validar enum
+            'anticuerpos_irregulares' => 'required|in:' . implode(',', array_column(TipoAnticuerposIrregulares::cases(), 'value')), // Validar enum
+        ]);
+
         Donacion::where('id', '=', $id)->update($datosDonacion);
-        
+
         return redirect('donacion')->with('mensaje', 'Donación actualizada correctamente');
     }
 
@@ -69,7 +89,7 @@ class DonacionController extends Controller
     public function destroy($id)
     {
         Donacion::destroy($id);
-        
+
         return redirect('donacion')->with('mensaje', 'Donación eliminada correctamente');
     }
 }
