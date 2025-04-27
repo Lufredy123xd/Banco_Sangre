@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4 text-center">Modificar Usuario</h1>
-        <form action="{{ url('/usuario/' . $usuario->id) }}" method="POST" class="p-4 border rounded shadow">
+    <div class="container bg-danger mt-5 p-5 rounded">
+        <h1 class="mb-4 text-light text-center">Modificar Usuario</h1>
+        <form action="{{ url('/usuario/' . $usuario->id) }}" method="POST" class="p-4 bg-light border rounded shadow">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
 

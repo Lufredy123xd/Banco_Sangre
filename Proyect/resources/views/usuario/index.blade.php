@@ -10,10 +10,10 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Lista de Usuarios</h1>
+    <div class="container bg-danger mt-5 p-5 rounded">
+        <h1 class="text-light mb-4">Lista de Usuarios</h1>
         <table class="table table-striped table-bordered">
-            <thead class="table-dark">
+            <thead class="table-light">
                 <tr>
                     <th>#</th>
                     <th>Nombre</th>
@@ -54,6 +54,16 @@
             {{ session('mensaje') }}
         </div>
     @endif
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

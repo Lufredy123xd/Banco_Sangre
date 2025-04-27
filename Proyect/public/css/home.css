@@ -175,6 +175,18 @@ table {
     border:none;
     border-radius: 20px;
     font-size: 20px;
+    background: rgb(146, 141, 141);
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    text-decoration: none;
+}
+
+.btn__bottom:hover
+{
+    background: rgb(104, 103, 103);
+    color: white;
+
 }
 
 .pagination {
@@ -277,7 +289,6 @@ table {
      
     }
 
-  
     table {
         border-collapse: collapse;
         width: max-content;
