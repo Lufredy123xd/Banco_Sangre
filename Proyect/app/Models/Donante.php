@@ -8,19 +8,19 @@ use app\Models\Donacion;
 
 class Donante extends Model
 {
-    // Atributos de la clase Donante
-    private string $nombre;
-    private string $apellido;
-    private int $cedula;
-    private string $sexo; // sexos
-    private string $telefono;
-    private \DateTime $fechaNacimiento;
-    private string $ABO; // tipoABO
-    private string $RH; // tipoRH
-    private string $estado; // estadoDonante
-    private string $observaciones;
-    private \DateTime $ultimaModificacion;
-   // private Usuario $modificadoPor; // Usuario
+   protected $fillable = [
+        'nombre',
+        'apellido',
+        'cedula',
+        'sexo',
+        'telefono',
+        'fecha_nacimiento',
+        'ABO',
+        'RH',
+        'estado',
+        'observaciones',
+        'ultima_modificacion'
+    ];
 
    
 

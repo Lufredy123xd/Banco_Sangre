@@ -37,9 +37,8 @@
             <div class="mb-3">
                 <label for="sexo" class="form-label">Sexo:</label>
                 <select id="sexo" name="sexo" class="form-control" required>
-                    @foreach (App\Enums\Sexo::cases() as $tipo)
-                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
-                    @endforeach
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
                 </select>
             </div>
 
