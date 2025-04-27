@@ -1,191 +1,182 @@
-/* Sección del formulario completa */
+/* Asegurar que el contenedor ocupe toda la altura de la pantalla */
 .section__registrar {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
     flex-direction: column;
-    height: 90vh;
-    width: 100%;
+    align-items: center;
+    justify-content: center; /* Centra el formulario verticalmente */
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh; /* Ocupa toda la altura de la ventana */
+    box-sizing: border-box; /* Incluye el padding en el cálculo de altura */
 }
 
-/* Caja principal del formulario */
+.section__registrar-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Ajustar el formulario para que no exceda el tamaño del contenedor */
 .registrar__formulario {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     background: #d4e6f1;
     width: 100%;
-    max-width: 1000px;
+    max-width: 800px;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    height: 90%;
+    box-sizing: border-box; /* Asegura que el padding no desborde */
 }
 
-/* Filas generales */
-.fila {
+/* Contenedor de nombre y apellido */
+.contenedor__nombre__completo {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.contenedor__nombre__completo div {
+    flex: 1;
+}
+
+/* Etiquetas y entradas */
+.block {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input__div {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+/* Contenedor de datos sanguíneos */
+.contenedor__datos__sangineos {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.contenedor__datos__sangineos div {
+    flex: 1;
+}
+
+/* Contenedor de opciones */
+.contenedor__checkbox {
+    margin-bottom: 20px;
+}
+
+.contenedor__checkbox h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.contenedor__checkbox div {
+    display: flex;
+    align-items: center;
     gap: 10px;
     margin-bottom: 10px;
 }
 
-.fila .input__div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.input__div label {
-    font-size: 16px;
-    margin-bottom: 5px;
-    padding-left: 5px;
-}
-
-.input__div input {
-    height: 40px;
-    border-radius: 8px;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-}
-
-/* Contenedor de secciones con radios e input de "¿por qué?" */
-.contenedor__checkbox {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-/* Fila individual de radios */
-.contenedor__checkbox__fila {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-/* Sección para "¿por qué?" */
-.contenedor__descripcion {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.contenedor__descripcion label {
-    font-size: 16px;
-    padding-left: 5px;
-    margin-bottom: 5px;
-}
-
-.contenedor__descripcion__porque {
-    width: 100%;
-    height: 40px;
-    border-radius: 10px;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-}
-
-/* Agrupación de radios */
-.radio-group {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 16px;
-}
-
-/* Radios */
-input[type="radio"] {
+.contenedor__bottom__input {
     width: 20px;
     height: 20px;
-}
-
-.ultimo
-{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    
-}
-
-.group__div input {
-    padding: 20px;
-    width:50px;
-}
-
-.group__div
-{
-    padding:20px;
-}
-
-/* Botones */
-.contenedor__bottom {
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-    margin-top:0px;
-}
-
-.contenedor__bottom button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 10px;
     cursor: pointer;
 }
 
-.cancelar {
+/* Contenedor de descripción */
+.contenedor__descripcion {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contenedor__descripcion input {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Botones */
+.contenedor__descripcion__porque {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contenedor__descripcion__porque.cancelar {
     background: #f0f0f0;
     color: #333;
 }
 
-.guardar {
+.contenedor__descripcion__porque.guardar {
     background: #42cdff;
     color: white;
 }
 
-/* Media query para tablets (<= 768px) */
-@media (max-width: 900px) {
-    .fila {
+.contenedor__descripcion__porque:hover {
+    opacity: 0.9;
+}
+
+/* Media query para tablets y dispositivos móviles */
+@media (max-width: 768px) {
+    .contenedor__nombre__completo,
+    .contenedor__datos__sangineos {
         flex-direction: column;
         gap: 15px;
-        width:100%;
     }
 
-    .contenedor__checkbox__fila {
+    .contenedor__descripcion__porque {
+        width: 100%;
+    }
+
+    .registrar__formulario {
+        padding: 15px;
+    }
+
+    .contenedor__checkbox div {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .section__registrar-title {
+        font-size: 20px;
     }
 
-    .radio-group {
-        flex-direction: row;
-        flex-wrap: wrap;
+    .registrar__formulario {
+        padding: 10px;
+    }
+
+    .contenedor__nombre__completo,
+    .contenedor__datos__sangineos {
         gap: 10px;
     }
 
-    .contenedor__descripcion {
-        width: 100%;
-    }
-
-    .contenedor__bottom {
-        gap: 10px;
-    }
-
-    .contenedor__bottom button {
-        width: 100%;
-    }
-
-    .registrar__formulario
-    {
-        height:100%;
-    }
-
-    .contenedor__checkbox {
-        width:100%;
+    .contenedor__descripcion__porque {
+        font-size: 14px;
+        padding: 8px 15px;
     }
 }

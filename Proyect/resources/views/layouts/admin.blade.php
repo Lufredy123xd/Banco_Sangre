@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="wi+dth=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{asset('imgs/vaccine_icon.png')}}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ asset('imgs/vaccine_icon.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ABM.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,10 +16,10 @@
 </head>
 
 <body>
-    @include('templates.header')
+    @include('templates.headerAdmin')
 
     <main>
-        @yield('content')
+        @yield('contentAdmin')
     </main>
 
     @include('templates.footer')
