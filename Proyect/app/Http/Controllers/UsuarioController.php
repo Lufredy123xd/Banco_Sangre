@@ -3,26 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Usuario; // Asegúrate de tener este modelo creado
+use App\Models\Usuario;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Muestra una lista de usuarios.
-     */
     public function index()
     {
-        $usuarios = Usuario::all();
-        return response()->json($usuarios);
+        $usuarios = Usuario::paginate(5); // o ->all() si querés traer todos
+        return view('usuario.index', compact('usuarios'));
     }
 
-    /**
-     * Muestra el formulario para crear un nuevo usuario.
-     */
     public function create()
     {
-        // Si usas vistas, retorna una vista aquí
-        return view('usuarios.create');
+        return view('usuario.crearUsuario');
     }
 
     /**
@@ -33,57 +27,49 @@ class UsuarioController extends Controller
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:usuarios,email',
+            'rol' => 'required|in:Administrador,Docente,Estudiante,Funcionario',
             'password' => 'required|string|min:8',
         ]);
 
-        $usuario = Usuario::create([
-            'nombre' => $validatedData['nombre'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-        ]);
+        // Hash the password before saving
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        Usuario::create($validatedData);
 
-        return response()->json(['message' => 'Usuario creado con éxito', 'usuario' => $usuario], 201);
+        return redirect()->route('usuario.index')->with('mensaje', 'Usuario creado correctamente.');
     }
 
     /**
-     * Muestra un usuario específico.
-     */
-    public function show($id)
-    {
-        $usuario = Usuario::findOrFail($id);
-        return response()->json($usuario);
-    }
-
-    /**
-     * Muestra el formulario para editar un usuario.
+     * Muestra el formulario para editar un usuario existente.
      */
     public function edit($id)
     {
         $usuario = Usuario::findOrFail($id);
-        // Si usas vistas, retorna una vista aquí
-        return view('usuarios.edit', compact('usuario'));
+        return view('usuario.modificarUsuario', compact('usuario'));
     }
 
     /**
-     * Actualiza un usuario existente en la base de datos.
+     * Actualiza la información de un usuario existente.
      */
     public function update(Request $request, $id)
     {
         $usuario = Usuario::findOrFail($id);
 
         $validatedData = $request->validate([
-            'nombre' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:usuarios,email,' . $usuario->id,
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email,' . $usuario->id,
+            'rol' => 'required|in:Administrador,Docente,Estudiante,Funcionario',
             'password' => 'nullable|string|min:8',
         ]);
 
-        $usuario->update([
-            'nombre' => $validatedData['nombre'] ?? $usuario->nombre,
-            'email' => $validatedData['email'] ?? $usuario->email,
-            'password' => isset($validatedData['password']) ? bcrypt($validatedData['password']) : $usuario->password,
-        ]);
+        if (!empty($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
+        }
 
-        return response()->json(['message' => 'Usuario actualizado con éxito', 'usuario' => $usuario]);
+        $usuario->update($validatedData);
+
+        return redirect()->route('usuario.index')->with('mensaje', 'Usuario actualizado correctamente.');
     }
 
     /**
@@ -94,6 +80,6 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();
 
-        return response()->json(['message' => 'Usuario eliminado con éxito']);
+        return redirect()->route('usuario.index')->with('mensaje', 'Usuario eliminado correctamente.');
     }
 }

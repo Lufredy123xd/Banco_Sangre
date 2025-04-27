@@ -17,6 +17,6 @@
 
     <div class="header__right">
         <h2 class="header__right-title">Usuario</h2>
-      <a href="#"><img src="imgs/user_icon.png" alt=""></a>
+      <img src="imgs/user_icon.png" alt="">
     </div>
 </header>

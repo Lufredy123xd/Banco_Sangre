@@ -143,7 +143,7 @@
 </div>
 
     <div class="content__main__bottom">
-        <button id="btn__Registrar" class="btn__bottom">Registrar Donante</button>
+        <a  href="{{route ('usuario.index') }}" id="btn__Registrar" class="btn__bottom">Registrar Donante</a>
     </div>
 </div>
 
