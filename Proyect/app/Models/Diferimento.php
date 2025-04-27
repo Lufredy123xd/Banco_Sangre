@@ -6,9 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Diferimento extends Model
 {
-    private string $motivo;
-    private \DateTime $fechaDiferimiento;
-    private string $tipo; // tipoDiferimiento
-    private int $tiempoEnMeses;
+
+    protected $fillable = [
+        'id_donante',
+        'motivo',
+        'fecha_diferimiento',
+        'tipo',
+        'tiempo_en_meses',
+    ];
+
+    public function donantes()
+    {
+        return $this->belongsTo(Donante::class);
+    }
 
 }

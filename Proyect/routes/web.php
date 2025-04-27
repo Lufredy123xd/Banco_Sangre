@@ -49,6 +49,7 @@ Route::resource('donacion', DonacionController::class)
         'destroy' => 'donacion.destroy',
     ]);
 
+// routes/web.php
 
 Route::resource('agenda', AgendaController::class)
     ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])

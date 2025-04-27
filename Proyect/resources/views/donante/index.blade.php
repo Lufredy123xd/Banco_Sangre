@@ -33,28 +33,36 @@
                         <td>{{ $donante->telefono }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ url('/donante/' . $donante->id . '/edit') }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ url('/donante/' . $donante->id . '/edit') }}"
+                                    class="btn btn-warning btn-sm">Editar</a>
                                 <form action="{{ url('/donante/' . $donante->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este donante?');">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este donante?');">Eliminar</button>
                                 </form>
+                                <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}"
+                                    class="btn btn-primary">Agendar donante</a>
+
                             </div>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+
+        @if (session('mensaje'))
+            <div class="alert alert-success">
+                {{ session('mensaje') }}
+            </div>
+        @endif
+
         <div class="d-flex justify-content-end">
             <a href="{{ route('donante.create') }}" class="btn btn-primary">Registrar Donante</a>
         </div>
     </div>
 
-    @if (session('mensaje'))
-        <div class="alert alert-success">
-            {{ session('mensaje') }}
-        </div>
-    @endif
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

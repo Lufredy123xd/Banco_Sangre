@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
-    private \DateTime $fechaAgenda;
-    private string $horario;
-    private bool $asistio;
+    protected $fillable = [
+        'id_donante',
+        'fechaAgenda',
+        'horario',
+        'asistio',
+    ];
+
+    public function donantes()
+    {
+        return $this->belongsTo(Donante::class);
+    }
+
 }

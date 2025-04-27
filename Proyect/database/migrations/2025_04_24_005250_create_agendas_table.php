@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('agendas', function (Blueprint $table) {
             $table->id();
+            
+            $table->foreignId('id_donante')->constrained('donantes')->onDelete('cascade');            
             $table->date('fecha_agenda')->comment('Fecha de la agenda');
             $table->time('horario')->comment('Horario de la agenda');
             $table->boolean('asistio')->default(false)->comment('Asistencia a la agenda');

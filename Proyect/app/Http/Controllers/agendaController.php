@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
+use App\Models\Donante;
 use Illuminate\Http\Request;
 
 class AgendaController extends Controller
@@ -12,17 +13,25 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        $datos['agendas'] = Agenda::paginate(5);
+        $datos['agendas'] = Agenda::paginate(10);
         return view('agenda.index', $datos);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view(view: 'agenda.create');
+        // Obtenemos el id del donante
+        $donanteId = $request->input('donante_id');
+
+        // Buscamos el donante por su ID
+        $donante = Donante::findOrFail($donanteId);
+
+        // Pasamos el donante a la vista
+        return view('agenda.create', compact('donante'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -31,10 +40,10 @@ class AgendaController extends Controller
     {
         //$datosAgenda = $request->all();
 
-        $datosAgenda=request()->except('_token');
+        $datosAgenda = request()->except('_token');
         Agenda::insert($datosAgenda);
-        
-        return redirect('agenda/create')->with('mensaje', 'Se agendo correctamente');
+
+        return redirect('donante')->with('mensaje', 'Se agendo correctamente');
 
         /*return response()->json([
             'message' => 'Agenda created successfully',
@@ -56,7 +65,8 @@ class AgendaController extends Controller
     public function edit($id)
     {
         $agenda = Agenda::findOrFail($id);
-        return view('agenda.edit', compact('agenda'));
+        $donante = Donante::findOrFail($agenda->donante_id);
+        return view('agenda.edit', compact('agenda', 'donante'));
     }
 
     /**
@@ -64,10 +74,11 @@ class AgendaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $datosAgenda=request()->except(['_token', '_method']);
+        $datosAgenda = request()->except(['_token', '_method']);
         Agenda::where('id', '=', $id)->update($datosAgenda);
         $agenda = Agenda::findOrFail($id);
-        return redirect()->route('agenda.edit', $id)->with('mensaje', 'Se actualizó correctamente');    }
+        return redirect()->route('agenda.edit', $id)->with('mensaje', 'Se actualizó correctamente');
+    }
 
     /**
      * Remove the specified resource from storage.

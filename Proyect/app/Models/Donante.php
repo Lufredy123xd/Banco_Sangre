@@ -1,6 +1,5 @@
 <?php
 
-namespace App;
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -26,16 +25,16 @@ class Donante extends Model
    
 
     // Relación uno a muchos con Agenda
-    /*public function agendas()
+    public function agendas()
     {
         return $this->hasMany(Agenda::class);
-    }*/
+    }
 
     // Relación uno a muchos con Diferimiento
-    /*public function diferimientos()
+    public function diferimientos()
     {
-        return $this->hasMany(Diferimiento::class);
-    }*/
+        return $this->hasMany(Diferimento::class);
+    }
 
     // Relación uno a muchos con Donacion
     public function donaciones()

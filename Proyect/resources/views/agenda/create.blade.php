@@ -15,6 +15,11 @@
         <form action="{{ url('/agenda') }}" method="POST" class="p-4 border rounded shadow">
             {{ csrf_field() }}
 
+            <p>Donante seleccionado: {{ $donante->nombre }}</p>
+
+            <!-- Campo oculto para el ID del donante -->
+            <input type="hidden" name="id_donante" value="{{ $donante->id }}">
+
             <!-- Campo para la fecha -->
             <div class="mb-3">
                 <label for="fecha_agenda" class="form-label">Fecha de la Agenda:</label>
@@ -36,9 +41,8 @@
                 </select>
             </div>
 
-            <a href="{{ route('agenda.index') }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('donante.index') }}" class="btn btn-secondary">Cancelar</a>
             <button type="submit" class="btn btn-primary">Guardar</button>
-           
         </form>
 
         @if (session('mensaje'))

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('diferimentos', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('id_donante')->constrained('donantes'); // Relación con Donante
+
             $table->string('motivo')->comment('Motivo del diferimiento');
             $table->date('fecha_diferimiento')->comment('Fecha del diferimiento');
             $table->string('tipo')->comment('Tipo de diferimiento');
