@@ -31,11 +31,13 @@
                         <td>{{ $usuario->rol }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}"
+                                    class="btn btn-warning btn-sm">Editar</a>
                                 <form action="{{ url('/usuario/' . $usuario->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</button>
                                 </form>
                             </div>
                         </td>
@@ -56,14 +58,14 @@
     @endif
 
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

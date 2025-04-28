@@ -12,7 +12,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4 text-center">Registrar Donante</h1>
-        <form action="{{ url('/donante') }}" method="POST" class="p-4 border rounded shadow">
+        <form action="{{ route('donante.store') }}" method="POST" class="p-4 border rounded shadow">
             {{ csrf_field() }}
 
             <!-- Campo oculto para el ID -->

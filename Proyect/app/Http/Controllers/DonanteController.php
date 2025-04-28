@@ -16,7 +16,7 @@ class DonanteController extends Controller
      */
     public function index()
     {
-        $datos['donantes'] = Donante::paginate(5);
+        $datos['donantes'] = Donante::paginate(10);
         return view('donante.index', $datos);
     }
 
@@ -33,6 +33,7 @@ class DonanteController extends Controller
      */
     public function store(Request $request)
     {
+        $datosDonante = $request->except('_token');
         $datosDonante = $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
@@ -46,9 +47,10 @@ class DonanteController extends Controller
             'observaciones' => 'nullable|string',
         ]);
 
-        Donante::create($datosDonante);
-
-        return redirect('donante')->with('mensaje', 'Donante registrado correctamente');
+        return response()->json([
+            'message' => 'Agenda created successfully',
+            'data' => $datosDonante,
+        ]);
     }
 
     /**

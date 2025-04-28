@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\VarDumper\VarDumper;
 
 class UsuarioController extends Controller
 {
@@ -24,16 +25,11 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email',
-            'rol' => 'required|in:Administrador,Docente,Estudiante,Funcionario',
-            'password' => 'required|string|min:8',
-        ]);
+        $data = $request->except('_token'); // Elimina el _token del array de datos
 
-        // Hash the password before saving
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        Usuario::create($validatedData);
+        $data['password'] = Hash::make($data['password']);
+
+        Usuario::create($data);
 
         return redirect()->route('usuario.index')->with('mensaje', 'Usuario creado correctamente.');
     }
