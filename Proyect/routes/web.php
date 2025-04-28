@@ -20,6 +20,9 @@ Route::get('/editar', function () {
     return view('administrador.editar');
 })->name('administrador.editar');
 
+Route::get('/gestionar-donante', function () {
+    return view('gestionarDonante');
+});
 
 Route::get('/faq', function () {
     return view('faq');
@@ -47,7 +50,7 @@ Route::resource('donacion', DonacionController::class)
         'destroy' => 'donacion.destroy',
     ]);
 
-// routes/web.php
+
 
 Route::resource('agenda', AgendaController::class)
     ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
@@ -85,3 +88,4 @@ Route::resource('usuario', UsuarioController::class)
         'update' => 'usuario.update',
         'destroy' => 'usuario.destroy',
     ]);
+

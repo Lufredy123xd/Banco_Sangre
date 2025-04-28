@@ -34,23 +34,10 @@ class DonanteController extends Controller
     public function store(Request $request)
     {
         $datosDonante = $request->except('_token');
-        $datosDonante = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'cedula' => 'required|integer|unique:donantes,cedula',
-            'sexo' => 'required|in:' . implode(',', array_column(Sexo::cases(), 'value')), // Validar enum
-            'telefono' => 'required|string|max:15',
-            'fecha_nacimiento' => 'required|date',
-            'ABO' => 'required|in:' . implode(',', array_column(TipoABO::cases(), 'value')), // Validar enum
-            'RH' => 'required|in:' . implode(',', array_column(TipoRH::cases(), 'value')), // Validar enum
-            'estado' => 'required|in:' . implode(',', array_column(EstadoDonante::cases(), 'value')), // Validar enum
-            'observaciones' => 'nullable|string',
-        ]);
 
-        return response()->json([
-            'message' => 'Agenda created successfully',
-            'data' => $datosDonante,
-        ]);
+        Donante::insert($datosDonante);
+
+        return redirect('donante')->with('mensaje', 'Se agrego el donante correctamente');
     }
 
     /**
@@ -73,24 +60,12 @@ class DonanteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        $datosDonante = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'cedula' => 'required|integer|unique:donantes,cedula,' . $id,
-            'sexo' => 'required|in:' . implode(',', array_column(Sexo::cases(), 'value')), // Validar enum
-            'telefono' => 'required|string|max:15',
-            'fecha_nacimiento' => 'required|date',
-            'ABO' => 'required|in:' . implode(',', array_column(TipoABO::cases(), 'value')), // Validar enum
-            'RH' => 'required|in:' . implode(',', array_column(TipoRH::cases(), 'value')), // Validar enum
-            'estado' => 'required|in:' . implode(',', array_column(EstadoDonante::cases(), 'value')), // Validar enum
-            'observaciones' => 'nullable|string',
-        ]);
-
+        $datosDonante = request()->except(['_token', '_method']);
         Donante::where('id', '=', $id)->update($datosDonante);
-
-        return redirect('donante')->with('mensaje', 'Donante actualizado correctamente');
+        $donante = Donante::findOrFail($id);
+        return redirect()->route('donante.edit', $id)->with('mensaje', 'Donante actualizado correctamente');
     }
 
     /**

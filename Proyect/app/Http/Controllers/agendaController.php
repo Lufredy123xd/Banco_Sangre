@@ -38,17 +38,12 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        //$datosAgenda = $request->all();
-
         $datosAgenda = request()->except('_token');
+
         Agenda::insert($datosAgenda);
 
         return redirect('donante')->with('mensaje', 'Se agendo correctamente');
 
-        /*return response()->json([
-            'message' => 'Agenda created successfully',
-            'data' => $datosAgenda,
-        ]);*/
     }
 
     /**
