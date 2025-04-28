@@ -18,9 +18,15 @@ Route::get('/modificar', function () {
     return view('modificar');
 })->name('modificar');
 
+<<<<<<< Updated upstream
 Route::get('/eliminar', function () {
     return view('eliminar');
 })->name('eliminar');
+=======
+Route::get('/gestionar-donante', function () {
+    return view('gestionarDonante');
+})->name('gestionarDonante');
+>>>>>>> Stashed changes
 
 Route::get('/faq', function () {
     return view('faq');

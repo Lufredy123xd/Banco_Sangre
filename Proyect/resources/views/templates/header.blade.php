@@ -4,10 +4,15 @@
             <img src="imgs/dropdown.png" alt="" class="header__dropdown-icon">
         </button>
         <nav class="header__nav">
+<<<<<<< Updated upstream
             <a href="{{ route('home') }}" class="header__nav-link">Inicio</a>
             <a href="{{ route('registrar') }}" class="header__nav-link">Registrar</a>
             <a href="{{ route('modificar') }}"class="header__nav-link">Modificar</a>
             <a href="{{ route('eliminar') }}" class="header__nav-link">Eliminar</a>
+=======
+            <a href="{{ route('administrador.home') }}" class="header__nav-link">Inicio</a>
+            <a href="{{ route('gestionarDonante') }}"class="header__nav-link">Gestionar Donante</a>
+>>>>>>> Stashed changes
             <a href="" class="header__nav-link">Cerrar sesion</a>
         </nav>
     </div>
@@ -18,6 +23,6 @@
 
     <div class="header__right">
         <h2 class="header__right-title">Usuario</h2>
-      <a href="#"><img src="imgs/user_icon.png" alt=""></a>
+        <a href="#"><img src="imgs/user_icon.png" alt=""></a>
     </div>
 </header>
