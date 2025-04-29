@@ -12,12 +12,12 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::paginate(5); // o ->all() si querés traer todos
-        return view('usuario.index', compact('usuarios'));
+        return view('administrador.index', compact('usuarios'));
     }
 
     public function create()
     {
-        return view('usuario.crearUsuario');
+        return view('administrador.registrar');
     }
 
     /**
@@ -31,7 +31,7 @@ class UsuarioController extends Controller
 
         Usuario::create($data);
 
-        return redirect()->route('usuario.index')->with('mensaje', 'Usuario creado correctamente.');
+        return redirect()->route('administrador.index')->with('mensaje', 'Usuario creado correctamente.');
     }
 
     /**
@@ -40,32 +40,24 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $usuario = Usuario::findOrFail($id);
-        return view('usuario.modificarUsuario', compact('usuario'));
+        return view('administrador.editar', compact('usuario'));
     }
 
     /**
      * Actualiza la información de un usuario existente.
      */
+    // El método update recibe el ID del usuario a actualizar y los datos del formulario
     public function update(Request $request, $id)
     {
         $usuario = Usuario::findOrFail($id);
-
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email,' . $usuario->id,
-            'rol' => 'required|in:Administrador,Docente,Estudiante,Funcionario',
-            'password' => 'nullable|string|min:8',
-        ]);
-
-        if (!empty($validatedData['password'])) {
-            $validatedData['password'] = Hash::make($validatedData['password']);
-        } else {
-            unset($validatedData['password']);
-        }
-
-        $usuario->update($validatedData);
-
-        return redirect()->route('usuario.index')->with('mensaje', 'Usuario actualizado correctamente.');
+    
+        $data = $request->except('_token'); // Elimina el _token del array de datos
+        $data['password'] = Hash::make($data['password']);
+        
+    
+        $usuario->update($data);
+    
+        return redirect()->route('administrador.index')->with('mensaje', 'Usuario modificado correctamente.');
     }
 
     /**
@@ -76,6 +68,6 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();
 
-        return redirect()->route('usuario.index')->with('mensaje', 'Usuario eliminado correctamente.');
+        return redirect()->route('administrador.index')->with('mensaje', 'Usuario eliminado correctamente.');
     }
 }

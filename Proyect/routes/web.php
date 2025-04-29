@@ -8,23 +8,34 @@ use App\Http\Controllers\DonanteController;
 use App\Http\Controllers\UsuarioController;
 
 // routes/web.php
-Route::get('/', function () {
-    return view('administrador.home');
+
+
+// Ruta para el inicio del administrador
+Route::get('/administrador/home', function () {
+return view('administrador.home');
 })->name('administrador.home');
 
-Route::get('/registrar', function () {
-    return view('administrador.registrar');
-})->name('administrador.registrar');
+// Ruta para registrar un nuevo administrador
+Route::get('/administrador/registrar', [UsuarioController::class, 'create'])->name('administrador.registrar');
 
-Route::get('/editar', function () {
-    return view('administrador.editar');
-})->name('administrador.editar');
+// Ruta para editar un administrador (redirige al formulario de edición)
+Route::get('/administrador/modificar', [UsuarioController::class, 'edit'])->name('administrador.modificar');
+
+//route administrador
+Route::resource('administrador', UsuarioController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->names([
+        'index' => 'administrador.index',
+        'create' => 'administrador.create',
+        'store' => 'administrador.store',
+        'edit' => 'administrador.edit',
+        'update' => 'administrador.update',
+        'destroy' => 'administrador.destroy',
+    ]);
 
 
-Route::get('/faq', function () {
-    return view('faq');
-})->name('faq');
 
+//route donante
 Route::resource('donante', DonanteController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->names([
@@ -36,6 +47,7 @@ Route::resource('donante', DonanteController::class)
         'destroy' => 'donante.destroy',
     ]);
 
+//route donacion
 Route::resource('donacion', DonacionController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->names([
@@ -48,7 +60,7 @@ Route::resource('donacion', DonacionController::class)
     ]);
 
 // routes/web.php
-
+// Route para mostrar la lista de agendas
 Route::resource('agenda', AgendaController::class)
     ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
     ->names([
@@ -61,6 +73,7 @@ Route::resource('agenda', AgendaController::class)
         'destroy' => 'agenda.destroy',
     ]);
 
+// Route para mostrar la lista de diferimientos
 Route::resource('diferimento', DiferimentoController::class)
     ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
     ->names([
@@ -73,7 +86,7 @@ Route::resource('diferimento', DiferimentoController::class)
         'destroy' => 'diferimento.destroy',
     ]);
 
-    
+
 // Ruta para mostrar la lista de usuarios
 Route::resource('usuario', UsuarioController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])

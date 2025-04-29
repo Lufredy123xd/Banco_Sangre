@@ -3,68 +3,71 @@
 @section('contentAdmin')
 
 <div class="content__main">
-    <div class="content__main__top">
-        <form action="" method="post">
-            <input type="text" name="txt_buscar" id="txt_buscar" class="content__main__top-text" placeholder="Ingrese dato a buscar">
-            <button class="content__main__top-button">Buscar</button>
-        </form>
-        <div class="dropdown-checkboxes">
-            <button class="dropdown-toggle">Filtrar columnas ▾</button>
-            <div class="dropdown-menu">
-                <label><input type="checkbox" name="cedula"> Cédula</label>
-                <label><input type="checkbox" name="nombre"> Nombre</label>
-                <label><input type="checkbox" name="apellido"> Apellido</label>
-                <label><input type="checkbox" name="telefono"> Teléfono</label>
-                <label><input type="checkbox" name="fechaNacimiento"> Fecha de Nacimiento</label>
-                <label><input type="checkbox" name="ABO"> ABO</label>
-                <label><input type="checkbox" name="RH"> RH</label>
-                <label><input type="checkbox" name="ultimaFechaDonacion"> Última Fecha de Donación</label>
-            </div>
-        </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const dropdown = document.querySelector(".dropdown-checkboxes");
-                const toggleBtn = dropdown.querySelector(".dropdown-toggle");
-
-                toggleBtn.addEventListener("click", function() {
-                    dropdown.classList.toggle("open");
-                });
-
-                document.addEventListener("click", function(e) {
-                    if (!dropdown.contains(e.target)) {
-                        dropdown.classList.remove("open");
-                    }
-                });
-            });
-        </script>
-
-
-        <div class="main__select">
-            <select name="cmb__ordenado_por" id="cmb__ordenado__por" class="select">
-                <option value="1" disabled selected>Ordenado por</option>
-                <option value="2">Mes</option>
-                <option value="2">Año</option>
-                <option value="2">Edad</option>
-            </select>
-
-            <select name="cmb__sexo" id="cmb__sexo" class="select">
-                <option value="1" disabled selected>Sexo</option>
-                <option value="2">Mes</option>
-                <option value="2">Año</option>
-                <option value="2">Edad</option>
-            </select>
-
-            <select name="cmb__estado" id="cmb__estado" class="select">
-                <option value="1" disabled selected>Estado</option>
-                <option value="2">Mes</option>
-                <option value="2">Año</option>
-                <option value="2">Edad</option>
-            </select>
-        </div>
+  <div class="content__main__top">
+    <form action="" method="post">
+      <input type="text" name="txt_buscar" id="txt_buscar" class="content__main__top-text" placeholder="Ingrese dato a buscar">
+      <button class="content__main__top-button">Buscar</button>
+    </form>
+    <div class="dropdown-checkboxes">
+      <button class="dropdown-toggle">Filtrar columnas ▾</button>
+      <div class="dropdown-menu">
+        <label><input type="checkbox" name="cedula"> Cédula</label>
+        <label><input type="checkbox" name="nombre"> Nombre</label>
+        <label><input type="checkbox" name="apellido"> Apellido</label>
+        <label><input type="checkbox" name="telefono"> Teléfono</label>
+        <label><input type="checkbox" name="fechaNacimiento"> Fecha de Nacimiento</label>
+        <label><input type="checkbox" name="ABO"> ABO</label>
+        <label><input type="checkbox" name="RH"> RH</label>
+        <label><input type="checkbox" name="ultimaFechaDonacion"> Última Fecha de Donación</label>
+      </div>
     </div>
 
-    <div class="content__main__center">
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const dropdown = document.querySelector(".dropdown-checkboxes");
+        const toggleBtn = dropdown.querySelector(".dropdown-toggle");
+
+        toggleBtn.addEventListener("click", function() {
+          dropdown.classList.toggle("open");
+        });
+
+        document.addEventListener("click", function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove("open");
+          }
+        });
+      });
+    </script>
+
+
+    <div class="main__select">
+      <!-- Select para Ordenado por -->
+      <select name="cmb__ordenado_por" id="cmb__ordenado__por" class="select">
+        <option value="" disabled selected>Ordenado por</option>
+        <option value="Mes">Mes</option>
+        <option value="Año">Año</option>
+        <option value="Edad">Edad</option>
+      </select>
+
+      <!-- Select para Sexo -->
+      <select name="cmb__sexo" id="cmb__sexo" class="select">
+        <option value="" disabled selected>Sexo</option>
+        @foreach (App\Enums\Sexo::cases() as $sexo)
+        <option value="{{ $sexo->value }}">{{ $sexo->value }}</option>
+        @endforeach
+      </select>
+
+      <!-- Select para Estado -->
+      <select name="cmb__estado" id="cmb__estado" class="select">
+        <option value="" disabled selected>Estado</option>
+        @foreach (App\Enums\EstadoDonante::cases() as $estado)
+        <option value="{{ $estado->value }}">{{ $estado->value }}</option>
+        @endforeach
+      </select>
+    </div>
+  </div>
+
+  <div class="content__main__center">
     <table>
       <thead>
         <tr>
@@ -90,61 +93,23 @@
           <td>tf</td>
           <td>10/10/10</td>
           <td>M</td>
-          <td><a href=""><img src="imgs/edit_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/ver_mas_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/gestionar_icon.png" alt=""></a></td>
-          <td><span class="estado">Estado</span></td>
-        </tr>
-
-        <tr class="fila-usuario">
-          <td>Mario</td>
-          <td>Alberto</td>
-          <td>5672492</td>
-          <td>0+</td>
-          <td>tf</td>
-          <td>10/10/10</td>
-          <td>M</td>
-          <td><a href=""><img src="imgs/edit_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/ver_mas_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/gestionar_icon.png" alt=""></a></td>
-          <td><span class="estado">Estado</span></td>
-        </tr>
-
-        <tr class="fila-usuario">
-          <td>Alberto</td>
-          <td>Alberto</td>
-          <td>5672492</td>
-          <td>0+</td>
-          <td>tf</td>
-          <td>10/10/10</td>
-          <td>M</td>
-          <td><a href=""><img src="imgs/edit_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/ver_mas_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/gestionar_icon.png" alt=""></a></td>
-          <td><span class="estado">Estado</span></td>
-        </tr>
-
-        <tr class="fila-usuario">
-          <td>Pepe</td>
-          <td>Alberto</td>
-          <td>5672492</td>
-          <td>0+</td>
-          <td>tf</td>
-          <td>10/10/10</td>
-          <td>M</td>
-          <td><a href=""><img src="imgs/edit_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/ver_mas_icon.png" alt=""></a></td>
-          <td><a href=""><img src="imgs/gestionar_icon.png" alt=""></a></td>
+          <td><a href=""><img src="{{ asset('imgs/edit_icon.png') }}" alt=""></a></td>
+          <td><a href=""><img src="{{ asset('imgs/ver_mas_icon.png') }}" alt=""></a></td>
+          <td><a href=""><img src="{{ asset('imgs/gestionar_icon.png') }}" alt=""></a></td>
           <td><span class="estado">Estado</span></td>
         </tr>
       </tbody>
     </table>
     <div class="pagination" id="pagination"></div>
-</div>
+  </div>
 
-    <div class="content__main__bottom">
-        <a  href="{{route ('usuario.index') }}" id="btn__Registrar" class="btn__bottom">Registrar Donante</a>
+  <div class="content__main__bottom">
+    <a href="" id="btn__Registrar" class="btn__bottom">Gestionar donante</a>
+    <a href="{{route ('administrador.index') }}" id="btn__Registrar" class="btn__bottom">Gestionar usuario</a>
+    <div class="contenedor__bottom__div">
+      <a href="{{route ('administrador.create') }}" id="btn__Registrar" class="btn__bottom usuario">Registrar usuario</a>
     </div>
+  </div>
 </div>
 
 <script>

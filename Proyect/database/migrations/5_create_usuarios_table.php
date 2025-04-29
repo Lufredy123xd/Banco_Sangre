@@ -10,9 +10,14 @@ return new class extends Migration
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('email')->unique();
-            $table->enum('rol', ['Administrador', 'Docente', 'Estudiante', 'Funcionario']);
+            $table->string('apellido');
+            $table->integer('cedula')->unique();
+            $table->enum('tipo_usuario', ['Administrador', 'Docente', 'Estudiante', 'Funcionario']);
+            $table->date('fecha_nacimiento');
+            $table->string('curso_hemoterapia')->nullable();
+            $table->string('user_name')->unique();
             $table->string('password');
+            $table->enum('estado', ['Activo', 'Inactivo', 'Suspendido']);
             $table->timestamps();
         });
     }

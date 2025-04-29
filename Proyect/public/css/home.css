@@ -179,8 +179,17 @@ table {
     color: white;
     text-align: center;
     line-height: 50px;
+    margin:20px;
     text-decoration: none;
 }
+
+.contenedor__bottom__div
+{
+  flex-grow: 1;
+  display: flex;
+  justify-content: end;
+}
+
 
 .btn__bottom:hover
 {
