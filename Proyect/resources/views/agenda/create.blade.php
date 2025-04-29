@@ -32,6 +32,7 @@
                 <input type="time" id="horario" name="horario" class="form-control" required>
             </div>
 
+            <input type="hidden" id="asistio" name="asistio" value="">
             <!-- Campo para asistencia 
             <div class="mb-3">
                 <label for="asistio" class="form-label">¿Asistió?</label>

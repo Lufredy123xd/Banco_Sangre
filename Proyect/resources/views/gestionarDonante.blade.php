@@ -14,7 +14,7 @@
                             <th>ABO</th>
                             <th>RH</th>
                             <th>Última Fecha Donación</th>
-                            <th>Fecha agendada</th>
+                            <th>Fecha agendada | Hora</th>
                             <th>Sexo</th>
                             <th>Estado</th>
                         </tr>
@@ -28,10 +28,12 @@
                             <td>{{ $donante->RH }}</td>
                             <td>{{ $donante->ultima_donacion ?? 'N/A' }}</td>
                             <td>
-                                @if ($agenda->isEmpty())
+                                @if (is_null($agenda))
                                     N/D
                                 @else
-                                    {{ $agenda->first()->fecha_agenda }}
+                                    {{ $agenda->fecha_agenda }}
+                                    |
+                                    {{ $agenda->horario }}
                                 @endif
                             </td>
                             <td>{{ $donante->sexo }}</td>
@@ -44,15 +46,15 @@
 
                 <div class="d-flex gap-2">
 
-                    @if (!$agenda->isEmpty() && $agenda->first()->asistio == null)
 
+                    @if ($agenda && $agenda->asistio == null)
                         @php
-                            $fechaAgenda = \Carbon\Carbon::parse($agenda->first()->fecha_agenda)->toDateString();
+                            $fechaAgenda = \Carbon\Carbon::parse($agenda->fecha_agenda)->toDateString();
                             $hoy = \Carbon\Carbon::now()->toDateString();
+
                         @endphp
 
-                        
-                        @if ($hoy > $fechaAgenda && $donante->estado === 'Para actualizar')
+                        @if ($hoy >= $fechaAgenda && strtolower($donante->estado) === strtolower('Para Actualizar'))
                             <a href="{{ route('diferimento.create', ['donante_id' => $donante->id]) }}"
                                 class="btn btn-primary">Diferir donante</a>
 
@@ -67,18 +69,17 @@
                         @endif
                     @endif
 
-                    @if ($agenda->isEmpty())
-                        @if ($donante->estado === 'Disponible')
-                            <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}"
-                                class="btn btn-primary">Agendar donante</a>
-                        @endif
+                    @if (strtolower($donante->estado) === strtolower('Disponible'))
+                        <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}"
+                            class="btn btn-primary">Agendar donante</a>
                     @endif
-             
-
-
-
 
                 </div>
+                @if (session('mensaje'))
+                    <div class="alert alert-success">
+                        {{ session('mensaje') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

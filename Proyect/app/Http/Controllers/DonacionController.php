@@ -103,15 +103,15 @@ class DonacionController extends Controller
     {
         $donante = Donante::findOrFail($id); // Buscar el donante por ID
 
-        $agenda = Agenda::where('id_donante', $id)->get(); // Obtener las citas del donante
+        $agenda = Agenda::where('id_donante', $id)
+            ->whereNull('asistio')  // Esto agrega la condición donde 'asistio' es null
+            ->orderByDesc('fecha_agenda')
+            ->first();
 
-        // Verificar si la fecha actual es mayor o igual a la fecha agendada y si el estado no es 'Disponible'
-        foreach ($agenda as $cita) {
-            if (now()->toDateString() >= $cita->fecha_agenda && $donante->estado !== "Disponible") {
-                $donante->estado = "Para actualizar";
-                $donante->save();
-                break;
-            }
+
+        if ($agenda && now()->toDateString() >= $agenda->fecha_agenda && $donante->estado === EstadoDonante::Agendado->value) {
+            $donante->estado = EstadoDonante::ParaActializar->value;
+            $donante->save();
         }
 
         return view('gestionarDonante', compact('donante', 'agenda'));
