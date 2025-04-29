@@ -33,6 +33,9 @@ Route::resource('administrador', UsuarioController::class)
         'destroy' => 'administrador.destroy',
     ]);
 
+Route::get('/gestionar-donante', function () {
+    return view('gestionarDonante');
+});
 
 
 //route donante
@@ -98,3 +101,4 @@ Route::resource('usuario', UsuarioController::class)
         'update' => 'usuario.update',
         'destroy' => 'usuario.destroy',
     ]);
+
