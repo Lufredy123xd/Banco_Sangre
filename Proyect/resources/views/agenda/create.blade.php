@@ -32,17 +32,18 @@
                 <input type="time" id="horario" name="horario" class="form-control" required>
             </div>
 
-            <!-- Campo para asistencia -->
+            <!-- Campo para asistencia 
             <div class="mb-3">
                 <label for="asistio" class="form-label">¿Asistió?</label>
                 <select id="asistio" name="asistio" class="form-select" required>
                     <option value="1">Sí</option>
                     <option value="0">No</option>
                 </select>
-            </div>
+            </div>-->
 
-            <a href="{{ route('donante.index') }}" class="btn btn-secondary">Cancelar</a>
             <button type="submit" class="btn btn-primary">Guardar</button>
+            <a class="btn btn-warning btn-rm" href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Cancelar</a>
+            
         </form>
 
         @if (session('mensaje'))

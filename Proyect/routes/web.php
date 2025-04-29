@@ -20,13 +20,13 @@ Route::get('/editar', function () {
     return view('administrador.editar');
 })->name('administrador.editar');
 
-Route::get('/gestionar-donante', function () {
-    return view('gestionarDonante');
-});
 
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
+
+Route::get('/gestionar-donante/{id}', [DonacionController::class, 'gestionarDonante'])->name('gestionarDonante');
+Route::post('/donante/{id}/no-asistio', [DonanteController::class, 'noAsistio'])->name('donante.no_asistio');
 
 Route::resource('donante', DonanteController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])

@@ -74,7 +74,10 @@ class DonanteController extends Controller
     public function destroy($id)
     {
         Donante::destroy($id);
-        
+
         return redirect('donante')->with('mensaje', 'Donante eliminado correctamente');
     }
+
+
+    
 }

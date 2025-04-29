@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('motivo')->comment('Motivo del diferimiento');
             $table->date('fecha_diferimiento')->comment('Fecha del diferimiento');
             $table->string('tipo')->comment('Tipo de diferimiento');
-            $table->integer('tiempo_en_meses')->comment('Tiempo en meses del diferimiento');
+            $table->integer('tiempo_en_meses')->comment('Tiempo en meses del diferimiento')->nullable();
             $table->timestamps();
         });
     }

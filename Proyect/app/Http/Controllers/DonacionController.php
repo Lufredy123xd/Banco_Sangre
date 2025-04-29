@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EstadoDonante;
+use App\Models\Agenda;
 use App\Models\Donacion;
 use App\Models\Donante;
 use App\Enums\TipoSerologia;
@@ -16,9 +18,11 @@ class DonacionController extends Controller
      */
     public function index()
     {
-        $datos['donaciones'] = Donacion::with('donante')->paginate(5);
+        $datos['donaciones'] = Donacion::with('donante')->paginate(10);
         return view('donacion.index', $datos);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -92,4 +96,26 @@ class DonacionController extends Controller
 
         return redirect('donacion')->with('mensaje', 'Donación eliminada correctamente');
     }
+
+
+
+    public function gestionarDonante($id)
+    {
+        $donante = Donante::findOrFail($id); // Buscar el donante por ID
+
+        $agenda = Agenda::where('id_donante', $id)->get(); // Obtener las citas del donante
+
+        // Verificar si la fecha actual es mayor o igual a la fecha agendada y si el estado no es 'Disponible'
+        foreach ($agenda as $cita) {
+            if (now()->toDateString() >= $cita->fecha_agenda && $donante->estado !== "Disponible") {
+                $donante->estado = "Para actualizar";
+                $donante->save();
+                break;
+            }
+        }
+
+        return view('gestionarDonante', compact('donante', 'agenda'));
+    }
+
+
 }
