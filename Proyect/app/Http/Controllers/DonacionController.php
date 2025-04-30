@@ -20,6 +20,9 @@ class DonacionController extends Controller
     public function index()
     {
         $datos['donaciones'] = Donacion::with('donante')->paginate(10);
+
+        
+
         return view('donacion.index', $datos);
     }
 

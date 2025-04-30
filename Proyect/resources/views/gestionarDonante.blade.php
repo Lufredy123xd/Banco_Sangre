@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS (necesario para que funcione el modal) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 @section('content')
     <div class="content__main">
         <div class="content__main">
@@ -41,11 +45,6 @@
                         </tr>
                     </tbody>
                 </table>
-
-                
-
-
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
                 <div>
 
@@ -97,7 +96,17 @@
                                 @foreach ($diferimientos as $diferimiento)
                                     <tr>
                                         <td>{{ $diferimiento->fecha_diferimiento }}</td>
-                                        <td><a href="">Mas detalle</a></td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                data-bs-target="#modalDiferimiento"
+                                                data-fecha="{{ $diferimiento->fecha_diferimiento }}"
+                                                data-tipo="{{ $diferimiento->tipo }}"
+                                                data-tiempo_en_meses="{{ $diferimiento->tiempo_en_meses }}"
+                                                data-motivo="{{ $diferimiento->motivo }}">
+                                                Más detalle
+                                            </button>
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             @endif
@@ -113,3 +122,42 @@
         </div>
     </div>
 @endsection
+
+
+<!-- Modal de Diferimiento -->
+<div class="modal fade" id="modalDiferimiento" tabindex="-1" aria-labelledby="modalDiferimientoLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDiferimientoLabel">Detalle del diferimiento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Fecha:</strong> <span id="modalFecha"></span></p>
+                <p><strong>Motivo:</strong> <span id="modalMotivo"></span></p>
+                <p><strong>Tipo:</strong> <span id="modalTipo"></span></p>
+                <p><strong>Tiempo en meses:</strong> <span id="modalTiempo"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('modalDiferimiento');
+    modal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const fecha = button.getAttribute('data-fecha');
+        const motivo = button.getAttribute('data-motivo');
+        const tipo = button.getAttribute('data-tipo');
+        const tiempo_en_meses = button.getAttribute('data-tiempo_en_meses');
+
+        modal.querySelector('#modalFecha').textContent = fecha;
+        modal.querySelector('#modalMotivo').textContent = motivo;
+        modal.querySelector('#modalTipo').textContent = tipo;
+        modal.querySelector('#modalTiempo').textContent = tiempo_en_meses;
+    });
+</script>
