@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="wi+dth=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('imgs/vaccine_icon.png') }}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{asset('imgs/vaccine_icon.png')}}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ABM.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +18,8 @@
     <!-- Bootstrap JS (necesario para que funcione el modal) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <title>BancoSangre</title>
+    
+    
 </head>
 
 <body>

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('estado'); // Estado del donante (activo, inactivo, etc.)
             $table->text('observaciones')->nullable(); // Observaciones adicionales
             $table->timestamp('ultima_modificacion')->nullable(); // Última modificación
-            //$table->foreignId('modificado_por')->nullable()->constrained('usuarios')->onDelete('set null'); // Relación con Usuario
+            $table->foreignId('modificado_por')->nullable()->constrained('usuarios')->onDelete('set null'); // Relación con Usuario
 
             $table->timestamps();
         });
