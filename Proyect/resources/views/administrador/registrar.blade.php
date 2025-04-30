@@ -36,7 +36,6 @@
         </select>
 
         <label class="block" for="txt__curso">Curso (en caso de estudiante)</label>
-        
         <select class="input__div" name="curso" id="txt__curso">
             @foreach (App\Enums\Curso::cases() as $curso)
             <option value="{{ $curso->value }}">{{ $curso->value }}</option>

@@ -224,6 +224,25 @@ table {
     background-color: #b00942;
 }
 
+.estado {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+.estado.activo {
+  background-color: green;
+}
+
+.estado.inactivo {
+  background-color: red;
+}
+
+.estado.suspendido {
+  background-color: gray;
+}
+
 @media screen and (max-width: 900px) {
 
 

@@ -2,114 +2,152 @@
 
 @section('contentAdmin')
 
+
+
 <div class="content__main">
-  <div class="content__main__top">
-    <form action="" method="post">
-      <input type="text" name="txt_buscar" id="txt_buscar" class="content__main__top-text" placeholder="Ingrese dato a buscar">
-      <button class="content__main__top-button">Buscar</button>
-    </form>
-    <div class="dropdown-checkboxes">
-      <button class="dropdown-toggle">Filtrar columnas ▾</button>
-      <div class="dropdown-menu">
-        <label><input type="checkbox" name="cedula"> Cédula</label>
-        <label><input type="checkbox" name="nombre"> Nombre</label>
-        <label><input type="checkbox" name="apellido"> Apellido</label>
-        <label><input type="checkbox" name="telefono"> Teléfono</label>
-        <label><input type="checkbox" name="fechaNacimiento"> Fecha de Nacimiento</label>
-        <label><input type="checkbox" name="ABO"> ABO</label>
-        <label><input type="checkbox" name="RH"> RH</label>
-        <label><input type="checkbox" name="ultimaFechaDonacion"> Última Fecha de Donación</label>
-      </div>
+    <div class="content__main__top">
+        <form action="" method="post">
+            <input type="text" name="txt_buscar" id="txt_buscar" class="content__main__top-text" placeholder="Ingrese dato a buscar">
+            <button class="content__main__top-button">Buscar</button>
+        </form>
+        <div class="dropdown-checkboxes">
+            <button class="dropdown-toggle">Filtrar columnas ▾</button>
+            <div class="dropdown-menu">
+                <label><input type="checkbox" name="cedula"> Cédula</label>
+                <label><input type="checkbox" name="nombre"> Nombre</label>
+                <label><input type="checkbox" name="apellido"> Apellido</label>
+                <label><input type="checkbox" name="telefono"> Teléfono</label>
+                <label><input type="checkbox" name="fechaNacimiento"> Fecha de Nacimiento</label>
+                <label><input type="checkbox" name="ABO"> ABO</label>
+                <label><input type="checkbox" name="RH"> RH</label>
+                <label><input type="checkbox" name="ultimaFechaDonacion"> Última Fecha de Donación</label>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const dropdown = document.querySelector(".dropdown-checkboxes");
+                const toggleBtn = dropdown.querySelector(".dropdown-toggle");
+
+                toggleBtn.addEventListener("click", function() {
+                    dropdown.classList.toggle("open");
+                });
+
+                document.addEventListener("click", function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdown.classList.remove("open");
+                    }
+                });
+            });
+        </script>
+
+        <div class="main__select">
+        
+        
+            <select name="cmb__estado" id="cmb__estado" class="select">
+                <option value="" disabled selected>Estado</option>
+                @foreach (App\Enums\EstadoUsuario::cases() as $estado)
+                    <option value="{{ $estado->value }}">{{ $estado->value }}</option>
+                @endforeach
+            </select>
+        </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                
+                const estadoSelect = document.getElementById("cmb__estado");
+                
+                const rows = Array.from(document.querySelectorAll(".fila-usuario"));
+        
+                function filterTable() {
+                   
+                    const selectedEstado = estadoSelect.value;
+                  
+        
+                    rows.forEach(row => {
+                        
+                        const estado = row.querySelector(".estado").textContent.trim();
+                        const nombre = row.querySelector("td:nth-child(2)").textContent.trim();
+        
+                        
+                        let matchesEstado = !selectedEstado || estado === selectedEstado;
+        
+                        row.style.display = matchesEstado ? "table-row" : "none";
+                    });
+        
+                    if (selectedOrdenadoPor) {
+                        rows.sort((a, b) => {
+                            const aValue = a.querySelector(`td:nth-child(${getColumnIndex(selectedOrdenadoPor)})`).textContent.trim();
+                            const bValue = b.querySelector(`td:nth-child(${getColumnIndex(selectedOrdenadoPor)})`).textContent.trim();
+                            return aValue.localeCompare(bValue);
+                        }).forEach(row => row.parentElement.appendChild(row));
+                    }
+                }
+        
+                function getColumnIndex(columnName) {
+                    switch (columnName) {
+                        case "nombre": return 2;
+                        case "cedula": return 3;
+                        case "tipo_usuario": return 4;
+                        default: return 1;
+                    }
+                }
+        
+             
+                estadoSelect.addEventListener("change", filterTable);
+                
+            });
+        </script>
+
+
+
+
+
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const dropdown = document.querySelector(".dropdown-checkboxes");
-        const toggleBtn = dropdown.querySelector(".dropdown-toggle");
-
-        toggleBtn.addEventListener("click", function() {
-          dropdown.classList.toggle("open");
-        });
-
-        document.addEventListener("click", function(e) {
-          if (!dropdown.contains(e.target)) {
-            dropdown.classList.remove("open");
-          }
-        });
-      });
-    </script>
-
-
-    <div class="main__select">
-      <!-- Select para Ordenado por -->
-      <select name="cmb__ordenado_por" id="cmb__ordenado__por" class="select">
-        <option value="" disabled selected>Ordenado por</option>
-        <option value="Mes">Mes</option>
-        <option value="Año">Año</option>
-        <option value="Edad">Edad</option>
-      </select>
-
-      <!-- Select para Sexo -->
-      <select name="cmb__sexo" id="cmb__sexo" class="select">
-        <option value="" disabled selected>Sexo</option>
-        @foreach (App\Enums\Sexo::cases() as $sexo)
-        <option value="{{ $sexo->value }}">{{ $sexo->value }}</option>
-        @endforeach
-      </select>
-
-      <!-- Select para Estado -->
-      <select name="cmb__estado" id="cmb__estado" class="select">
-        <option value="" disabled selected>Estado</option>
-        @foreach (App\Enums\EstadoDonante::cases() as $estado)
-        <option value="{{ $estado->value }}">{{ $estado->value }}</option>
-        @endforeach
-      </select>
-    </div>
-  </div>
-
-  <div class="content__main__center">
+    <div class="content__main__center">
     <table>
       <thead>
         <tr>
+          <th>id</th>
           <th>Nombre</th>
-          <th>Apellido</th>
           <th>CI</th>
-          <th>ABO</th>
-          <th>RH</th>
-          <th>Ultima Fecha Donación</th>
-          <th>Sexo</th>
+          <th>Tipo deusuario</th>
+          <th></th>
+          <th></th>
+          <th></th>
           <th>Editar</th>
           <th>Ver más</th>
-          <th>Gestionar donación</th>
           <th>Estado</th>
         </tr>
       </thead>
       <tbody>
+      @foreach ($usuarios as $usuario)
         <tr class="fila-usuario">
-          <td>Luis</td>
-          <td>Alberto</td>
-          <td>5672492</td>
-          <td>0+</td>
-          <td>tf</td>
-          <td>10/10/10</td>
-          <td>M</td>
-          <td><a href=""><img src="{{ asset('imgs/edit_icon.png') }}" alt=""></a></td>
-          <td><a href=""><img src="{{ asset('imgs/ver_mas_icon.png') }}" alt=""></a></td>
-          <td><a href=""><img src="{{ asset('imgs/gestionar_icon.png') }}" alt=""></a></td>
-          <td><span class="estado">Estado</span></td>
+          <td>{{ $usuario->id }}</td>
+          <td>{{ $usuario->nombre }}</td>
+          <td>{{ $usuario->cedula }}</td>
+          <td>{{ $usuario->tipo_usuario }}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><a href="{{ url('/administrador/' . $usuario->id . '/edit') }}"><img src="{{ asset('imgs/edit_icon.png') }}" alt=""></a></td>
+          <td><a href="{{ route('administrador.verMas', ['id' => $usuario->id]) }}"><img src="{{ asset('imgs/ver_mas_icon.png') }}" alt=""></a></td>
+          <td><span class="estado {{ strtolower($usuario->estado) }}">{{ $usuario->estado }}</span></td>
         </tr>
+        @endforeach
       </tbody>
     </table>
     <div class="pagination" id="pagination"></div>
-  </div>
+</div>
 
-  <div class="content__main__bottom">
-    <a href="" id="btn__Registrar" class="btn__bottom">Gestionar donante</a>
-    <a href="{{route ('administrador.index') }}" id="btn__Registrar" class="btn__bottom">Gestionar usuario</a>
+    <div class="content__main__bottom">
+    <a  href="{{route ('administrador.homeDonante')}}" id="btn__Registrar" class="btn__bottom">Gestionar donante</a>
+    <a  href="{{route ('administrador.home') }}" id="btn__Registrar" class="btn__bottom">Gestionar usuario</a>
     <div class="contenedor__bottom__div">
-      <a href="{{route ('administrador.create') }}" id="btn__Registrar" class="btn__bottom usuario">Registrar usuario</a>
+        <a  href="{{route ('administrador.create') }}" id="btn__Registrar" class="btn__bottom usuario">Registrar usuario</a>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>

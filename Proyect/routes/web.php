@@ -15,12 +15,23 @@ Route::get('/administrador/home', function () {
 return view('administrador.home');
 })->name('administrador.home');
 
+Route::get('/administrador/homeDonante', function () {
+    return view('administrador.homeDonante');
+})->name('administrador.homeDonante');
+
+Route::get('/administrador/verMas', function () {
+    return view('administrador.verMas');
+})->name('administrador.verMas');
+
 // Ruta para registrar un nuevo administrador
 Route::get('/administrador/registrar', [UsuarioController::class, 'create'])->name('administrador.registrar');
 
 // Ruta para editar un administrador (redirige al formulario de edición)
 Route::get('/administrador/modificar', [UsuarioController::class, 'edit'])->name('administrador.modificar');
 
+Route::get('/administrador/home', [UsuarioController::class, 'home'])->name('administrador.home');
+
+Route::get('/administrador/verMas/{id}', [UsuarioController::class, 'verMas'])->name('administrador.verMas');
 //route administrador
 Route::resource('administrador', UsuarioController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
@@ -49,6 +60,8 @@ Route::resource('donante', DonanteController::class)
         'update' => 'donante.update',
         'destroy' => 'donante.destroy',
     ]);
+
+    Route::get('/administrador/homeDonante', [DonanteController::class, 'home'])->name('administrador.homeDonante');
 
 //route donacion
 Route::resource('donacion', DonacionController::class)

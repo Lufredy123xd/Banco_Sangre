@@ -20,6 +20,12 @@ class DonanteController extends Controller
         return view('donante.index', $datos);
     }
 
+    public function home()
+    {
+        $datos['donantes'] = Donante::paginate(10);
+        return view('administrador.homeDonante', $datos);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

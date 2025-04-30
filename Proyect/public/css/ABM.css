@@ -96,7 +96,16 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+
 }
+
+
+    input[disabled], select[disabled] {
+        background-color:rgb(255, 255, 255); /* Fondo más claro */
+        color:rgb(0, 0, 0); /* Texto más claro */
+        border-color: #dcdcdc; /* Borde más claro */
+        cursor: not-allowed; /* Cursor de no permitido */
+    }
 
 /* Contenedor de descripción */
 .contenedor__descripcion {
