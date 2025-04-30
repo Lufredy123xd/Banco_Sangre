@@ -145,6 +145,9 @@
 
 
             </div>
+
+            <a href="{{ route(name: 'donante.index') }}" class="btn btn-sm btn-info">Volver</a>
+
             @if (session('mensaje'))
                 <div class="alert alert-success">
                     {{ session('mensaje') }}
