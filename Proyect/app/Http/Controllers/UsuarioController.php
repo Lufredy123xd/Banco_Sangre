@@ -12,7 +12,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::paginate(5); // o ->all() si querés traer todos
-        return view('administrador.index', compact('usuarios'));
+        return view('administrador.home', compact('usuarios'));
     }
 
     public function home()
@@ -31,6 +31,41 @@ class UsuarioController extends Controller
     {
         return view('administrador.registrar');
     }
+
+
+    /**
+     * Muestra el formulario para crear un nuevo usuario.
+     */
+
+     public function authenticate(Request $request)
+     {
+         $request->validate([
+             'user_name' => 'required|string',
+             'password' => 'required|string',
+         ]);
+     
+         $usuario = Usuario::where('user_name', $request->user_name)->first();
+     
+         if ($usuario && Hash::check($request->password, $usuario->password)) {
+             // Guardar información del usuario en la sesión
+             session([
+                 'usuario_id' => $usuario->id,
+                 'user_name' => $usuario->user_name,
+                 'tipo_usuario' => $usuario->tipo_usuario,
+             ]);
+     
+             // Redirección condicional
+             if ($usuario->tipo_usuario === 'Administrador') {
+                 return redirect()->route('administrador.home')->with('mensaje', 'Bienvenido administrador.');
+             } elseif (in_array($usuario->tipo_usuario, ['Docente', 'Estudiante', 'Funcionario'])) {
+                 return redirect()->route('usuario.index')->with('mensaje', 'Bienvenido al sistema.');
+             } else {
+                 return back()->withErrors(['login_error' => 'Tipo de usuario no autorizado.']);
+             }
+         }
+     
+         return back()->withErrors(['login_error' => 'Usuario o contraseña incorrectos.']);
+     }
 
     /**
      * Almacena un nuevo usuario en la base de datos.

@@ -2,14 +2,6 @@
 
 @section('contentAdmin')
 
-<style>
-    input[disabled], select[disabled] {
-        background-color:rgb(255, 255, 255); /* Fondo más claro */
-        color:rgb(0, 0, 0); /* Texto más claro */
-        border-color: #dcdcdc; /* Borde más claro */
-        cursor: not-allowed; /* Cursor de no permitido */
-    }
-</style>
 
 <section class="section__registrar">
     <h2 class="section__registrar-title">Ver Mas</h2>

@@ -10,7 +10,7 @@ use App\Http\Controllers\UsuarioController;
 // routes/web.php
 
 
-// Ruta para el inicio del administrador
+/*// Ruta para el inicio del administrador
 Route::get('/administrador/home', function () {
 return view('administrador.home');
 })->name('administrador.home');
@@ -23,6 +23,26 @@ Route::get('/administrador/verMas', function () {
     return view('administrador.verMas');
 })->name('administrador.verMas');
 
+// GET: muestra el formulario
+Route::get('/login', function () {
+    return view('login'); // o donde esté tu blade del login
+})->name('login');
+
+Route::get('/usuario', function () {
+    return view('usuario.index'); // o donde esté tu blade del login
+})->name('usuario.index');
+
+// POST: procesa el formulario
+Route::post('/login', [UsuarioController::class, 'authenticate'])->name('login.authenticate');
+
+Route::get('/registrar', [DonanteController::class, 'create'])->name('registrar');
+
+// GET: muestra el formulario
+Route::get('/home', function () {
+    return view('home'); // o donde esté tu blade del login
+})->name('home');
+
+
 // Ruta para registrar un nuevo administrador
 Route::get('/administrador/registrar', [UsuarioController::class, 'create'])->name('administrador.registrar');
 
@@ -31,7 +51,7 @@ Route::get('/administrador/modificar', [UsuarioController::class, 'edit'])->name
 
 Route::get('/administrador/home', [UsuarioController::class, 'home'])->name('administrador.home');
 
-Route::get('/administrador/verMas/{id}', [UsuarioController::class, 'verMas'])->name('administrador.verMas');
+Route::get('/administrador/verMas/{id}', [UsuarioController::class, 'verMas'])->name('administrador.verMas');*/
 //route administrador
 Route::resource('administrador', UsuarioController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
