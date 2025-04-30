@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EstadoDonante;
+use App\Models\Agenda;
+use App\Models\Diferimento;
 use App\Models\Donacion;
 use App\Models\Donante;
 use App\Enums\TipoSerologia;
@@ -16,9 +19,14 @@ class DonacionController extends Controller
      */
     public function index()
     {
-        $datos['donaciones'] = Donacion::with('donante')->paginate(5);
+        $datos['donaciones'] = Donacion::with('donante')->paginate(10);
+
+        
+
         return view('donacion.index', $datos);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,7 +52,16 @@ class DonacionController extends Controller
 
         Donacion::create($datosDonacion);
 
-        return redirect('donacion')->with('mensaje', 'Donación registrada correctamente');
+        $donanteId = $request->input('id_donante');
+
+        // Buscamos el donante por su ID
+        $donante = Donante::findOrFail($donanteId);
+        $donante->estado = EstadoDonante::No_Disponible->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->save();
+
+        return redirect()->route('gestionarDonante', ['id' => $donanteId])
+            ->with('mensaje', 'Donación registrada correctamente');
+
     }
 
     /**
@@ -92,4 +109,33 @@ class DonacionController extends Controller
 
         return redirect('donacion')->with('mensaje', 'Donación eliminada correctamente');
     }
+
+
+
+    public function gestionarDonante($id)
+    {
+        $donante = Donante::findOrFail($id); // Buscar el donante por ID
+
+        $agenda = Agenda::where('id_donante', $id)
+            ->whereNull('asistio')  // Esto agrega la condición donde 'asistio' es null
+            ->orderByDesc('fecha_agenda')
+            ->first();
+
+
+        $diferimientos = Diferimento::where('id_donante', $id)
+            ->get();
+        
+        $donaciones = Donacion::where('id_donante', $id)
+            ->get();
+
+
+        if ($agenda && now()->toDateString() >= $agenda->fecha_agenda && $donante->estado === EstadoDonante::Agendado->value) {
+            $donante->estado = EstadoDonante::ParaActializar->value;
+            $donante->save();
+        }
+
+        return view('gestionarDonante', compact('donante', 'agenda', 'diferimientos', 'donaciones'));
+    }
+
+
 }

@@ -64,12 +64,11 @@ Route::resource('administrador', UsuarioController::class)
         'destroy' => 'administrador.destroy',
     ]);
 
-Route::get('/gestionar-donante', function () {
-    return view('gestionarDonante');
-});
 
 
-//route donante
+Route::get('/gestionar-donante/{id}', [DonacionController::class, 'gestionarDonante'])->name('gestionarDonante');
+Route::post('/donante/{id}/no-asistio', [DonanteController::class, 'noAsistio'])->name('donante.no_asistio');
+
 Route::resource('donante', DonanteController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->names([

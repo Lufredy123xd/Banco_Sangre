@@ -23,6 +23,11 @@
         <form action="{{ url('/diferimento') }}" method="post">
             {{ csrf_field() }}
 
+            <p>Donante seleccionado: {{ $donante->nombre }}</p>
+
+            <!-- Campo oculto para el ID del donante -->
+            <input type="hidden" name="id_donante" value="{{ $donante->id }}">
+
             <div class="mb-3">
                 <label for="motivo" class="form-label">Motivo</label>
                 <input type="text" class="form-control" id="motivo" name="motivo" required>
@@ -34,17 +39,38 @@
             </div>
 
             <div class="mb-3">
-                <label for="tipo" class="form-label">Tipo</label>
-                <input type="text" class="form-control" id="tipo" name="tipo" required>
+                <label for="tipo_diferimiento" class="form-label">Seleccione el tipo de diferimiento:</label>
+                <select id="tipo_diferimiento" name="tipo" class="form-control" required onchange="toggleTiempoEnMeses()">
+                    <option value="Permanente">Permanente</option>
+                    <option value="Temporal">Temporal</option>
+                </select>
             </div>
-
-            <div class="mb-3">
+            
+            <div class="mb-3" id="tiempoEnMesesContainer">
                 <label for="tiempoEnMeses" class="form-label">Tiempo en Meses</label>
-                <input type="number" class="form-control" id="tiempoEnMeses" name="tiempo_en_meses" required>
+                <input type="number" class="form-control" id="tiempoEnMeses" name="tiempo_en_meses">
             </div>
+            
+            <script>
+                function toggleTiempoEnMeses() {
+                    const tipoDiferimiento = document.getElementById('tipo_diferimiento').value;
+                    const tiempoEnMesesContainer = document.getElementById('tiempoEnMesesContainer');
+            
+                    if (tipoDiferimiento === 'Permanente') {
+                        tiempoEnMesesContainer.style.display = 'none';
+                        document.getElementById('tiempoEnMeses').removeAttribute('required');
+                    } else {
+                        tiempoEnMesesContainer.style.display = 'block';
+                        document.getElementById('tiempoEnMeses').setAttribute('required', 'required');
+                    }
+                }
+            
+                // Inicializar el estado al cargar la página
+                document.addEventListener('DOMContentLoaded', toggleTiempoEnMeses);
+            </script>
 
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="{{ url('/diferimento') }}" class="btn btn-secondary">Cancelar</a>
+            <a class="btn btn-warning btn-rm" href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Cancelar</a>
         </form>
     </div>
 

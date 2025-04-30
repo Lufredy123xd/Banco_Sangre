@@ -25,6 +25,7 @@
             </thead>
             <tbody>
                 @foreach ($donantes as $donante)
+
                     <tr>
                         <td>{{ $donante->id }}</td>
                         <td>{{ $donante->nombre }}</td>
@@ -41,8 +42,12 @@
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('¿Estás seguro de que deseas eliminar este donante?');">Eliminar</button>
                                 </form>
-                                <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}"
-                                    class="btn btn-primary">Agendar donante</a>
+
+
+                                <a class="btn btn-warning btn-sm"
+                                    href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Gestionar
+                                    Donante</a>
+
 
                             </div>
                         </td>

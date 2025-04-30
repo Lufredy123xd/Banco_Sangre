@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agenda;
+use App\Models\Donacion;
 use App\Models\Donante;
 use Illuminate\Http\Request;
 use App\Enums\TipoABO;
@@ -17,6 +19,8 @@ class DonanteController extends Controller
     public function index()
     {
         $datos['donantes'] = Donante::paginate(10);
+
+
         return view('donante.index', $datos);
     }
 
@@ -80,7 +84,30 @@ class DonanteController extends Controller
     public function destroy($id)
     {
         Donante::destroy($id);
-        
+
         return redirect('donante')->with('mensaje', 'Donante eliminado correctamente');
+    }
+
+
+    public function noAsistio($id)
+    {
+        $donante = Donante::findOrFail($id);
+
+        $agenda = Agenda::where('id_donante', $id)
+            ->whereNull('asistio')  // Esto agrega la condición donde 'asistio' es null
+            ->orderByDesc('fecha_agenda')
+            ->first();
+
+        if ($agenda) {
+            $agenda->asistio = false;
+            $agenda->save();
+        }
+
+
+        $donante->estado = EstadoDonante::Disponible->value;
+        $donante->save();
+
+        return redirect()->route('gestionarDonante', ['id' => $id])
+            ->with('mensaje', 'Se actualizo la asistencia del donante');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EstadoDonante;
 use App\Models\Agenda;
 use App\Models\Donante;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class AgendaController extends Controller
 
         // Buscamos el donante por su ID
         $donante = Donante::findOrFail($donanteId);
+        
 
         // Pasamos el donante a la vista
         return view('agenda.create', compact('donante'));
@@ -38,12 +40,23 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        $datosAgenda = request()->except('_token');
+        // Captura todos los datos menos el token
+        $datosAgenda = $request->except('_token');
 
+        // Captura el donante_id desde la URL (query string)
+        $donanteId = $request->input('id_donante');
+
+        // Buscamos el donante por su ID
+        $donante = Donante::findOrFail($donanteId);
+        $donante->estado = EstadoDonante::Agendado->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->save();
+
+        // Inserta la agenda con los datos
         Agenda::insert($datosAgenda);
 
-        return redirect('donante')->with('mensaje', 'Se agendo correctamente');
-
+        // Redirige a la página de gestionarDonante, pasando el id del donante
+        return redirect()->route('gestionarDonante', ['id' => $donanteId])
+            ->with('mensaje', 'Se agendó correctamente');
     }
 
     /**
@@ -70,6 +83,7 @@ class AgendaController extends Controller
     public function update(Request $request, $id)
     {
         $datosAgenda = request()->except(['_token', '_method']);
+        
         Agenda::where('id', '=', $id)->update($datosAgenda);
         $agenda = Agenda::findOrFail($id);
         return redirect()->route('agenda.edit', $id)->with('mensaje', 'Se actualizó correctamente');
