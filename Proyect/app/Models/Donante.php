@@ -19,7 +19,8 @@ class Donante extends Model
         'RH',
         'estado',
         'observaciones',
-        'ultima_modificacion'
+        'ultima_modificacion',
+        'modificado_por'
     ];
 
    
@@ -39,12 +40,12 @@ class Donante extends Model
     // Relación uno a muchos con Donacion
     public function donaciones()
     {
-        return $this->hasMany(Donacion::class);
+        return $this->hasMany(Donacion::class, 'id_donante');
     }
 
     // Relación muchos a uno con Usuario
-   /* public function usuario()
+    public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'modificado_por');
-    }*/
+    }
 }

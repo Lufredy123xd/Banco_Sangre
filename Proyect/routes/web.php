@@ -102,3 +102,22 @@ Route::resource('usuario', UsuarioController::class)
         'destroy' => 'usuario.destroy',
     ]);
 
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+
+    Route::get('/registrar', function () {
+        return view('registrar');
+    })->name('registrar');
+
+    Route::get('/modificar', function () {
+        return view('modificar');
+    })->name('modificar');
+
+    Route::get('/detalle', function () {
+        return view('detalle');
+    })->name('detalle');
+
+    Route::get('/gestionarDonante', function () {
+        return view('gestionarDonante');
+    })->name('gestionarDonante');

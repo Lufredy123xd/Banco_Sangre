@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donante;
+use App\Models\Donacion;
 use Illuminate\Http\Request;
-use App\Enums\TipoABO;
-use App\Enums\TipoRH;
-use App\Enums\EstadoDonante;
-use App\Enums\Sexo;
 
 class DonanteController extends Controller
 {
@@ -17,7 +14,11 @@ class DonanteController extends Controller
     public function index()
     {
         $datos['donantes'] = Donante::paginate(10);
-        return view('donante.index', $datos);
+
+        $donaciones = Donacion::all();
+
+
+        return view('donante.index', $datos, compact('donaciones'));
     }
 
     /**
