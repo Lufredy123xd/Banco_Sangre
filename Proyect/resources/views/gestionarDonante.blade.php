@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap JS (necesario para que funcione el modal) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 @section('content')
     <div class="content__main">
         <div class="content__main">
@@ -111,8 +107,43 @@
                                 @endforeach
                             @endif
                         </tbody>
+                    </table>
 
+                    <h3>Historial de donaciones</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($donaciones->isEmpty())
+                                <tr>
+                                    <td colspan="2">No hay donaciones registrados.</td>
+                                </tr>
+                            @else
+                                @foreach ($donaciones as $donacion)
+                                    <tr>
+                                        <td>{{ $donacion->fecha }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                data-bs-target="#modalDonacion" data-fecha="{{ $donacion->fecha }}"
+                                                data-serologia="{{ $donacion->serologia }}"
+                                                data-anticuerpos_irregulares="{{ $donacion->anticuerpos_irregulares }}"
+                                                data-clase_donacion="{{ $donacion->clase_donacion }}">
+                                                Más detalle
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
+
+
             </div>
             @if (session('mensaje'))
                 <div class="alert alert-success">
@@ -146,6 +177,28 @@
     </div>
 </div>
 
+<!-- Modal de Donación -->
+<div class="modal fade" id="modalDonacion" tabindex="-1" aria-labelledby="modalDonacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDonacionLabel">Detalle de la donación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Fecha:</strong> <span id="donacionFecha"></span></p>
+                <p><strong>Serología:</strong> <span id="donacionSerologia"></span></p>
+                <p><strong>Anticuerpos irregulares:</strong> <span id="donacionAnticuerpos"></span></p>
+                <p><strong>Clase de donación:</strong> <span id="donacionClase"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     const modal = document.getElementById('modalDiferimiento');
     modal.addEventListener('show.bs.modal', function(event) {
@@ -161,3 +214,20 @@
         modal.querySelector('#modalTiempo').textContent = tiempo_en_meses;
     });
 </script>
+
+<script>
+    const modalDonacion = document.getElementById('modalDonacion');
+    modalDonacion.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const fecha = button.getAttribute('data-fecha');
+        const serologia = button.getAttribute('data-serologia');
+        const anticuerpos = button.getAttribute('data-anticuerpos_irregulares');
+        const clase = button.getAttribute('data-clase_donacion');
+
+        modalDonacion.querySelector('#donacionFecha').textContent = fecha;
+        modalDonacion.querySelector('#donacionSerologia').textContent = serologia;
+        modalDonacion.querySelector('#donacionAnticuerpos').textContent = anticuerpos;
+        modalDonacion.querySelector('#donacionClase').textContent = clase;
+    });
+</script>
+

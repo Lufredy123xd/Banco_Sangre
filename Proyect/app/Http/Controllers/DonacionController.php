@@ -52,7 +52,16 @@ class DonacionController extends Controller
 
         Donacion::create($datosDonacion);
 
-        return redirect('donacion')->with('mensaje', 'Donación registrada correctamente');
+        $donanteId = $request->input('id_donante');
+
+        // Buscamos el donante por su ID
+        $donante = Donante::findOrFail($donanteId);
+        $donante->estado = EstadoDonante::No_Disponible->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->save();
+
+        return redirect()->route('gestionarDonante', ['id' => $donanteId])
+            ->with('mensaje', 'Donación registrada correctamente');
+
     }
 
     /**
@@ -115,6 +124,9 @@ class DonacionController extends Controller
 
         $diferimientos = Diferimento::where('id_donante', $id)
             ->get();
+        
+        $donaciones = Donacion::where('id_donante', $id)
+            ->get();
 
 
         if ($agenda && now()->toDateString() >= $agenda->fecha_agenda && $donante->estado === EstadoDonante::Agendado->value) {
@@ -122,7 +134,7 @@ class DonacionController extends Controller
             $donante->save();
         }
 
-        return view('gestionarDonante', compact('donante', 'agenda', 'diferimientos'));
+        return view('gestionarDonante', compact('donante', 'agenda', 'diferimientos', 'donaciones'));
     }
 
 
