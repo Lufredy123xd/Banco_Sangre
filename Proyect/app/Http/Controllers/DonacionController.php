@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\EstadoDonante;
 use App\Models\Agenda;
+use App\Models\Diferimento;
 use App\Models\Donacion;
 use App\Models\Donante;
 use App\Enums\TipoSerologia;
@@ -109,12 +110,16 @@ class DonacionController extends Controller
             ->first();
 
 
+        $diferimientos = Diferimento::where('id_donante', $id)
+            ->get();
+
+
         if ($agenda && now()->toDateString() >= $agenda->fecha_agenda && $donante->estado === EstadoDonante::Agendado->value) {
             $donante->estado = EstadoDonante::ParaActializar->value;
             $donante->save();
         }
 
-        return view('gestionarDonante', compact('donante', 'agenda'));
+        return view('gestionarDonante', compact('donante', 'agenda', 'diferimientos'));
     }
 
 

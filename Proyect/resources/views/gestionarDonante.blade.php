@@ -42,9 +42,12 @@
                     </tbody>
                 </table>
 
+                
+
+
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-                <div class="d-flex gap-2">
+                <div>
 
 
                     @if ($agenda && $agenda->asistio == null)
@@ -75,12 +78,38 @@
                     @endif
 
                 </div>
-                @if (session('mensaje'))
-                    <div class="alert alert-success">
-                        {{ session('mensaje') }}
-                    </div>
-                @endif
+
+                <div>
+                    <h3>Historial de diferimiento</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($diferimientos->isEmpty())
+                                <tr>
+                                    <td colspan="2">No hay diferimientos registrados.</td>
+                                </tr>
+                            @else
+                                @foreach ($diferimientos as $diferimiento)
+                                    <tr>
+                                        <td>{{ $diferimiento->fecha_diferimiento }}</td>
+                                        <td><a href="">Mas detalle</a></td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+
+                </div>
             </div>
+            @if (session('mensaje'))
+                <div class="alert alert-success">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection

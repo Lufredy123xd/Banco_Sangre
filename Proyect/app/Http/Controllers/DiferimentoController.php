@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EstadoDonante;
+use App\Models\Agenda;
 use App\Models\Diferimento;
 use App\Models\Donante;
 use Illuminate\Http\Request;
@@ -39,8 +41,24 @@ class DiferimentoController extends Controller
     {
         $datosDiferimento = request()->except('_token');
         Diferimento::insert($datosDiferimento);
+
+        // Captura el donante_id desde la URL (query string)
+        $donanteId = $request->input('id_donante');
+
+        $agenda = Agenda::where('id_donante', $donanteId)
+            ->whereNull('asistio')  // Esto agrega la condición donde 'asistio' es null
+            ->orderByDesc('fecha_agenda')
+            ->first();
+        $agenda->asistio = true; // Cambiamos el estado del donante a "Agendado"
+        $agenda->save();
+
+        // Buscamos el donante por su ID
+        $donante = Donante::findOrFail($donanteId);
+        $donante->estado = EstadoDonante::No_Disponible->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->save();
         
-        return redirect('diferimento')->with('mensaje', 'Se diferio correctamente');
+        return redirect()->route('gestionarDonante', ['id' => $donanteId])
+            ->with('mensaje', 'Se diferio correctamente');
     }
 
     /**
