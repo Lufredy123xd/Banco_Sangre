@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EstadoDonante;
 use App\Models\Agenda;
 use App\Models\Donacion;
 use App\Models\Donante;
