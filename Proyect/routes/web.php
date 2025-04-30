@@ -10,7 +10,7 @@ use App\Http\Controllers\UsuarioController;
 // routes/web.php
 
 
-/*// Ruta para el inicio del administrador
+// Ruta para el inicio del administrador
 Route::get('/administrador/home', function () {
 return view('administrador.home');
 })->name('administrador.home');
@@ -51,7 +51,7 @@ Route::get('/administrador/modificar', [UsuarioController::class, 'edit'])->name
 
 Route::get('/administrador/home', [UsuarioController::class, 'home'])->name('administrador.home');
 
-Route::get('/administrador/verMas/{id}', [UsuarioController::class, 'verMas'])->name('administrador.verMas');*/
+Route::get('/administrador/verMas/{id}', [UsuarioController::class, 'verMas'])->name('administrador.verMas');
 //route administrador
 Route::resource('administrador', UsuarioController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
