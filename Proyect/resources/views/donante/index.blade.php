@@ -113,9 +113,14 @@
 
     <!-- Botón registrar -->
     <div class="row mt-4">
-        <div class="col-12 text-end">
-            <a href="{{ route('donante.create') }}" class="btn btn-success">Registrar Donante</a>
-        </div>
+    <div class="col-12 text-end d-flex justify-content-around">
+    @if (session('tipo_usuario') === 'Administrador')
+        <a href="{{ route('donante.index') }}" class="btn btn-dark">Gestionar donante</a>
+        <a href="{{ route('usuario.index') }}" class="btn btn-secondary">Gestionar usuario</a>
+        
+    @endif
+    <a href="{{ route('donante.create') }}" class="btn btn-success">Registrar donante</a>
+</div>
     </div>
 </div>
 

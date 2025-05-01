@@ -4,7 +4,7 @@
             <img src="{{ asset ('imgs/dropdown.png')}}" alt="" class="header__dropdown-icon">
         </button>
         <nav class="header__nav">
-            <a href="{{ route('donante.index') }}" class="header__nav-link">Inicio</a>
+            <a href="{{ route('usuario.index') }}" class="header__nav-link">Inicio</a>
             <a href="" class="header__nav-link">Cerrar sesion</a>
         </nav>
     </div>

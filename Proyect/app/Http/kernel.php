@@ -12,5 +12,6 @@ class Kernel extends HttpKernel
         // otros middlewares...
 
         'auth.usuario' => \App\Http\Middleware\Authenticate::class, // ← este es tu middleware personalizado
+        'admin' => \App\Http\Middleware\VerificarAdministrador::class,
     ];
 }

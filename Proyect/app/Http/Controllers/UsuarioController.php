@@ -11,25 +11,19 @@ class UsuarioController extends Controller
 {
     public function index()
     {
+
+        if (session('tipo_usuario') !== 'Administrador') {
+            abort(403, 'Acceso no autorizado.');
+        }
+        
         $usuarios = Usuario::paginate(5); // o ->all() si querés traer todos
-        return view('usuario.home', compact('usuarios'));
+        return view('usuario.index', compact('usuarios'));
     }
 
-    public function home()
-    {
-        $usuarios = Usuario::all(); // Obtiene todos los usuarios de la base de datos
-        return view('usuario.home', compact('usuarios')); // Pasa los usuarios a la vista
-    }
-
-    public function verMas($id)
-    {
-        $usuario = Usuario::findOrFail($id);
-        return view('administrador.verMas', compact('usuario')); // Pasa los usuarios a la vista
-    }
 
     public function create()
     {
-        return view('administrador.registrar');
+        return view('usuario.registrar');
     }
 
 
@@ -37,35 +31,41 @@ class UsuarioController extends Controller
      * Muestra el formulario para crear un nuevo usuario.
      */
 
-     public function authenticate(Request $request)
-     {
-         $request->validate([
-             'user_name' => 'required|string',
-             'password' => 'required|string',
-         ]);
-     
-         $usuario = Usuario::where('user_name', $request->user_name)->first();
-     
-         if ($usuario && Hash::check($request->password, $usuario->password)) {
-             // Guardar información del usuario en la sesión
-             session([
-                 'usuario_id' => $usuario->id,
-                 'user_name' => $usuario->user_name,
-                 'tipo_usuario' => $usuario->tipo_usuario,
-             ]);
-     
-             // Redirección condicional
-             if ($usuario->tipo_usuario === 'Administrador') {
-                 return redirect()->route('administrador.home')->with('mensaje', 'Bienvenido administrador.');
-             } elseif (in_array($usuario->tipo_usuario, ['Docente', 'Estudiante', 'Funcionario'])) {
-                 return redirect()->route('usuario.index')->with('mensaje', 'Bienvenido al sistema.');
-             } else {
-                 return back()->withErrors(['login_error' => 'Tipo de usuario no autorizado.']);
-             }
-         }
-     
-         return back()->withErrors(['login_error' => 'Usuario o contraseña incorrectos.']);
-     }
+    public function authenticate(Request $request)
+    {
+        $request->validate([
+            'user_name' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $usuario = Usuario::where('user_name', $request->user_name)->first();
+
+        if ($usuario && Hash::check($request->password, $usuario->password)) {
+            // Validar estado activo
+            if (strtolower($usuario->estado) !== 'activo') {
+                return back()->withErrors(['login_error' => 'El usuario no está activo.']);
+            }
+
+            // Guardar información del usuario en la sesión
+            session([
+                'usuario_id' => $usuario->id,
+                'user_name' => $usuario->user_name,
+                'tipo_usuario' => $usuario->tipo_usuario,
+            ]);
+
+            // Redirección condicional
+            if ($usuario->tipo_usuario === 'Administrador') {
+                return redirect()->route('usuario.index')->with('mensaje', 'Bienvenido administrador.');
+            } elseif (in_array($usuario->tipo_usuario, ['Docente', 'Estudiante', 'Funcionario'])) {
+                return redirect()->route('donante.index')->with('mensaje', 'Bienvenido al sistema.');
+            } else {
+                return back()->withErrors(['login_error' => 'Tipo de usuario no autorizado.']);
+            }
+        }
+
+        return back()->withErrors(['login_error' => 'Usuario o contraseña incorrectos.']);
+    }
+
 
     /**
      * Almacena un nuevo usuario en la base de datos.
@@ -78,7 +78,7 @@ class UsuarioController extends Controller
 
         Usuario::create($data);
 
-        return redirect()->route('administrador.index')->with('mensaje', 'Usuario creado correctamente.');
+        return redirect()->route('usuario.index')->with('mensaje', 'Usuario creado correctamente.');
     }
 
     /**
@@ -87,7 +87,7 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $usuario = Usuario::findOrFail($id);
-        return view('administrador.editar', compact('usuario'));
+        return view('usuario.editar', compact('usuario'));
     }
 
     /**
@@ -104,7 +104,7 @@ class UsuarioController extends Controller
 
         $usuario->update($data);
 
-        return redirect()->route('administrador.index')->with('mensaje', 'Usuario modificado correctamente.');
+        return redirect()->route('usuario.index')->with('mensaje', 'Usuario modificado correctamente.');
     }
 
     /**
@@ -115,6 +115,6 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $usuario->delete();
 
-        return redirect()->route('administrador.index')->with('mensaje', 'Usuario eliminado correctamente.');
+        return redirect()->route('usuario.index')->with('mensaje', 'Usuario eliminado correctamente.');
     }
 }

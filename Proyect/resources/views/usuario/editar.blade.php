@@ -3,7 +3,7 @@
 @section('contentAdmin')
 <section class="section__registrar">
     <h2 class="section__registrar-title">Editar Usuario</h2>
-    <form action="{{ url('/administrador/' . $usuario->id) }}" method="post" class="registrar__formulario">
+    <form action="{{ url('/usuario/' . $usuario->id) }}" method="post" class="registrar__formulario">
         {{ csrf_field() }}
         {{ method_field('PUT') }}
 
@@ -94,7 +94,7 @@
         <div class="contenedor__bottom">
             <div class="contenedor__descripcion">
                 <div>
-                    <a href="{{ route('administrador.home') }}" class="contenedor__descripcion__porque">Volver</a>
+                    <a href="{{ route('usuario.index') }}" class="contenedor__descripcion__porque">Volver</a>
                     <button type="submit" class="contenedor__descripcion__porque guardar">Editar</button>
                 </div>
             </div>

@@ -10,11 +10,17 @@ use Illuminate\Http\Request;
 
 class DonanteController extends Controller
 {
+
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        if (session('tipo_usuario') !== 'Administrador') {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $datos['donantes'] = Donante::paginate(10);
 
         $donaciones = Donacion::all();
