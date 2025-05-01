@@ -134,10 +134,8 @@ Route::resource('usuario', UsuarioController::class)
         'destroy' => 'usuario.destroy',
     ]);
 
-    Route::get('/home', function () {
-        return view('home');
-    })->name('home');
-
+    
+/*
     Route::get('/registrar', function () {
         return view('registrar');
     })->name('registrar');
@@ -149,7 +147,4 @@ Route::resource('usuario', UsuarioController::class)
     Route::get('/detalle', function () {
         return view('detalle');
     })->name('detalle');
-
-    Route::get('/gestionarDonante', function () {
-        return view('gestionarDonante');
-    })->name('gestionarDonante');
+*/

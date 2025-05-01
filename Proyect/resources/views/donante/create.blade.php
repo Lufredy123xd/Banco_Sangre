@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-
     <section class="section__registrar">
         <h2 class="section__registrar-title">Registrar Donante</h2>
 
@@ -77,13 +75,9 @@
                 placeholder="Escriba sus observaciones..."></textarea>
 
             <div class="contenedor__bottom">
-                <div class="contenedor__descripcion">
-                    <div>
-                        <a href="{{ route('donante.index') }}" type="button"
-                            class="contenedor__descripcion__porque">Cancelar</a>
-                        <button type="submit" class="contenedor__descripcion__porque guardar">Registrar</button>
-                    </div>
-                </div>
+                <a href="{{ route('donante.index') }}" type="button"
+                    class="contenedor__descripcion__porque cancelar">Cancelar</a>
+                <button type="submit" class="contenedor__descripcion__porque guardar">Registrar</button>
             </div>
 
             @if (session('mensaje'))

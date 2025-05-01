@@ -88,13 +88,13 @@
                 placeholder="Escriba sus observaciones...">{{ $donante->observaciones }}</textarea>
 
             <div class="contenedor__bottom">
-                <div class="contenedor__descripcion">
-                    <div>
+                
+                    
                         <a href="{{ route('donante.index') }}" type="button"
-                            class="contenedor__descripcion__porque">Cancelar</a>
+                            class="contenedor__descripcion__porque cancelar">Volver</a>
                         <button type="submit" class="contenedor__descripcion__porque guardar">Guardar</button>
-                    </div>
-                </div>
+                    
+                
             </div>
 
             @if (session('mensaje'))

@@ -12,13 +12,13 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuarios = Usuario::paginate(5); // o ->all() si querés traer todos
-        return view('administrador.home', compact('usuarios'));
+        return view('usuario.home', compact('usuarios'));
     }
 
     public function home()
     {
         $usuarios = Usuario::all(); // Obtiene todos los usuarios de la base de datos
-        return view('administrador.home', compact('usuarios')); // Pasa los usuarios a la vista
+        return view('usuario.home', compact('usuarios')); // Pasa los usuarios a la vista
     }
 
     public function verMas($id)

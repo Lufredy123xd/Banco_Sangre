@@ -1,4 +1,3 @@
-{{-- filepath: resources/views/usuario/index.blade.php --}}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -17,8 +16,10 @@
                 <tr>
                     <th>#</th>
                     <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Rol</th>
+                    <th>Apellido</th>
+                    <th>Cédula</th>
+                    <th>Tipo de Usuario</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -27,13 +28,15 @@
                     <tr>
                         <td>{{ $usuario->id }}</td>
                         <td>{{ $usuario->nombre }}</td>
-                        <td>{{ $usuario->email }}</td>
-                        <td>{{ $usuario->rol }}</td>
+                        <td>{{ $usuario->apellido }}</td>
+                        <td>{{ $usuario->cedula }}</td>
+                        <td>{{ $usuario->tipo_usuario }}</td>
+                        <td>{{ $usuario->estado }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}"
+                                <a href="{{ url('/administrador/' . $usuario->id . '/edit') }}"
                                     class="btn btn-warning btn-sm">Editar</a>
-                                <form action="{{ url('/usuario/' . $usuario->id) }}" method="post">
+                                <form action="{{ url('/administrador/' . $usuario->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     <button type="submit" class="btn btn-danger btn-sm"
@@ -47,7 +50,7 @@
         </table>
         <div class="d-flex justify-content-between">
             <a href="{{ route('administrador.home') }}" class="btn btn-secondary">Volver al Inicio</a>
-            <a href="{{ route('usuario.create') }}" class="btn btn-primary">Registrar Usuario</a>
+            <a href="{{ route('administrador.create') }}" class="btn btn-primary">Registrar Usuario</a>
         </div>
     </div>
 

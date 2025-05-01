@@ -67,10 +67,13 @@
     border-radius: 0 20px 20px 20px; /* solo esquinas inferiores + esquina superior derecha */
     background: var(--secondary);
     font-size: 15px;
+    color: white; /* Cambiar el color del texto a blanco */
 }
 
+/* Estilo para las opciones del select */
 .select option {
-    background: white;
+    background: var(--secondary); /* Fondo del dropdown */
+    color: white; /* Cambiar el color del texto a blanco */
 }
 
 /* Campo de texto del top */
@@ -129,7 +132,7 @@ table {
   tbody td {
     padding: 15px;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px; 
   }
 
   .fila-usuario {
@@ -140,15 +143,7 @@ table {
     font-size: 28px;
   }
 
-  .estado {
-    background-color: #e14467;
-    color: white;
-    padding:10px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: bold;
-   
-  }
+  
 
 .content__main__bottom
 {
@@ -224,23 +219,37 @@ table {
     background-color: #b00942;
 }
 
+/* Estilo general para el estado */
 .estado {
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  color: white;
+    padding: 5px 10px;
+    border-radius: 0 20px 20px 20px;
+    color: #000;
+    text-align: center;
 }
 
-.estado.activo {
-  background-color: green;
+/* Colores específicos para cada estado */
+.estado.disponible {
+    background-color: #6FEB73;
 }
 
-.estado.inactivo {
-  background-color: red;
+.estado.no-disponible {
+    background-color: #EB736F;
 }
 
-.estado.suspendido {
-  background-color: gray;
+.estado.pendiente {
+    background-color: #EBDD6F;
+}
+
+.estado.notificado {
+    background-color: #8DA8FF;
+}
+
+.estado.agendado {
+    background-color: #b846b1;
+}
+
+.estado.para-actualizar {
+    background-color: #0e8fda;
 }
 
 @media screen and (max-width: 900px) {
@@ -337,4 +346,3 @@ table {
        border-radius: 10px;
     }
   }
-  
