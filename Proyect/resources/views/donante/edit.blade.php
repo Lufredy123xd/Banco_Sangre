@@ -5,6 +5,16 @@
     <section class="section__registrar">
         <h2 class="section__registrar-title">Editar Donante</h2>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ url('/donante/' . $donante->id) }}" method="POST" class="registrar__formulario">
             {{ csrf_field() }}
             {{ method_field('PATCH') }}

@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum TipoAnticuerposIrregulares: string
 {
-    case anticuerpoPositivo = 'Positivo';
     case anticuerpoNegativo = 'Negativo';
+    case anticuerpoPositivo = 'Positivo';
+    
 }

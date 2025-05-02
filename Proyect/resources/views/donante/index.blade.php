@@ -5,10 +5,10 @@
     <!-- Filtros y búsqueda -->
     <div class="row mb-4">
         <div class="col-md-6 col-lg-4 mb-3">
-            <input type="text" name="txt_buscar" id="txt_buscar" class="form-control" placeholder="Ingrese dato a buscar">
+            <input type="text" name="txt_buscar" id="txt_buscar" class="form-control shadow-sm" placeholder="Ingrese dato a buscar">
         </div>
         <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__estado" id="cmb__estado" class="form-select">
+            <select name="cmb__estado" id="cmb__estado" class="form-select shadow-sm rounded-pill">
                 <option value="" selected>Estado</option>
                 @foreach (App\Enums\EstadoDonante::cases() as $estado)
                     <option value="{{ $estado->value }}">{{ $estado->value }}</option>
@@ -16,14 +16,14 @@
             </select>
         </div>
         <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__sexo" id="cmb__sexo" class="form-select">
+            <select name="cmb__sexo" id="cmb__sexo" class="form-select shadow-sm rounded-pill">
                 <option value="" selected>Sexo</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
             </select>
         </div>
         <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__abo" id="cmb__abo" class="form-select">
+            <select name="cmb__abo" id="cmb__abo" class="form-select shadow-sm rounded-pill">
                 <option value="" selected>ABO</option>
                 @foreach (App\Enums\TipoABO::cases() as $abo)
                     <option value="{{ $abo->value }}">{{ $abo->value }}</option>
@@ -31,7 +31,7 @@
             </select>
         </div>
         <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__rh" id="cmb__rh" class="form-select">
+            <select name="cmb__rh" id="cmb__rh" class="form-select shadow-sm rounded-pill">
                 <option value="" selected>RH</option>
                 @foreach (App\Enums\TipoRH::cases() as $rh)
                     <option value="{{ $rh->value }}">{{ $rh->value }}</option>
@@ -39,16 +39,15 @@
             </select>
         </div>
         <div class="col-md-6 col-lg-3 mb-3">
-            <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
+            <select name="cmb__ordenar" id="cmb__ordenar" class="form-select shadow-sm rounded-pill">
                 <option value="" selected>Ordenar por</option>
                 <option value="nombre">Nombre</option>
                 <option value="apellido">Apellido</option>
-                <option value="cedula">Cédula</option>
                 <option value="fecha">Última Fecha Donación</option>
             </select>
         </div>
         <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__orden" id="cmb__orden" class="form-select">
+            <select name="cmb__orden" id="cmb__orden" class="form-select shadow-sm rounded-pill">
                 <option value="asc" selected>Ascendente</option>
                 <option value="desc">Descendente</option>
             </select>

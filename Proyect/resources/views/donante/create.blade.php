@@ -4,6 +4,16 @@
     <section class="section__registrar">
         <h2 class="section__registrar-title">Registrar Donante</h2>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('donante.store') }}" method="POST" class="registrar__formulario">
             {{ csrf_field() }}
 
@@ -26,11 +36,13 @@
             </div>
 
             <label class="block" for="txt__cedula">Cédula</label>
-            <input class="input__div" type="number" name="cedula" id="txt__cedula" required
-                placeholder="Cédula del donante" maxlength="20" title="La cédula solo puede contener números.">
-
+            <input class="input__div" type="text" name="cedula" id="txt__cedula" required
+                placeholder="Cédula del donante" maxlength="8" pattern="\d{8}"
+                title="La cédula debe contener exactamente 8 dígitos.">
+            
+                
             <label class="block" for="txt__telefono">Teléfono</label>
-            <input class="input__div" type="text" name="telefono" id="txt__telefono" required
+            <input class="input__div" type="number" name="telefono" id="txt__telefono" required
                 placeholder="Teléfono del donante" maxlength="15" pattern="\d{7,15}"
                 title="El teléfono debe contener entre 7 y 15 dígitos.">
 
@@ -70,9 +82,12 @@
                 @endforeach
             </select>
 
-            <label class="block" for="observaciones">Observaciones</label>
-            <textarea class="input__div" id="observaciones" name="observaciones" rows="3"
-                placeholder="Escriba sus observaciones..."></textarea>
+            <div class="contenedor__descripcion">
+                <label class="block" for="observaciones">Observaciones</label>
+                <textarea class="input__div" id="observaciones" name="observaciones" rows="3"
+                    placeholder="Escriba sus observaciones..." maxlength="255" 
+                    title="El motivo no puede exceder los 255 caracteres."></textarea>
+            </div>
 
             <div class="contenedor__bottom">
                 <a href="{{ route('donante.index') }}" type="button"

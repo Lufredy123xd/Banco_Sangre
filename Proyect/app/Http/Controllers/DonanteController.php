@@ -48,12 +48,23 @@ class DonanteController extends Controller
      */
     public function store(Request $request)
     {
-        $datosDonante = $request->except('_token');
+        // Validaciones
+    $request->validate([
+        'cedula' => 'required|digits:8|unique:donantes,cedula', // Cédula única y exactamente 8 dígitos
+        'nombre' => 'required|string|max:50', // Nombre obligatorio, texto y máximo 50 caracteres
+        'apellido' => 'required|string|max:50', // Apellido obligatorio, texto y máximo 50 caracteres
+        'telefono' => 'required|digits_between:7,15', // Teléfono obligatorio, entre 7 y 15 dígitos
+        'fecha_nacimiento' => 'required|date|before_or_equal:today', // Fecha de nacimiento obligatoria y no puede ser futura
+        'observaciones' => 'nullable|string|max:255', // Observaciones opcionales, máximo 255 caracteres
+    ]);
 
-        Donante::insert($datosDonante);
+    // Guardar los datos del donante
+    $datosDonante = $request->except('_token');
+    Donante::create($datosDonante);
 
-        return redirect('donante')->with('mensaje', 'Se agrego el donante correctamente');
-    }
+    // Redirigir con mensaje de éxito
+    return redirect('donante')->with('mensaje', 'Se agregó el donante correctamente.');
+}
 
     /**
      * Display the specified resource.
