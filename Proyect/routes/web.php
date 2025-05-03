@@ -16,6 +16,7 @@ Route::get('/', function () {
 // POST: procesa el formulario
 Route::post('/login', [UsuarioController::class, 'authenticate'])->name('login.authenticate');
 
+Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
 //route administrador
 Route::resource('administrador', UsuarioController::class)
@@ -45,7 +46,7 @@ Route::resource('donante', DonanteController::class)
         'destroy' => 'donante.destroy',
     ]);
 
-    Route::get('/administrador/homeDonante', [DonanteController::class, 'home'])->name('administrador.homeDonante');
+Route::get('/administrador/homeDonante', [DonanteController::class, 'home'])->name('administrador.homeDonante');
 
 //route donacion
 Route::resource('donacion', DonacionController::class)
@@ -99,7 +100,8 @@ Route::resource('usuario', UsuarioController::class)
         'destroy' => 'usuario.destroy',
     ]);
 
-    
+
+
 /*
     Route::get('/registrar', function () {
         return view('registrar');

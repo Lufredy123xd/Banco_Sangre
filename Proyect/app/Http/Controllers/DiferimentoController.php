@@ -15,6 +15,9 @@ class DiferimentoController extends Controller
      */
     public function index()
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $datos['diferimentos'] = Diferimento::paginate(10);
         return view('diferimento.index', $datos);
     }
@@ -24,6 +27,9 @@ class DiferimentoController extends Controller
      */
     public function create(Request $request)
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         // Obtenemos el id del donante
         $donanteId = $request->input('donante_id');
 
@@ -74,6 +80,9 @@ class DiferimentoController extends Controller
      */
     public function edit($id)
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $diferimento = Diferimento::findOrFail($id);
         $donante = Donante::findOrFail($diferimento->donante_id);
         return view('diferimento.edit', compact('diferimento', 'donante'));

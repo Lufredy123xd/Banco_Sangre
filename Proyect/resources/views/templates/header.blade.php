@@ -4,8 +4,12 @@
             <img src="{{ asset ('imgs/dropdown.png')}}" alt="" class="header__dropdown-icon">
         </button>
         <nav class="header__nav">
-            <a href="{{ route('usuario.index') }}" class="header__nav-link">Inicio</a>
-            <a href="" class="header__nav-link">Cerrar sesion</a>
+            @if (session('tipo_usuario') === 'Administrador')
+                <a href="{{ route('usuario.index') }}" class="header__nav-link">Inicio</a>
+            @else
+                <a href="{{ route('donante.index') }}" class="header__nav-link">Inicio</a>
+            @endif
+            <a href="{{ route('logout') }}" class="header__nav-link">Cerrar sesión</a>
         </nav>
     </div>
     <div class="header__left">
