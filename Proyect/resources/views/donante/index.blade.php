@@ -54,58 +54,73 @@
             </div>
         </div>
 
-<div class="container-fluid py-4">
-    <!-- Filtros y búsqueda -->
-    <div class="row mb-4">
-        <div class="col-md-6 col-lg-4 mb-3">
-            <input type="text" name="txt_buscar" id="txt_buscar" class="form-control shadow-sm" placeholder="Ingrese dato a buscar">
+        <!-- Tabla de donantes -->
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table id="donantesTable" class="table table-striped table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>CI</th>
+                                <th>ABO</th>
+                                <th>RH</th>
+                                <th>Última Fecha Donación</th>
+                                <th>Sexo</th>
+                                <th>Editar</th>
+                                <th>Ver más</th>
+                                <th>Gestionar donación</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($donantes as $donante)
+                                <tr class="fila-usuario">
+                                    <td class="nombre">{{ $donante->nombre }}</td>
+                                    <td class="apellido">{{ $donante->apellido }}</td>
+                                    <td class="cedula">{{ $donante->cedula }}</td>
+                                    <td class="abo">{{ $donante->ABO }}</td>
+                                    <td class="rh">{{ $donante->RH }}</td>
+                                    <td class="fecha">
+                                        {{ $donante->donaciones->sortByDesc('fecha')->first() ? $donante->donaciones->sortByDesc('fecha')->first()->fecha : 'Sin donaciones' }}
+                                    </td>
+                                    <td class="sexo">{{ $donante->sexo }}</td>
+                                    <td>
+                                        <a href="{{ url('/donante/' . $donante->id . '/edit') }}"
+                                            class="btn btn-sm btn-primary">
+                                            <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar"
+                                                style="width: 20px; height: 20px;">
+                                        </a>
+                                    </td>
+                                    <!-- filepath: d:\Proyectos\_PHP\Banco_Sangre\Proyect\resources\views\donante\index.blade.php -->
+                                    <td>
+                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#modalDonacion" data-nombre="{{ $donante->nombre }}"
+                                            data-apellido="{{ $donante->apellido }}" data-cedula="{{ $donante->cedula }}"
+                                            data-abo="{{ $donante->ABO }}" data-rh="{{ $donante->RH }}"
+                                            data-sexo="{{ $donante->sexo }}" data-estado="{{ $donante->estado }}"
+                                            data-fecha="{{ $donante->donaciones->sortByDesc('fecha')->first() ? $donante->donaciones->sortByDesc('fecha')->first()->fecha : 'Sin donaciones' }}">
+                                            <img src="{{ asset('imgs/ver_mas_icon.png') }}" alt="Ver más"
+                                                style="width: 20px; height: 20px;">
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('gestionarDonante', ['id' => $donante->id]) }}"
+                                            class="btn btn-sm btn-warning">
+                                            <img src="{{ asset('imgs/gestionar_icon.png') }}" alt="Gestionar"
+                                                style="width: 20px; height: 20px;">
+                                        </a>
+                                    </td>
+                                    <td class="estado {{ strtolower(str_replace(' ', '-', $donante->estado)) }}">
+                                        {{ $donante->estado }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__estado" id="cmb__estado" class="form-select shadow-sm rounded-pill">
-                <option value="" selected>Estado</option>
-                @foreach (App\Enums\EstadoDonante::cases() as $estado)
-                    <option value="{{ $estado->value }}">{{ $estado->value }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__sexo" id="cmb__sexo" class="form-select shadow-sm rounded-pill">
-                <option value="" selected>Sexo</option>
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__abo" id="cmb__abo" class="form-select shadow-sm rounded-pill">
-                <option value="" selected>ABO</option>
-                @foreach (App\Enums\TipoABO::cases() as $abo)
-                    <option value="{{ $abo->value }}">{{ $abo->value }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__rh" id="cmb__rh" class="form-select shadow-sm rounded-pill">
-                <option value="" selected>RH</option>
-                @foreach (App\Enums\TipoRH::cases() as $rh)
-                    <option value="{{ $rh->value }}">{{ $rh->value }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-3 mb-3">
-            <select name="cmb__ordenar" id="cmb__ordenar" class="form-select shadow-sm rounded-pill">
-                <option value="" selected>Ordenar por</option>
-                <option value="nombre">Nombre</option>
-                <option value="apellido">Apellido</option>
-                <option value="fecha">Última Fecha Donación</option>
-            </select>
-        </div>
-        <div class="col-md-6 col-lg-2 mb-3">
-            <select name="cmb__orden" id="cmb__orden" class="form-select shadow-sm rounded-pill">
-                <option value="asc" selected>Ascendente</option>
-                <option value="desc">Descendente</option>
-            </select>
-        </div>
-    </div>
 
         <!-- Botón registrar -->
         <div class="row mt-4">
