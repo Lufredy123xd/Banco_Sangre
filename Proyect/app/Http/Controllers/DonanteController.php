@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EstadoDonante;
+use App\Enums\TipoUsuario;
 use App\Models\Agenda;
 use App\Models\Donacion;
 use App\Models\Donante;
@@ -17,7 +18,7 @@ class DonanteController extends Controller
      */
     public function index()
     {
-        if (session('tipo_usuario') !== 'Administrador') {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -31,6 +32,10 @@ class DonanteController extends Controller
 
     public function home()
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $datos['donantes'] = Donante::paginate(10);
         return view('administrador.homeDonante', $datos);
     }
@@ -40,6 +45,10 @@ class DonanteController extends Controller
      */
     public function create()
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         return view('donante.create');
     }
 
@@ -68,6 +77,10 @@ class DonanteController extends Controller
      */
     public function edit($id)
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $donante = Donante::findOrFail($id);
         return view('donante.edit', compact('donante'));
     }

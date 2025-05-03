@@ -15,7 +15,7 @@ class UsuarioController extends Controller
         if (session('tipo_usuario') !== 'Administrador') {
             abort(403, 'Acceso no autorizado.');
         }
-        
+
         $usuarios = Usuario::paginate(5); // o ->all() si querés traer todos
         return view('usuario.index', compact('usuarios'));
     }
@@ -23,9 +23,24 @@ class UsuarioController extends Controller
 
     public function create()
     {
+        if (session('tipo_usuario') !== 'Administrador') {
+            abort(403, 'Acceso no autorizado.');
+        }
         return view('usuario.registrar');
     }
 
+
+    /**
+     * Cierra la sesión del usuario.
+     */
+    public function logout()
+    {
+        // Eliminar todos los datos de la sesión
+        session()->flush();
+    
+        // Redirigir a la página de inicio de sesión
+        return redirect('/')->with('mensaje', 'Sesión cerrada correctamente.');
+    }
 
     /**
      * Muestra el formulario para crear un nuevo usuario.
@@ -76,6 +91,9 @@ class UsuarioController extends Controller
 
         $data['password'] = Hash::make($data['password']);
 
+
+        dump($data); // Para depurar y ver los datos que se están guardando
+
         Usuario::create($data);
 
         return redirect()->route('usuario.index')->with('mensaje', 'Usuario creado correctamente.');
@@ -86,6 +104,9 @@ class UsuarioController extends Controller
      */
     public function edit($id)
     {
+        if (session('tipo_usuario') !== 'Administrador') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $usuario = Usuario::findOrFail($id);
         return view('usuario.editar', compact('usuario'));
     }

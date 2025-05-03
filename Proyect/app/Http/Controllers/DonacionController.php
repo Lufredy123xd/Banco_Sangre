@@ -19,6 +19,9 @@ class DonacionController extends Controller
      */
     public function index()
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $datos['donaciones'] = Donacion::with('donante')->paginate(10);
 
         
@@ -33,6 +36,9 @@ class DonacionController extends Controller
      */
     public function create()
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $donantes = Donante::all(); // Obtener todos los donantes
         return view('donacion.create', compact('donantes'));
     }
@@ -77,6 +83,9 @@ class DonacionController extends Controller
      */
     public function edit($id)
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $donacion = Donacion::findOrFail($id);
         $donantes = Donante::all(); // Obtener todos los donantes
         return view('donacion.edit', compact('donacion', 'donantes'));

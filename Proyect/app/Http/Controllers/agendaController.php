@@ -14,6 +14,10 @@ class AgendaController extends Controller
      */
     public function index()
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         $datos['agendas'] = Agenda::paginate(10);
         return view('agenda.index', $datos);
     }
@@ -23,6 +27,10 @@ class AgendaController extends Controller
      */
     public function create(Request $request)
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
+
         // Obtenemos el id del donante
         $donanteId = $request->input('donante_id');
 
@@ -72,6 +80,9 @@ class AgendaController extends Controller
      */
     public function edit($id)
     {
+        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+            abort(403, 'Acceso no autorizado.');
+        }
         $agenda = Agenda::findOrFail($id);
         $donante = Donante::findOrFail($agenda->donante_id);
         return view('agenda.edit', compact('agenda', 'donante'));

@@ -44,10 +44,10 @@
         </select>
 
         <label class="block" for="txt__curso">Curso (en caso de estudiante)</label>
-        <select class="input__div" name="curso" id="txt__curso">
+        <select class="input__div" name="curso_hemoterapia" id="txt__curso">
             <option value="" disabled>Seleccione un curso</option>
             @foreach (App\Enums\Curso::cases() as $curso)
-            <option value="{{ $curso->value }}" {{ $usuario->curso == $curso->value ? 'selected' : '' }}>
+            <option value="{{ $curso->value }}" {{ $usuario->curso_hemoterapia == $curso->value ? 'selected' : '' }}>
                 {{ $curso->value }}
             </option>
             @endforeach
