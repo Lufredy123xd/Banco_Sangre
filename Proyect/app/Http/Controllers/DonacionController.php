@@ -34,14 +34,16 @@ class DonacionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create(Request $request)
+{
         if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
-        $donantes = Donante::all(); // Obtener todos los donantes
-        return view('donacion.create', compact('donantes'));
-    }
+        $donanteId = $request->query('donante_id'); // Captura el parámetro donante_id
+        $donante = Donante::findOrFail($donanteId); // Busca el donante por ID
+
+    return view('donacion.create', compact('donante'));
+}
 
     /**
      * Store a newly created resource in storage.

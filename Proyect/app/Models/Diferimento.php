@@ -17,7 +17,7 @@ class Diferimento extends Model
 
     public function donantes()
     {
-        return $this->belongsTo(Donante::class);
+        return $this->belongsTo(Donante::class, 'id_donante');
     }
 
 }

@@ -2,10 +2,15 @@
 
 @section('content')
     <div class="content__main">
+        @if (session('mensaje'))
+                <div class="alert alert-success">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
         <div class="content__main">
 
-            <div class="content__main__center">
-                <table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -54,7 +59,7 @@
 
                         @if ($hoy >= $fechaAgenda && strtolower($donante->estado) === strtolower('Para Actualizar'))
                             <a href="{{ route('diferimento.create', ['donante_id' => $donante->id]) }}"
-                                class="btn btn-primary">Diferir donante</a>
+                                class="btn btn-danger">Donante Diferido</a>
 
                             <a href="{{ route('donacion.create', ['donante_id' => $donante->id]) }}"
                                 class="btn btn-primary">Agregar donación</a>
@@ -73,86 +78,90 @@
                     @endif
 
                 </div>
-
-                <div>
-                    <h3>Historial de diferimiento</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($diferimientos->isEmpty())
-                                <tr>
-                                    <td colspan="2">No hay diferimientos registrados.</td>
-                                </tr>
-                            @else
-                                @foreach ($diferimientos as $diferimiento)
-                                    <tr>
-                                        <td>{{ $diferimiento->fecha_diferimiento }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                data-bs-target="#modalDiferimiento"
-                                                data-fecha="{{ $diferimiento->fecha_diferimiento }}"
-                                                data-tipo="{{ $diferimiento->tipo }}"
-                                                data-tiempo_en_meses="{{ $diferimiento->tiempo_en_meses }}"
-                                                data-motivo="{{ $diferimiento->motivo }}">
-                                                Más detalle
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-
+            </div>
+            <div class="row mt-4">
+                        
+                <!-- Historial de donaciones -->
+                <div class="col-md-6 mb-4 border rounded p-3">
                     <h3>Historial de donaciones</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Opcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($donaciones->isEmpty())
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead>
                                 <tr>
-                                    <td colspan="2">No hay donaciones registrados.</td>
+                                    <th>Fecha</th>
+                                    <th>Opción</th>
                                 </tr>
-                            @else
-                                @foreach ($donaciones as $donacion)
+                            </thead>
+                            <tbody>
+                                @if ($donaciones->isEmpty())
                                     <tr>
-                                        <td>{{ $donacion->fecha }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                data-bs-target="#modalDonacion" data-fecha="{{ $donacion->fecha }}"
-                                                data-serologia="{{ $donacion->serologia }}"
-                                                data-anticuerpos_irregulares="{{ $donacion->anticuerpos_irregulares }}"
-                                                data-clase_donacion="{{ $donacion->clase_donacion }}">
-                                                Más detalle
-                                            </button>
-                                        </td>
-
+                                        <td colspan="2">No hay donaciones registradas.</td>
                                     </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                                @else
+                                    @foreach ($donaciones as $donacion)
+                                        <tr>
+                                            <td>{{ $donacion->fecha }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                    data-bs-target="#modalDonacion"
+                                                    data-fecha="{{ $donacion->fecha }}"
+                                                    data-serologia="{{ $donacion->serologia }}"
+                                                    data-anticuerpos_irregulares="{{ $donacion->anticuerpos_irregulares }}"
+                                                    data-clase_donacion="{{ $donacion->clase_donacion }}">
+                                                    Más detalle
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-
+                <!-- Historial de diferimientos -->
+                <div class="col-md-6 mb-4 border rounded p-3">
+                    <h3>Historial de diferimiento</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Opción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($diferimientos->isEmpty())
+                                    <tr>
+                                        <td colspan="2">No hay diferimientos registrados.</td>
+                                    </tr>
+                                @else
+                                    @foreach ($diferimientos as $diferimiento)
+                                        <tr>
+                                            <td>{{ $diferimiento->fecha_diferimiento }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                    data-bs-target="#modalDiferimiento"
+                                                    data-fecha="{{ $diferimiento->fecha_diferimiento }}"
+                                                    data-tipo="{{ $diferimiento->tipo }}"
+                                                    data-tiempo_en_meses="{{ $diferimiento->tiempo_en_meses }}"
+                                                    data-motivo="{{ $diferimiento->motivo }}">
+                                                    Más detalle
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
-            <a href="{{ route(name: 'donante.index') }}" class="btn btn-sm btn-info">Volver</a>
 
-            @if (session('mensaje'))
-                <div class="alert alert-success">
-                    {{ session('mensaje') }}
-                </div>
-            @endif
+            
+
+            <a href="{{ route(name: 'donante.index') }}" class="btn btn-sm btn-info">Volver</a>
         </div>
     </div>
 @endsection

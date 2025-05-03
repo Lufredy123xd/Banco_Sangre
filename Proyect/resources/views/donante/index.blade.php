@@ -4,10 +4,11 @@
         <!-- Filtros y búsqueda -->
         <div class="row mb-4">
             <div class="col-md-6 col-lg-4 mb-3">
-                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control" placeholder="Ingrese dato a buscar">
+                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control shadow-sm"
+                    placeholder="Ingrese dato a buscar">
             </div>
             <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__estado" id="cmb__estado" class="form-select">
+                <select name="cmb__estado" id="cmb__estado" class="form-select shadow-sm rounded-pill">
                     <option value="" selected>Estado</option>
                     @foreach (App\Enums\EstadoDonante::cases() as $estado)
                         <option value="{{ $estado->value }}">{{ $estado->value }}</option>
@@ -15,14 +16,14 @@
                 </select>
             </div>
             <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__sexo" id="cmb__sexo" class="form-select">
+                <select name="cmb__sexo" id="cmb__sexo" class="form-select shadow-sm rounded-pill">
                     <option value="" selected>Sexo</option>
                     <option value="M">Masculino</option>
                     <option value="F">Femenino</option>
                 </select>
             </div>
             <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__abo" id="cmb__abo" class="form-select">
+                <select name="cmb__abo" id="cmb__abo" class="form-select shadow-sm rounded-pill">
                     <option value="" selected>ABO</option>
                     @foreach (App\Enums\TipoABO::cases() as $abo)
                         <option value="{{ $abo->value }}">{{ $abo->value }}</option>
@@ -30,7 +31,7 @@
                 </select>
             </div>
             <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__rh" id="cmb__rh" class="form-select">
+                <select name="cmb__rh" id="cmb__rh" class="form-select shadow-sm rounded-pill">
                     <option value="" selected>RH</option>
                     @foreach (App\Enums\TipoRH::cases() as $rh)
                         <option value="{{ $rh->value }}">{{ $rh->value }}</option>
@@ -38,16 +39,15 @@
                 </select>
             </div>
             <div class="col-md-6 col-lg-3 mb-3">
-                <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
+                <select name="cmb__ordenar" id="cmb__ordenar" class="form-select shadow-sm rounded-pill">
                     <option value="" selected>Ordenar por</option>
                     <option value="nombre">Nombre</option>
                     <option value="apellido">Apellido</option>
-                    <option value="cedula">Cédula</option>
                     <option value="fecha">Última Fecha Donación</option>
                 </select>
             </div>
             <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__orden" id="cmb__orden" class="form-select">
+                <select name="cmb__orden" id="cmb__orden" class="form-select shadow-sm rounded-pill">
                     <option value="asc" selected>Ascendente</option>
                     <option value="desc">Descendente</option>
                 </select>
@@ -93,14 +93,9 @@
                                                 style="width: 20px; height: 20px;">
                                         </a>
                                     </td>
-                                    <!-- filepath: d:\Proyectos\_PHP\Banco_Sangre\Proyect\resources\views\donante\index.blade.php -->
                                     <td>
-                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#modalDonacion" data-nombre="{{ $donante->nombre }}"
-                                            data-apellido="{{ $donante->apellido }}" data-cedula="{{ $donante->cedula }}"
-                                            data-abo="{{ $donante->ABO }}" data-rh="{{ $donante->RH }}"
-                                            data-sexo="{{ $donante->sexo }}" data-estado="{{ $donante->estado }}"
-                                            data-fecha="{{ $donante->donaciones->sortByDesc('fecha')->first() ? $donante->donaciones->sortByDesc('fecha')->first()->fecha : 'Sin donaciones' }}">
+                                        <button class="btn btn-sm btn-info" onclick="verMas({{ $donante->id }})"
+                                            data-bs-toggle="modal" data-bs-target="#verMasModal">
                                             <img src="{{ asset('imgs/ver_mas_icon.png') }}" alt="Ver más"
                                                 style="width: 20px; height: 20px;">
                                         </button>
@@ -130,6 +125,35 @@
                     <a href="{{ route('usuario.index') }}" class="btn btn-secondary">Gestionar usuario</a>
                 @endif
                 <a href="{{ route('donante.create') }}" class="btn btn-success">Registrar donante</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Ver Más -->
+    <div class="modal fade" id="verMasModal" tabindex="-1" aria-labelledby="verMasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verMasModalLabel">Detalles del Donante</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Nombre:</strong> <span id="detalleNombre"></span></p>
+                    <p><strong>Apellido:</strong> <span id="detalleApellido"></span></p>
+                    <p><strong>Cédula:</strong> <span id="detalleCedula"></span></p>
+                    <p><strong>Sexo:</strong> <span id="detalleSexo"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="detalleTelefono"></span></p>
+                    <p><strong>Fecha de Nacimiento:</strong> <span id="detalleFechaNacimiento"></span></p>
+                    <p><strong>Grupo Sanguíneo (ABO):</strong> <span id="detalleABO"></span></p>
+                    <p><strong>Factor RH:</strong> <span id="detalleRH"></span></p>
+                    <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
+                    <p><strong>Observaciones:</strong> <span id="detalleObservaciones"></span></p>
+                    <p><strong>Cantidad de Donaciones:</strong> <span id="detalleDonaciones"></span></p>
+                    <p><strong>Cantidad de Diferimientos:</strong> <span id="detalleDiferimientos"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -187,9 +211,15 @@
                     const bText = b.querySelector(`.${column}`).textContent.trim().toLowerCase();
 
                     if (column === "fecha") {
-                        return ascending ?
-                            new Date(aText) - new Date(bText) :
-                            new Date(bText) - new Date(aText);
+                        const parseDate = (text) => {
+                            const date = new Date(text);
+                            return isNaN(date) ? new Date(0) : date;
+                        };
+
+                        const aDate = parseDate(aText);
+                        const bDate = parseDate(bText);
+
+                        return ascending ? aDate - bDate : bDate - aDate;
                     }
 
                     return ascending ?
@@ -209,56 +239,50 @@
             ordenSelect.addEventListener("change", sortTable);
         });
     </script>
+    <script>
+        function verMas(donanteId) {
+            // Realiza una solicitud AJAX para obtener los detalles del donante
+            fetch(`/donante/${donanteId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Rellena los datos en el modal
+                    document.getElementById('detalleNombre').textContent = data.nombre;
+                    document.getElementById('detalleApellido').textContent = data.apellido;
+                    document.getElementById('detalleCedula').textContent = data.cedula;
+                    document.getElementById('detalleSexo').textContent = data.sexo === 'M' ? 'Masculino' : 'Femenino';
+                    document.getElementById('detalleTelefono').textContent = data.telefono;
+                    document.getElementById('detalleFechaNacimiento').textContent = data.fecha_nacimiento;
+                    document.getElementById('detalleABO').textContent = data.ABO;
+                    document.getElementById('detalleRH').textContent = data.RH;
+                    document.getElementById('detalleEstado').textContent = data.estado;
+                    document.getElementById('detalleObservaciones').textContent = data.observaciones ||
+                        'Sin observaciones';
+                    document.getElementById('detalleDonaciones').textContent = data.donaciones_count || 0;
+                    document.getElementById('detalleDiferimientos').textContent = data.diferimientos_count || 0;
 
-<!-- filepath: d:\Proyectos\_PHP\Banco_Sangre\Proyect\resources\views\donante\index.blade.php -->
-<div class="modal fade" id="modalDonacion" tabindex="-1" aria-labelledby="modalDonacionLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalDonacionLabel">Detalle del Donante</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Nombre:</strong> <span id="donanteNombre"></span></p>
-                <p><strong>Apellido:</strong> <span id="donanteApellido"></span></p>
-                <p><strong>Cédula:</strong> <span id="donanteCedula"></span></p>
-                <p><strong>ABO:</strong> <span id="donanteAbo"></span></p>
-                <p><strong>RH:</strong> <span id="donanteRh"></span></p>
-                <p><strong>Sexo:</strong> <span id="donanteSexo"></span></p>
-                <p><strong>Estado:</strong> <span id="donanteEstado"></span></p>
-                <p><strong>Última Fecha de Donación:</strong> <span id="donanteFecha"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+                    // Muestra el modal
+                    const modal = new bootstrap.Modal(document.getElementById('verMasModal'));
+                    modal.show();
+                })
+                .catch(error => {
+                    console.error('Error al obtener los detalles del donante:', error);
+                });
+        }
 
-<!-- filepath: d:\Proyectos\_PHP\Banco_Sangre\Proyect\resources\views\donante\index.blade.php -->
-<script>
-    const modalDonacion = document.getElementById('modalDonacion');
-    modalDonacion.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
+        document.addEventListener("DOMContentLoaded", function() {
+            const modalElement = document.getElementById('verMasModal');
 
-        const nombre = button.getAttribute('data-nombre');
-        const apellido = button.getAttribute('data-apellido');
-        const cedula = button.getAttribute('data-cedula');
-        const abo = button.getAttribute('data-abo');
-        const rh = button.getAttribute('data-rh');
-        const sexo = button.getAttribute('data-sexo');
-        const estado = button.getAttribute('data-estado');
-        const fecha = button.getAttribute('data-fecha');
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                // Forzar la eliminación del backdrop
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
 
-        modalDonacion.querySelector('#donanteNombre').textContent = nombre;
-        modalDonacion.querySelector('#donanteApellido').textContent = apellido;
-        modalDonacion.querySelector('#donanteCedula').textContent = cedula;
-        modalDonacion.querySelector('#donanteAbo').textContent = abo;
-        modalDonacion.querySelector('#donanteRh').textContent = rh;
-        modalDonacion.querySelector('#donanteSexo').textContent = sexo;
-        modalDonacion.querySelector('#donanteEstado').textContent = estado;
-        modalDonacion.querySelector('#donanteFecha').textContent = fecha;
-    });
-</script>
-
+                // Asegúrate de que el body no tenga la clase 'modal-open'
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = ''; // Restablece el scroll
+            });
+        });
+    </script>
 @endsection

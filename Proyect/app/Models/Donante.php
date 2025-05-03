@@ -23,7 +23,15 @@ class Donante extends Model
         'modificado_por'
     ];
 
-   
+    public function setNombreAttribute($value)
+    {
+        $this->attributes['nombre'] = ucfirst(strtolower($value)); // Convierte la primera letra en mayúscula
+    }
+
+    public function setApellidoAttribute($value)
+    {
+        $this->attributes['apellido'] = ucfirst(strtolower($value)); // Convierte la primera letra en mayúscula
+    }
 
     // Relación uno a muchos con Agenda
     public function agendas()
@@ -34,7 +42,7 @@ class Donante extends Model
     // Relación uno a muchos con Diferimiento
     public function diferimientos()
     {
-        return $this->hasMany(Diferimento::class);
+        return $this->hasMany(Diferimento::class, 'id_donante');
     }
 
     // Relación uno a muchos con Donacion

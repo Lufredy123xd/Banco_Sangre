@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\EstadoDonante;
 use App\Enums\TipoUsuario;
 use App\Models\Agenda;
+use App\Models\Diferimento;
 use App\Models\Donacion;
 use App\Models\Donante;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 class DonanteController extends Controller
 {
 
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -58,22 +59,22 @@ class DonanteController extends Controller
     public function store(Request $request)
     {
         // Validaciones
-    $request->validate([
-        'cedula' => 'required|digits:8|unique:donantes,cedula', // Cédula única y exactamente 8 dígitos
-        'nombre' => 'required|string|max:50', // Nombre obligatorio, texto y máximo 50 caracteres
-        'apellido' => 'required|string|max:50', // Apellido obligatorio, texto y máximo 50 caracteres
-        'telefono' => 'required|digits_between:7,15', // Teléfono obligatorio, entre 7 y 15 dígitos
-        'fecha_nacimiento' => 'required|date|before_or_equal:today', // Fecha de nacimiento obligatoria y no puede ser futura
-        'observaciones' => 'nullable|string|max:255', // Observaciones opcionales, máximo 255 caracteres
-    ]);
+        $request->validate([
+            'cedula' => 'required|digits:8|unique:donantes,cedula', // Cédula única y exactamente 8 dígitos
+            'nombre' => 'required|string|max:50', // Nombre obligatorio, texto y máximo 50 caracteres
+            'apellido' => 'required|string|max:50', // Apellido obligatorio, texto y máximo 50 caracteres
+            'telefono' => 'required|digits_between:7,15', // Teléfono obligatorio, entre 7 y 15 dígitos
+            'fecha_nacimiento' => 'required|date|before_or_equal:today', // Fecha de nacimiento obligatoria y no puede ser futura
+            'observaciones' => 'nullable|string|max:255', // Observaciones opcionales, máximo 255 caracteres
+        ]);
 
-    // Guardar los datos del donante
-    $datosDonante = $request->except('_token');
-    Donante::create($datosDonante);
+        // Guardar los datos del donante
+        $datosDonante = $request->except('_token');
+        Donante::create($datosDonante);
 
-    // Redirigir con mensaje de éxito
-    return redirect('donante')->with('mensaje', 'Se agregó el donante correctamente.');
-}
+        // Redirigir con mensaje de éxito
+        return redirect('donante')->with('mensaje', 'Se agregó el donante correctamente.');
+    }
 
     /**
      * Display the specified resource.
@@ -138,5 +139,31 @@ class DonanteController extends Controller
 
         return redirect()->route('gestionarDonante', ['id' => $id])
             ->with('mensaje', 'Se actualizo la asistencia del donante');
+    }
+
+    public function getDetails($id)
+    {
+        // Obtiene el donante con los conteos de donaciones y diferimientos
+        $donante = Donante::findOrFail($id);
+
+        $donante->donaciones_count = Donacion::where('id_donante', $id)->count();
+        $donante->diferimientos_count = Diferimento::where('id_donante', $id)->count();
+
+        // Devuelve los datos del donante como JSON
+        return response()->json([
+            'id' => $donante->id,
+            'nombre' => $donante->nombre,
+            'apellido' => $donante->apellido,
+            'cedula' => $donante->cedula,
+            'sexo' => $donante->sexo,
+            'telefono' => $donante->telefono,
+            'fecha_nacimiento' => $donante->fecha_nacimiento,
+            'ABO' => $donante->ABO,
+            'RH' => $donante->RH,
+            'estado' => $donante->estado,
+            'observaciones' => $donante->observaciones,
+            'donaciones_count' => $donante->donaciones_count, // Conteo de donaciones
+            'diferimientos_count' => $donante->diferimientos_count, // Conteo de diferimientos
+        ]);
     }
 }
