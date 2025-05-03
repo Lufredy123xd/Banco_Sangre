@@ -31,11 +31,13 @@ class DonacionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $donantes = Donante::all(); // Obtener todos los donantes
-        return view('donacion.create', compact('donantes'));
-    }
+    public function create(Request $request)
+{
+        $donanteId = $request->query('donante_id'); // Captura el parámetro donante_id
+        $donante = Donante::findOrFail($donanteId); // Busca el donante por ID
+
+    return view('donacion.create', compact('donante'));
+}
 
     /**
      * Store a newly created resource in storage.

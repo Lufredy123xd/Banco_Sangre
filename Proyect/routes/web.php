@@ -98,7 +98,8 @@ Route::resource('usuario', UsuarioController::class)
         'update' => 'usuario.update',
         'destroy' => 'usuario.destroy',
     ]);
-
+    // Ruta para mostrar detalles de donaciones
+    Route::get('/donante/{id}', [DonanteController::class, 'getDetails']);
     
 /*
     Route::get('/registrar', function () {

@@ -23,7 +23,19 @@
         <form action="{{ url('/diferimento') }}" method="post">
             {{ csrf_field() }}
 
-            <p>Donante seleccionado: {{ $donante->nombre }}</p>
+            <div class="mb-3 border rounded p-3">
+                <label class="form-label">Datos del Donante</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" value="{{ $donante->nombre }} {{ $donante->apellido }}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Cédula</label>
+                        <input type="text" class="form-control" value="{{ $donante->cedula }}" readonly>
+                    </div>
+                </div>
+            </div>
 
             <!-- Campo oculto para el ID del donante -->
             <input type="hidden" name="id_donante" value="{{ $donante->id }}">

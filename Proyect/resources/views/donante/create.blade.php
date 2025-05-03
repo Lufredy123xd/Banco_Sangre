@@ -78,9 +78,12 @@
             <label class="block" for="estado">Estado</label>
             <select class="input__div" name="estado" id="estado" required>
                 @foreach (App\Enums\EstadoDonante::cases() as $tipo)
-                    <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
+                    @if ($tipo->value != 'Diferido Permanente' && $tipo->value != 'Agendado' && $tipo->value != 'Para Actualizar')
+                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
+                    @endif
                 @endforeach
             </select>
+            
 
             <div class="contenedor__descripcion">
                 <label class="block" for="observaciones">Observaciones</label>

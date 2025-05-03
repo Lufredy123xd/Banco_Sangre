@@ -15,14 +15,21 @@
         <form action="{{ url('/donacion') }}" method="POST" class="p-4 border rounded shadow">
             {{ csrf_field() }}
 
-            <div class="mb-3">
-                <label for="id_donante" class="form-label">Donante:</label>
-                <select id="id_donante" name="id_donante" class="form-control" required>
-                    @foreach ($donantes as $donante)
-                        <option value="{{ $donante->id }}">{{ $donante->nombre }} {{ $donante->apellido }}</option>
-                    @endforeach
-                </select>
+            <div class="mb-3 border rounded p-3">
+                <label class="form-label">Datos del Donante:</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" value="{{ $donante->nombre }} {{ $donante->apellido }}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Cédula</label>
+                        <input type="text" class="form-control" value="{{ $donante->cedula }}" readonly>
+                    </div>
+                </div>
             </div>
+
+            <input type="hidden" name="id_donante" value="{{ $donante->id }}">
 
             <div class="mb-3">
                 <label for="fecha" class="form-label">Fecha:</label>
