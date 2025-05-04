@@ -3,10 +3,10 @@
 @section('content')
     <div class="content__main">
         @if (session('mensaje'))
-                <div class="alert alert-success">
-                    {{ session('mensaje') }}
-                </div>
-            @endif
+            <div class="alert alert-success">
+                {{ session('mensaje') }}
+            </div>
+        @endif
         <div class="content__main">
 
             <div class="table-responsive">
@@ -47,40 +47,38 @@
                     </tbody>
                 </table>
 
-                <div>
 
+            </div>
+            <div class="d-flex justify-content-center flex-wrap gap-3 mt-1">
+                @if ($agenda && $agenda->asistio == null)
+                    @php
+                        $fechaAgenda = \Carbon\Carbon::parse($agenda->fecha_agenda)->toDateString();
+                        $hoy = \Carbon\Carbon::now()->toDateString();
+                    @endphp
 
-                    @if ($agenda && $agenda->asistio == null)
-                        @php
-                            $fechaAgenda = \Carbon\Carbon::parse($agenda->fecha_agenda)->toDateString();
-                            $hoy = \Carbon\Carbon::now()->toDateString();
-
-                        @endphp
-
-                        @if ($hoy >= $fechaAgenda && strtolower($donante->estado) === strtolower('Para Actualizar'))
+                    @if ($hoy >= $fechaAgenda && strtolower($donante->estado) === strtolower('Para Actualizar'))
+                        <div class="text-center">
                             <a href="{{ route('diferimento.create', ['donante_id' => $donante->id]) }}"
-                                class="btn btn-danger">Donante Diferido</a>
-
+                                class="btn btn-danger d-inline-block">Donante Diferido</a>
                             <a href="{{ route('donacion.create', ['donante_id' => $donante->id]) }}"
-                                class="btn btn-primary">Agregar donación</a>
+                                class="btn btn-primary d-inline-block">Agregar donación</a>
+                        </div>
 
-                            <form action="{{ route('donante.no_asistio', ['id' => $donante->id]) }}" method="POST"
-                                style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-danger">No asistió</button>
-                            </form>
-                        @endif
+                        <form action="{{ route('donante.no_asistio', ['id' => $donante->id]) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">No asistió</button>
+                        </form>
                     @endif
+                @endif
 
-                    @if (strtolower($donante->estado) === strtolower('Disponible'))
-                        <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}"
-                            class="btn btn-primary">Agendar donante</a>
-                    @endif
-
-                </div>
+                @if (strtolower($donante->estado) === strtolower('Disponible'))
+                    <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}" class="btn btn-primary">Agendar
+                        donante</a>
+                @endif
             </div>
             <div class="row mt-4">
-                        
+
                 <!-- Historial de donaciones -->
                 <div class="col-md-6 mb-4 border rounded p-3">
                     <h3>Historial de donaciones</h3>
@@ -103,8 +101,7 @@
                                             <td>{{ $donacion->fecha }}</td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                    data-bs-target="#modalDonacion"
-                                                    data-fecha="{{ $donacion->fecha }}"
+                                                    data-bs-target="#modalDonacion" data-fecha="{{ $donacion->fecha }}"
                                                     data-serologia="{{ $donacion->serologia }}"
                                                     data-anticuerpos_irregulares="{{ $donacion->anticuerpos_irregulares }}"
                                                     data-clase_donacion="{{ $donacion->clase_donacion }}">
@@ -158,10 +155,9 @@
                 </div>
             </div>
 
-
-            
-
-            <a href="{{ route(name: 'donante.index') }}" class="btn btn-sm btn-info">Volver</a>
+        </div>
+        <div>
+            <a href="{{ route(name: 'donante.index') }}" class="btn btn-lg btn-info ">Volver</a>
         </div>
     </div>
 @endsection
@@ -242,4 +238,3 @@
         modalDonacion.querySelector('#donacionClase').textContent = clase;
     });
 </script>
-

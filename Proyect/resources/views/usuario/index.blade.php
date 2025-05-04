@@ -6,21 +6,7 @@
             <div class="col-md-6 col-lg-4 mb-3">
                 <input type="text" name="txt_buscar" id="txt_buscar" class="form-control" placeholder="Ingrese dato a buscar">
             </div>
-            <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__estado" id="cmb__estado" class="form-select">
-                    <option value="" selected>Estado</option>
-                    @foreach (App\Enums\EstadoUsuario::cases() as $estado)
-                        <option value="{{ $estado->value }}">{{ $estado->value }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__sexo" id="cmb__sexo" class="form-select">
-                    <option value="" selected>Sexo</option>
-                    <option value="M">Masculino</option>
-                    <option value="F">Femenino</option>
-                </select>
-            </div>
+            
             <div class="col-md-6 col-lg-3 mb-3">
                 <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
                     <option value="" selected>Ordenar por</option>

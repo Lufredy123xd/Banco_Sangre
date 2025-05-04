@@ -20,7 +20,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" value="{{ $donante->nombre }} {{ $donante->apellido }}" readonly>
+                        <input type="text" class="form-control"
+                            value="{{ $donante->nombre }} {{ $donante->apellido }}" readonly>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Cédula</label>
@@ -63,8 +64,12 @@
                 </select>
             </div>
 
-            <a href="{{ route('donacion.index') }}" class="btn btn-secondary">Cancelar</a>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-warning btn-rm"
+                    href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+
         </form>
     </div>
 </body>

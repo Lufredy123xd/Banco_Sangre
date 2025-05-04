@@ -170,20 +170,20 @@
             const rows = document.querySelectorAll(".fila-usuario");
 
             function filterTable() {
-                const estadoValue = estadoFilter.value.toLowerCase();
-                const sexoValue = sexoFilter.value.toLowerCase();
-                const aboValue = aboFilter.value.toLowerCase();
-                const rhValue = rhFilter.value.toLowerCase();
-                const searchValue = searchInput.value.toLowerCase();
+                const estadoValue = estadoFilter.value.toLowerCase().trim();
+                const sexoValue = sexoFilter.value.toLowerCase().trim();
+                const aboValue = aboFilter.value.toLowerCase().trim();
+                const rhValue = rhFilter.value.toLowerCase().trim();
+                const searchValue = searchInput.value.toLowerCase().trim();
 
                 rows.forEach(row => {
-                    const estado = row.querySelector(".estado").textContent.toLowerCase();
-                    const sexo = row.querySelector(".sexo").textContent.toLowerCase();
-                    const abo = row.querySelector(".abo").textContent.toLowerCase();
-                    const rh = row.querySelector(".rh").textContent.toLowerCase();
-                    const nombre = row.querySelector(".nombre").textContent.toLowerCase();
-                    const apellido = row.querySelector(".apellido").textContent.toLowerCase();
-                    const cedula = row.querySelector(".cedula").textContent.toLowerCase();
+                    const estado = row.querySelector(".estado").textContent.toLowerCase().trim();
+                    const sexo = row.querySelector(".sexo").textContent.toLowerCase().trim();
+                    const abo = row.querySelector(".abo").textContent.toLowerCase().trim();
+                    const rh = row.querySelector(".rh").textContent.toLowerCase().trim();
+                    const nombre = row.querySelector(".nombre").textContent.toLowerCase().trim();
+                    const apellido = row.querySelector(".apellido").textContent.toLowerCase().trim();
+                    const cedula = row.querySelector(".cedula").textContent.toLowerCase().trim();
 
                     const matchesEstado = !estadoValue || estado === estadoValue;
                     const matchesSexo = !sexoValue || sexo === sexoValue;
@@ -239,6 +239,7 @@
             ordenSelect.addEventListener("change", sortTable);
         });
     </script>
+
     <script>
         function verMas(donanteId) {
             // Realiza una solicitud AJAX para obtener los detalles del donante
