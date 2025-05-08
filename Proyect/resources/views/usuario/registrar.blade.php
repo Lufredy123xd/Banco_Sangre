@@ -1,6 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
-@section('contentAdmin')
+@section('content')
     <section class="section__registrar">
         <h2 class="section__registrar-title">Registrar Usuario</h2>
         <form action="{{ url('/usuario') }}" method="post" class="registrar__formulario">
@@ -71,7 +71,7 @@
             </div>
 
             <div class="contenedor__bottom">
-                <a href="{{ route('donante.index') }}" type="button"
+                <a href="{{ route('usuario.index') }}" type="button"
                     class="contenedor__descripcion__porque cancelar">Volver</a>
                 <button type="submit" class="contenedor__descripcion__porque guardar">Registrar</button>
             </div>

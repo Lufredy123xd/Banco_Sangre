@@ -94,7 +94,7 @@
 
             <div class="contenedor__bottom">
                 <a href="{{ route('donante.index') }}" type="button"
-                    class="contenedor__descripcion__porque cancelar">Cancelar</a>
+                    class="contenedor__descripcion__porque cancelar">Volver</a>
                 <button type="submit" class="contenedor__descripcion__porque guardar">Registrar</button>
             </div>
 

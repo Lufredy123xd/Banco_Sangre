@@ -18,7 +18,7 @@
     </div>
 
     <div class="header__right">
-        <h2 class="header__right-title">Usuario</h2>
+        <h2 class="header__right-title">{{ session('user_name', 'Usuario') }}</h2>
       <a href="#"><img src="{{ asset ('imgs/user_icon.png')}}" alt=""></a>
     </div>
 </header>
