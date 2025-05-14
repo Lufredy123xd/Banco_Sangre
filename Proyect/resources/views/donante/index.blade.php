@@ -113,6 +113,10 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    <a href="{{ route('donantes.export.pdf') }}" class="btn btn-danger mb-3">
+                        Exportar en PDF
+                    </a>
                 </div>
             </div>
         </div>
@@ -155,6 +159,9 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
+
+
+
         </div>
     </div>
 

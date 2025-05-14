@@ -3,15 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EstadoDonante;
-use App\Enums\TipoUsuario;
 use App\Models\Agenda;
 use App\Models\Diferimento;
 use App\Models\Donacion;
 use App\Models\Donante;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class DonanteController extends Controller
 {
+
+    public function exportPdf()
+    {
+        // Obtener todos los donantes
+        $donantes = Donante::all();
+
+        // Obtener todas las donaciones, sin necesidad de "eager loading" en este caso
+        $donaciones = Donacion::all();
+
+        // Generar el PDF con la vista 'donante.pdf' y pasar los donantes y las donaciones
+        $pdf = Pdf::loadView('donante.pdf', compact('donantes', 'donaciones'));
+
+        // Descargar el archivo PDF
+        return $pdf->download('donantes.pdf');
+    }
 
 
     /**
@@ -19,7 +35,7 @@ class DonanteController extends Controller
      */
     public function index()
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -33,7 +49,7 @@ class DonanteController extends Controller
 
     public function home()
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -46,7 +62,7 @@ class DonanteController extends Controller
      */
     public function create()
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
 
@@ -89,7 +105,7 @@ class DonanteController extends Controller
      */
     public function edit($id)
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
 

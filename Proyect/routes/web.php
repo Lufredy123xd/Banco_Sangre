@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonanteController;
 use App\Http\Controllers\UsuarioController;
 
+Route::get('/donantes/export/pdf', [DonanteController::class, 'exportPdf'])->name('donantes.export.pdf');
+
+
 // routes/web.php
 
 Route::get('/', function () {
