@@ -7,8 +7,11 @@ use App\Models\Agenda;
 use App\Models\Diferimento;
 use App\Models\Donacion;
 use App\Models\Donante;
+use App\Models\Usuario;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Laravel\Pail\ValueObjects\Origin\Console;
 
 
 class DonanteController extends Controller
@@ -119,6 +122,10 @@ class DonanteController extends Controller
     public function update($id)
     {
         $datosDonante = request()->except(['_token', '_method']);
+
+        // Asignar el usuario actual como modificador
+        $datosDonante['modificado_por'] = session('usuario_id');
+
         Donante::where('id', '=', $id)->update($datosDonante);
         $donante = Donante::findOrFail($id);
         return redirect()->route('donante.edit', $id)->with('mensaje', 'Donante actualizado correctamente');
@@ -165,6 +172,14 @@ class DonanteController extends Controller
         $donante->donaciones_count = Donacion::where('id_donante', $id)->count();
         $donante->diferimientos_count = Diferimento::where('id_donante', $id)->count();
 
+        $usuario = null;
+
+        if ($donante->modificado_por === null) {
+            $donante->modificado_por = 'N/A';
+        } else {
+            $usuario = Usuario::findOrFail($donante->modificado_por);
+        }
+
         // Devuelve los datos del donante como JSON
         return response()->json([
             'id' => $donante->id,
@@ -180,6 +195,8 @@ class DonanteController extends Controller
             'observaciones' => $donante->observaciones,
             'donaciones_count' => $donante->donaciones_count, // Conteo de donaciones
             'diferimientos_count' => $donante->diferimientos_count, // Conteo de diferimientos
+            'modificado_por' => $usuario ? $usuario->nombre . ' ' . $usuario->apellido : 'N/A', // Nombre del usuario que modificó
+
         ]);
     }
 }
