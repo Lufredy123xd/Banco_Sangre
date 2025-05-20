@@ -9,7 +9,7 @@
         
         <div>
             <label for="user_name">Usuario</label>
-            <input type="text" name="user_name" required>
+            <input type="text" name="user_name" value="{{ $UserName }}" readonly>
 
             <label for="new_password">Nueva Contraseña</label>
             <input type="password" name="new_password" required>
@@ -18,6 +18,7 @@
             <input type="password" name="new_password_confirmation" required>
         </div>
         <button class="btn">Restablecer contraseña</button>
+        <a href="{{ route('donante.index') }}" class="reset-btn">Cancelar</a>
     </form>
 
     @if ($errors->any())

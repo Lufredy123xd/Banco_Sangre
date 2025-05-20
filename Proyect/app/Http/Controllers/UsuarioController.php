@@ -44,17 +44,18 @@ class UsuarioController extends Controller
 
     public function showResetForm()
     {
-        return view('auth.reset-password'); // crea esta vista
+        $UserName = session('user_name');
+        return view('auth.reset-password',compact('UserName')); // crea esta vista
     }
 
     public function resetPassword(Request $request)
     {
+        
         $request->validate([
-            'user_name' => 'required|string|exists:usuarios,user_name',
             'new_password' => 'required|string|min:6|max:50|confirmed',
         ]);
 
-        $usuario = Usuario::where('user_name', $request->user_name)->first();
+        $usuario = session('user_name');
         $usuario->password = Hash::make($request->new_password);
         $usuario->save();
 

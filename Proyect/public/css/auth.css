@@ -83,3 +83,13 @@ a
 {
     color:white;
 }
+.reset-btn
+{
+    background: white;
+    color: rgb(0, 0, 0);
+    margin: 20px;
+    border-radius: 50px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
