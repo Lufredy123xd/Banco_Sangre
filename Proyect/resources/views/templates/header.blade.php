@@ -4,10 +4,14 @@
             <img src="{{ asset ('imgs/dropdown.png')}}" alt="" class="header__dropdown-icon">
         </button>
         <nav class="header__nav">
+
+        <a href="{{ route('password.form') }}" class="header__nav-link">Olvide mi contraseña</a>
             @if (session('tipo_usuario') === 'Administrador')
-                <a href="{{ route('usuario.index') }}" class="header__nav-link">Inicio</a>
+            <a href="{{ route('usuario.index') }}" class="header__nav-link">Inicio</a>
+            
+
             @else
-                <a href="{{ route('donante.index') }}" class="header__nav-link">Inicio</a>
+            <a href="{{ route('donante.index') }}" class="header__nav-link">Inicio</a>
             @endif
             <a href="{{ route('logout') }}" class="header__nav-link">Cerrar sesión</a>
         </nav>
@@ -19,6 +23,6 @@
 
     <div class="header__right">
         <h2 class="header__right-title">{{ session('user_name', 'Usuario') }}</h2>
-      <a href="#"><img src="{{ asset ('imgs/user_icon.png')}}" alt=""></a>
+        <a href="#"><img src="{{ asset ('imgs/user_icon.png')}}" alt=""></a>
     </div>
 </header>
