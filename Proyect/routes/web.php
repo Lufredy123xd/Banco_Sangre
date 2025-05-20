@@ -13,8 +13,8 @@ Route::get('/donantes/export/pdf', [DonanteController::class, 'exportPdf'])->nam
 // routes/web.php
 
 Route::get('/', function () {
-    return view('/login');
-});
+    return view('login');
+})->name('login');
 
 // POST: procesa el formulario
 Route::post('/login', [UsuarioController::class, 'authenticate'])->name('login.authenticate');

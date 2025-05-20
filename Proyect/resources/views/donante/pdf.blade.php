@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Lista de Donantes</title>
     <style>
@@ -9,7 +10,8 @@
             font-size: 12px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #000;
             padding: 5px;
             text-align: left;
@@ -24,6 +26,7 @@
         }
     </style>
 </head>
+
 <body>
     <h2>Lista de Donantes</h2>
     <table>
@@ -48,26 +51,33 @@
                     <td>{{ $donante->cedula }}</td>
                     <td>{{ $donante->ABO }}</td>
                     <td>{{ $donante->RH }}</td>
-                    
+
                     <!-- Última Fecha Donación -->
                     <td>
                         @php
-                            $ultimaDonacion = $donaciones->where('id_donante', $donante->id)->sortByDesc('fecha')->first();
+                            $ultimaDonacion = $donaciones
+                                ->where('id_donante', $donante->id)
+                                ->sortByDesc('fecha')
+                                ->first();
                         @endphp
-                        @if($ultimaDonacion)
+                        @if ($ultimaDonacion)
                             {{ $ultimaDonacion->fecha }}
                         @else
                             No disponible
                         @endif
                     </td>
-                    
+
                     <td>{{ $donante->sexo }}</td>
                     <td>{{ $donante->estado }}</td>
 
                     <!-- Mostrar las donaciones -->
                     <td>
-                        @foreach ($donaciones->where('id_donante', $donante->id) as $donacion)
-                            <p>Fecha: {{ $donacion->fecha }} | Tipo: {{ $donacion->clase_donacion }} | Reacciones adversas: {{ $donacion->reacciones_adversas ? 'Sí' : 'No' }}</p>
+                        @foreach ($donaciones->where('id_donante', $donante->id)->sortByDesc('fecha')->take(2) as $donacion)
+                            <p>
+                                Fecha: {{ $donacion->fecha }} |
+                                Tipo: {{ $donacion->clase_donacion }} |
+                                Reacciones adversas: {{ $donacion->reacciones_adversas ? 'Sí' : 'No' }}
+                            </p>
                         @endforeach
                     </td>
                 </tr>
@@ -75,4 +85,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

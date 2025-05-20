@@ -149,6 +149,8 @@
                     <p><strong>Observaciones:</strong> <span id="detalleObservaciones"></span></p>
                     <p><strong>Cantidad de Donaciones:</strong> <span id="detalleDonaciones"></span></p>
                     <p><strong>Cantidad de Diferimientos:</strong> <span id="detalleDiferimientos"></span></p>
+                    <p><strong>Modificado por:</strong> <span id="detalleModificadoPor"></span></p>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -262,6 +264,10 @@
                         'Sin observaciones';
                     document.getElementById('detalleDonaciones').textContent = data.donaciones_count || 0;
                     document.getElementById('detalleDiferimientos').textContent = data.diferimientos_count || 0;
+
+                    
+                    document.getElementById('detalleModificadoPor').textContent = data.modificado_por || 'N/A';
+
 
                     // Muestra el modal
                     const modal = new bootstrap.Modal(document.getElementById('verMasModal'));

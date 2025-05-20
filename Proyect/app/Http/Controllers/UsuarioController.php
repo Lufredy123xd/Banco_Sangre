@@ -55,6 +55,8 @@ class UsuarioController extends Controller
 
         $usuario = Usuario::where('user_name', $request->user_name)->first();
 
+        
+
         if ($usuario && Hash::check($request->password, $usuario->password)) {
             // Validar estado activo
             if (strtolower($usuario->estado) !== 'activo') {
@@ -90,9 +92,6 @@ class UsuarioController extends Controller
         $data = $request->except('_token'); // Elimina el _token del array de datos
 
         $data['password'] = Hash::make($data['password']);
-
-
-        dump($data); // Para depurar y ver los datos que se están guardando
 
         Usuario::create($data);
 
