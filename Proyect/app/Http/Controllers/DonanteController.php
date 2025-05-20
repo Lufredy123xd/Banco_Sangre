@@ -173,7 +173,7 @@ class DonanteController extends Controller
             'cedula' => $donante->cedula,
             'sexo' => $donante->sexo,
             'telefono' => $donante->telefono,
-            'fecha_nacimiento' => $donante->fecha_nacimiento,
+            'fecha_nacimiento' => \Carbon\Carbon::parse($donante->fecha_nacimiento)->format('d/m/Y'),
             'ABO' => $donante->ABO,
             'RH' => $donante->RH,
             'estado' => $donante->estado,

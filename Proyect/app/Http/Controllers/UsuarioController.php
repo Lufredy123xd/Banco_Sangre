@@ -120,8 +120,14 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
 
         $data = $request->except('_token'); // Elimina el _token del array de datos
-        $data['password'] = Hash::make($data['password']);
-
+        
+        if ($data['password'] == null) {
+            $data['password'] = $usuario->password; // Mantiene la contraseña actual si no se proporciona una nueva
+        } else {
+            $data['password'] = Hash::make($data['password']);
+        }
+        
+    
 
         $usuario->update($data);
 

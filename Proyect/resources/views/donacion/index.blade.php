@@ -1,18 +1,19 @@
-{{-- filepath: resources/views/donacion/index.blade.php --}}
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Donaciones</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
+@extends('layouts.app')
+@section('content')
     <div class="container mt-5">
         <h1 class="mb-4">Lista de Donaciones</h1>
-        <table class="table table-striped table-bordered">
+
+        <!-- Filtro por rango de fechas -->
+        <div class="mb-3">
+            <label for="filtroFecha" class="form-label">Filtrar por:</label>
+            <select id="filtroFecha" class="form-select" style="width:auto;display:inline-block;">
+                <option value="todas">Todas</option>
+                <option value="hoy">Hoy</option>
+                <option value="semana">Esta semana</option>
+            </select>
+        </div>
+
+        <table class="table table-striped table-bordered" id="tablaDonaciones">
             <thead class="table-dark">
                 <tr>
                     <th>#</th>
@@ -27,7 +28,7 @@
                     <tr>
                         <td>{{ $donacion->id }}</td>
                         <td>{{ $donacion->donante->nombre }} {{ $donacion->donante->apellido }}</td>
-                        <td>{{ $donacion->fecha }}</td>
+                        <td class="fecha-donacion">{{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}</td>
                         <td>{{ $donacion->clase_donacion }}</td>
                         <td>
                             <div class="d-flex gap-2">
@@ -43,9 +44,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-end">
-            <a href="{{ route('donacion.create') }}" class="btn btn-primary">Registrar Donación</a>
-        </div>
+        
     </div>
 
     @if (session('mensaje'))
@@ -54,7 +53,38 @@
         </div>
     @endif
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+    document.getElementById('filtroFecha').addEventListener('change', function() {
+        const filtro = this.value;
+        const filas = document.querySelectorAll('#tablaDonaciones tbody tr');
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0);
 
-</html>
+        // Calcular el primer y último día de la semana (lunes a domingo)
+        const primerDiaSemana = new Date(hoy);
+        primerDiaSemana.setDate(hoy.getDate() - hoy.getDay());
+        primerDiaSemana.setHours(0,0,0,0);
+        const ultimoDiaSemana = new Date(primerDiaSemana);
+        ultimoDiaSemana.setDate(primerDiaSemana.getDate() + 6);
+        ultimoDiaSemana.setHours(23,59,59,999);
+
+        filas.forEach(fila => {
+            const fechaTexto = fila.querySelector('.fecha-donacion').textContent.trim();
+            // Convertir 'dd/mm/aaaa' a Date correctamente
+            const partes = fechaTexto.split('/');
+            const fecha = new Date(partes[2], partes[1] - 1, partes[0]);
+            fecha.setHours(0,0,0,0);
+
+            let mostrar = true;
+
+            if (filtro === 'hoy') {
+                mostrar = fecha.getTime() === hoy.getTime();
+            } else if (filtro === 'semana') {
+                mostrar = fecha >= primerDiaSemana && fecha <= ultimoDiaSemana;
+            }
+
+            fila.style.display = mostrar ? '' : 'none';
+        });
+    });
+</script>
+@endsection

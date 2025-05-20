@@ -53,6 +53,12 @@
                 </select>
             </div>
         </div>
+        <!-- Botón registrar -->
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ route('donantes.export.pdf') }}" class="btn btn-danger mb-3">Exportar en PDF</a>
+            <a href="{{ route('donante.create') }}" class="btn btn-success mb-3">Registrar donante</a>
+        </div>
 
         <!-- Tabla de donantes -->
         <div class="row">
@@ -83,7 +89,7 @@
                                     <td class="abo">{{ $donante->ABO }}</td>
                                     <td class="rh">{{ $donante->RH }}</td>
                                     <td class="fecha">
-                                        {{ $donante->donaciones->sortByDesc('fecha')->first() ? $donante->donaciones->sortByDesc('fecha')->first()->fecha : 'Sin donaciones' }}
+                                        {{ $donante->donaciones->sortByDesc('fecha')->first() ? \Carbon\Carbon::parse($donante->donaciones->sortByDesc('fecha')->first()->fecha)->format('d/m/Y') : 'Sin donaciones' }}
                                     </td>
                                     <td class="sexo">{{ $donante->sexo }}</td>
                                     <td>
@@ -114,23 +120,12 @@
                         </tbody>
                     </table>
 
-                    <a href="{{ route('donantes.export.pdf') }}" class="btn btn-danger mb-3">
-                        Exportar en PDF
-                    </a>
+
                 </div>
             </div>
         </div>
 
-        <!-- Botón registrar -->
-        <div class="row mt-4">
-            <div class="col-12 text-end d-flex justify-content-around">
-                @if (session('tipo_usuario') === 'Administrador')
-                    <a href="{{ route('donante.index') }}" class="btn btn-dark">Gestionar donante</a>
-                    <a href="{{ route('usuario.index') }}" class="btn btn-secondary">Gestionar usuario</a>
-                @endif
-                <a href="{{ route('donante.create') }}" class="btn btn-success">Registrar donante</a>
-            </div>
-        </div>
+
     </div>
 
     <!-- Modal para Ver Más -->
