@@ -10,21 +10,38 @@ use App\Models\Donante;
 use App\Enums\TipoSerologia;
 use App\Enums\TipoAnticuerposIrregulares;
 use App\Enums\TipoDonacion;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class DonacionController extends Controller
 {
+
+
+    public function exportPdf()
+    {
+        // Obtener todas las donaciones, sin necesidad de "eager loading" en este caso
+        $donaciones = Donacion::all();
+        $donantes = Donante::all();
+
+        // Generar el PDF con la vista 'donante.pdf' y pasar los donantes y las donaciones
+        $pdf = Pdf::loadView('donacion.pdf', compact( 'donaciones', 'donantes'));
+
+        // Descargar el archivo PDF
+        return $pdf->download('donaciones.pdf');
+    }
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
         $datos['donaciones'] = Donacion::with('donante')->paginate(10);
 
-        
+
 
         return view('donacion.index', $datos);
     }
@@ -35,15 +52,15 @@ class DonacionController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
-{
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+    {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
         $donanteId = $request->query('donante_id'); // Captura el parámetro donante_id
         $donante = Donante::findOrFail($donanteId); // Busca el donante por ID
 
-    return view('donacion.create', compact('donante'));
-}
+        return view('donacion.create', compact('donante'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -85,7 +102,7 @@ class DonacionController extends Controller
      */
     public function edit($id)
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
+        if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
         $donacion = Donacion::findOrFail($id);
@@ -135,7 +152,7 @@ class DonacionController extends Controller
 
         $diferimientos = Diferimento::where('id_donante', $id)
             ->get();
-        
+
         $donaciones = Donacion::where('id_donante', $id)
             ->get();
 

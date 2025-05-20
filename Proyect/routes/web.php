@@ -8,7 +8,7 @@ use App\Http\Controllers\DonanteController;
 use App\Http\Controllers\UsuarioController;
 
 Route::get('/donantes/export/pdf', [DonanteController::class, 'exportPdf'])->name('donantes.export.pdf');
-
+Route::get('/donaciones/export/pdf', [DonacionController::class, 'exportPdf'])->name('donaciones.export.pdf');
 
 // routes/web.php
 

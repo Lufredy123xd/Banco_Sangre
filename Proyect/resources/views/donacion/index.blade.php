@@ -11,6 +11,10 @@
                 <option value="hoy">Hoy</option>
                 <option value="semana">Esta semana</option>
             </select>
+            <div class="d-flex gap-2 justify-content-end">
+                <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-danger mb-3">Exportar en PDF</a>
+            </div>
+
         </div>
 
         <table class="table table-striped table-bordered" id="tablaDonaciones">
@@ -32,11 +36,13 @@
                         <td>{{ $donacion->clase_donacion }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ url('/donacion/' . $donacion->id . '/edit') }}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="{{ url('/donacion/' . $donacion->id . '/edit') }}"
+                                    class="btn btn-warning btn-sm">Editar</a>
                                 <form action="{{ url('/donacion/' . $donacion->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta donación?');">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta donación?');">Eliminar</button>
                                 </form>
                             </div>
                         </td>
@@ -44,7 +50,7 @@
                 @endforeach
             </tbody>
         </table>
-        
+
     </div>
 
     @if (session('mensaje'))
@@ -54,37 +60,37 @@
     @endif
 
     <script>
-    document.getElementById('filtroFecha').addEventListener('change', function() {
-        const filtro = this.value;
-        const filas = document.querySelectorAll('#tablaDonaciones tbody tr');
-        const hoy = new Date();
-        hoy.setHours(0,0,0,0);
+        document.getElementById('filtroFecha').addEventListener('change', function() {
+            const filtro = this.value;
+            const filas = document.querySelectorAll('#tablaDonaciones tbody tr');
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
 
-        // Calcular el primer y último día de la semana (lunes a domingo)
-        const primerDiaSemana = new Date(hoy);
-        primerDiaSemana.setDate(hoy.getDate() - hoy.getDay());
-        primerDiaSemana.setHours(0,0,0,0);
-        const ultimoDiaSemana = new Date(primerDiaSemana);
-        ultimoDiaSemana.setDate(primerDiaSemana.getDate() + 6);
-        ultimoDiaSemana.setHours(23,59,59,999);
+            // Calcular el primer y último día de la semana (lunes a domingo)
+            const primerDiaSemana = new Date(hoy);
+            primerDiaSemana.setDate(hoy.getDate() - hoy.getDay());
+            primerDiaSemana.setHours(0, 0, 0, 0);
+            const ultimoDiaSemana = new Date(primerDiaSemana);
+            ultimoDiaSemana.setDate(primerDiaSemana.getDate() + 6);
+            ultimoDiaSemana.setHours(23, 59, 59, 999);
 
-        filas.forEach(fila => {
-            const fechaTexto = fila.querySelector('.fecha-donacion').textContent.trim();
-            // Convertir 'dd/mm/aaaa' a Date correctamente
-            const partes = fechaTexto.split('/');
-            const fecha = new Date(partes[2], partes[1] - 1, partes[0]);
-            fecha.setHours(0,0,0,0);
+            filas.forEach(fila => {
+                const fechaTexto = fila.querySelector('.fecha-donacion').textContent.trim();
+                // Convertir 'dd/mm/aaaa' a Date correctamente
+                const partes = fechaTexto.split('/');
+                const fecha = new Date(partes[2], partes[1] - 1, partes[0]);
+                fecha.setHours(0, 0, 0, 0);
 
-            let mostrar = true;
+                let mostrar = true;
 
-            if (filtro === 'hoy') {
-                mostrar = fecha.getTime() === hoy.getTime();
-            } else if (filtro === 'semana') {
-                mostrar = fecha >= primerDiaSemana && fecha <= ultimoDiaSemana;
-            }
+                if (filtro === 'hoy') {
+                    mostrar = fecha.getTime() === hoy.getTime();
+                } else if (filtro === 'semana') {
+                    mostrar = fecha >= primerDiaSemana && fecha <= ultimoDiaSemana;
+                }
 
-            fila.style.display = mostrar ? '' : 'none';
+                fila.style.display = mostrar ? '' : 'none';
+            });
         });
-    });
-</script>
+    </script>
 @endsection
