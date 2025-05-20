@@ -21,6 +21,12 @@ Route::post('/login', [UsuarioController::class, 'authenticate'])->name('login.a
 
 Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
+// Mostrar formulario de recuperación
+Route::get('/reset', [UsuarioController::class, 'showResetForm'])->name('password.form');
+
+// Procesar solicitud de nueva contraseña
+Route::post('/reset', [UsuarioController::class, 'resetPassword'])->name('password.reset');
+
 //route administrador
 Route::resource('administrador', UsuarioController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])

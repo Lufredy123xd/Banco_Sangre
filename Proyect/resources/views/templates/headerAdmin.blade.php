@@ -3,6 +3,11 @@
         <button class="header__dropdown-button">
             <img src="{{ asset('imgs/dropdown.png') }}" alt="" class="header__dropdown-icon">
         </button>
+
+           <nav class="header__nav">
+            <a href="" class="header__nav-link">Olvide mi contraseña</a>
+        </nav>
+
         <nav class="header__nav">
             <a href="" class="header__nav-link">Cerrar sesion</a>
         </nav>

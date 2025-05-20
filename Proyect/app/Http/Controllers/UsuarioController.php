@@ -37,9 +37,28 @@ class UsuarioController extends Controller
     {
         // Eliminar todos los datos de la sesión
         session()->flush();
-    
+
         // Redirigir a la página de inicio de sesión
         return redirect('/')->with('mensaje', 'Sesión cerrada correctamente.');
+    }
+
+    public function showResetForm()
+    {
+        return view('auth.reset-password'); // crea esta vista
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'user_name' => 'required|string|exists:usuarios,user_name',
+            'new_password' => 'required|string|min:6|max:50|confirmed',
+        ]);
+
+        $usuario = Usuario::where('user_name', $request->user_name)->first();
+        $usuario->password = Hash::make($request->new_password);
+        $usuario->save();
+
+        return redirect()->route('donante.index')->with('mensaje', 'Contraseña actualizada correctamente. Inicie sesión con su nueva contraseña.');
     }
 
     /**

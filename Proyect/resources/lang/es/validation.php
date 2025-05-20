@@ -140,6 +140,8 @@ return [
         'RH' => 'factor RH',
         'estado' => 'estado',
         'observaciones' => 'observaciones',
+
+    
     ],
 
     'custom' => [
