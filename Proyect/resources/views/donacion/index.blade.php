@@ -13,8 +13,8 @@
             </select>
         </div>
         <div class="d-flex gap-2 justify-content-left">
-                <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-danger mb-3">Exportar en PDF</a>
-            </div>
+            <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-danger mb-3">Exportar en PDF</a>
+        </div>
 
         <table class="table table-striped table-bordered" id="tablaDonaciones">
             <thead class="table-dark">
@@ -49,6 +49,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div>
+            {{ $donaciones->links('pagination::bootstrap-5') }}
+        </div>
 
     </div>
 

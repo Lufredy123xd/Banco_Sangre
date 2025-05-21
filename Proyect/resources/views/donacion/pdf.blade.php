@@ -4,10 +4,25 @@
 <head>
     <title>Lista de Donantes</title>
     <style>
+        @page {
+            margin: 20mm;
+        }
+
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            /* fuente compatible con DomPDF */
+            font-size: 12px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            page-break-inside: auto;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
         }
 
         th,
@@ -15,6 +30,7 @@
             border: 1px solid #000;
             padding: 5px;
             text-align: left;
+            vertical-align: top;
         }
 
         th {
@@ -25,10 +41,11 @@
             text-align: center;
         }
     </style>
+
 </head>
 
 <body>
-    <h2>Lista de Donantes</h2>
+    <h2>Lista de Donaciones</h2>
     <table>
         <thead>
             <tr>
@@ -43,12 +60,9 @@
                     $donacionesDonante = $donaciones->where('id_donante', $donante->id);
                 @endphp
                 @if ($donacionesDonante->count())
-                    @foreach ($donacionesDonante as $i => $donacion)
+                    @foreach ($donacionesDonante as $donacion)
                         <tr>
-                            @if ($i === 0)
-                                <td rowspan="{{ $donacionesDonante->count() }}">{{ $donante->nombre }}
-                                    {{ $donante->apellido }}</td>
-                            @endif
+                            <td>{{ $donante->nombre }} {{ $donante->apellido }}</td>
                             <td>{{ $donacion->fecha }}</td>
                             <td>{{ $donacion->clase_donacion }}</td>
                         </tr>
@@ -56,10 +70,12 @@
                 @else
                     <tr>
                         <td>{{ $donante->nombre }} {{ $donante->apellido }}</td>
-                        <td colspan="2" style="text-align:center;">Sin donaciones</td>
+                        <td>Sin fecha</td>
+                        <td>Sin donaciones</td>
                     </tr>
                 @endif
             @endforeach
+
         </tbody>
     </table>
 </body>
