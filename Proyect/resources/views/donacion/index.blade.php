@@ -11,11 +11,10 @@
                 <option value="hoy">Hoy</option>
                 <option value="semana">Esta semana</option>
             </select>
-            <div class="d-flex gap-2 justify-content-end">
+        </div>
+        <div class="d-flex gap-2 justify-content-left">
                 <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-danger mb-3">Exportar en PDF</a>
             </div>
-
-        </div>
 
         <table class="table table-striped table-bordered" id="tablaDonaciones">
             <thead class="table-dark">

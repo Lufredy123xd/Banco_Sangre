@@ -4,6 +4,8 @@
             <img src="{{ asset ('imgs/dropdown.png')}}" alt="" class="header__dropdown-icon">
         </button>
         <nav class="header__nav">
+
+        
             @if (session('tipo_usuario') === 'Administrador')
                 <a href="{{ route('usuario.index') }}" class="header__nav-link">Gestionar Usuarios</a>
                 <a href="{{ route('donante.index') }}" class="header__nav-link">Gestionar Donantes</a>
@@ -11,6 +13,7 @@
             @else
                 <a href="{{ route('donante.index') }}" class="header__nav-link">Gestionar Donantes</a>
             @endif
+            <a href="{{ route('donacion.index') }}" class="header__nav-link">Listar Donaciones</a>
             <a href="{{ route('password.form') }}" class="header__nav-link">Cambiar contraseña</a>
             <a href="{{ route('logout') }}" class="header__nav-link">Cerrar sesión</a>
         </nav>
