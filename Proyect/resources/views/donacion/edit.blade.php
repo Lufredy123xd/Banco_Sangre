@@ -18,13 +18,15 @@
 
             <div class="mb-3">
                 <label for="id_donante" class="form-label">Donante:</label>
-                <select id="id_donante" name="id_donante" class="form-control" required>
-                    @foreach ($donantes as $donante)
-                        <option value="{{ $donante->id }}" {{ $donante->id == $donacion->id_donante ? 'selected' : '' }}>
-                            {{ $donante->nombre }} {{ $donante->apellido }}
-                        </option>
-                    @endforeach
-                </select>
+
+                @php
+                    $donante = App\Models\Donante::find($donacion->id_donante);
+                    $nombreCompleto = $donante->nombre . ' ' . $donante->apellido;
+                @endphp
+
+                <input type="hidden" id="id_donante" name="id_donante" value="{{ $donacion->id_donante }}">
+                <input value="{{ $nombreCompleto }}" class="form-control" required>
+                    
             </div>
 
             <div class="mb-3">

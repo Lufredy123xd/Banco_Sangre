@@ -85,11 +85,14 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div>
+                        {{ $usuarios->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </div>
 
-        
+
     </div>
 
     <script>
@@ -111,7 +114,8 @@
                     const cedula = row.querySelector(".cedula").textContent.trim().toLowerCase();
 
                     const matchesEstado = !estadoValue || estado === estadoValue;
-                    const matchesSearch = !searchValue || nombre.includes(searchValue) || apellido.includes(searchValue) || cedula.includes(searchValue);
+                    const matchesSearch = !searchValue || nombre.includes(searchValue) || apellido.includes(
+                        searchValue) || cedula.includes(searchValue);
 
                     if (matchesEstado && matchesSearch) {
                         row.style.display = "table-row";

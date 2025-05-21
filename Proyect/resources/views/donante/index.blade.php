@@ -120,7 +120,9 @@
                         </tbody>
                     </table>
 
-
+                    <div>
+                        {{ $donantes->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,7 +267,7 @@
                     document.getElementById('detalleDonaciones').textContent = data.donaciones_count || 0;
                     document.getElementById('detalleDiferimientos').textContent = data.diferimientos_count || 0;
 
-                    
+
                     document.getElementById('detalleModificadoPor').textContent = data.modificado_por || 'N/A';
 
 

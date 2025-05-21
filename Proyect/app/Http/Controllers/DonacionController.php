@@ -39,6 +39,7 @@ class DonacionController extends Controller
         if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
+        
         $datos['donaciones'] = Donacion::with('donante')->paginate(10);
 
 
