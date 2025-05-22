@@ -21,6 +21,9 @@ Route::post('/login', [UsuarioController::class, 'authenticate'])->name('login.a
 
 Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
+
+Route::middleware(['autenticado'])->group(function () {
+
 // Mostrar formulario de recuperación
 Route::get('/reset', [UsuarioController::class, 'showResetForm'])->name('password.form');
 
@@ -111,16 +114,4 @@ Route::resource('usuario', UsuarioController::class)
     // Ruta para mostrar detalles de donaciones
     Route::get('/donante/{id}', [DonanteController::class, 'getDetails']);
     
-/*
-    Route::get('/registrar', function () {
-        return view('registrar');
-    })->name('registrar');
-
-    Route::get('/modificar', function () {
-        return view('modificar');
-    })->name('modificar');
-
-    Route::get('/detalle', function () {
-        return view('detalle');
-    })->name('detalle');
-*/
+});

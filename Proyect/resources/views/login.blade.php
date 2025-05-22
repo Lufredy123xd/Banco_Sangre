@@ -27,7 +27,10 @@
                 maxlength="50" 
                 title="La contraseña debe tener al menos 6 caracteres y un máximo de 50.">
         </div>
-        <a href="{{ route('password.form') }}">¿Has olvidado la contraseña?</a>
+        
+        <!--
+        <a href="{{ route('password.form') }}">¿Has olvidado la contraseña?</a>-->
+        
         <button id="btn__ingresar" class="btn">Ingresar</button>
     </form>
     @if ($errors->any())
