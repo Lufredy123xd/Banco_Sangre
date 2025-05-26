@@ -46,7 +46,7 @@
         </div>
 
         <div class="text-center mt-4">
-            <a href="{{ route('donacion.index') }}" class="btn btn-primary">Volver a Donaciones</a>
+            <a href="{{ route('donante.index') }}" class="btn btn-primary">Volver a donantes</a>
         </div>
     </div>
 
