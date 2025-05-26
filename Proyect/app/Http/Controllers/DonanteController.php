@@ -199,4 +199,16 @@ class DonanteController extends Controller
 
         ]);
     }
+
+    public function notificar($id)
+    {
+        $donante = Donante::findOrFail($id);
+        $donante->estado = 'Notificado';
+        $donante->modificado_por = session('usuario_id');
+        $donante->ultima_modificacion = now();
+        $donante->save();
+
+        return redirect()->route('gestionarDonante', ['id' => $id])
+            ->with('mensaje', 'Donante notificado correctamente');
+    }
 }

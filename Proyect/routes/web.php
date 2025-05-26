@@ -128,5 +128,8 @@ Route::resource('usuario', UsuarioController::class)
     ]);
     // Ruta para mostrar detalles de donaciones
     Route::get('/donante/{id}', [DonanteController::class, 'getDetails']);
+    // Ruta para notificar a un donante
+    Route::post('/donante/notificar/{id}', [DonanteController::class, 'notificar'])
+    ->name('donante.notificar');
     
 });

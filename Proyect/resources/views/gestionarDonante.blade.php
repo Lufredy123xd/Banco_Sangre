@@ -74,9 +74,21 @@
                     @endif
                 @endif
 
-                @if (strtolower($donante->estado) === strtolower('Disponible'))
+                @if (strtolower($donante->estado) === strtolower('Notificado') || strtolower($donante->estado) === strtolower('Disponible'))
                     <a href="{{ route('agenda.create', ['donante_id' => $donante->id]) }}" class="btn btn-primary">Agendar
                         donante</a>
+                @endif
+                 @if (strtolower($donante->estado) === strtolower('Disponible'))
+                    <!-- Botón de Enviar Recordatorio por WhatsApp con icono -->
+                    <form action="{{ route('donante.notificar', ['id' => $donante->id]) }}" method="POST"
+                        style="display: inline;">
+                        @csrf
+                        <button type="submit"
+                            onclick="window.open('https://wa.me/598{{ $donante->telefono }}?text=Hola%20{{ urlencode($donante->nombre) }}%20{{ urlencode($donante->apellido) }}%2C%20te%20informamos%20que%20ya%20estás%20apto%20para%20donar%20sangre.%20¡Esperamos%20tu%20contribución%21', '_blank')"
+                            class="btn btn-success">
+                            <i class="fab fa-whatsapp"></i> Enviar Recordatorio
+                        </button>
+                    </form>
                 @endif
             </div>
             <div class="row mt-4">
