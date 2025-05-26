@@ -32,6 +32,8 @@ Route::get('/reset', [UsuarioController::class, 'showResetForm'])->name('passwor
 // Procesar solicitud de nueva contraseña
 Route::post('/reset', [UsuarioController::class, 'resetPassword'])->name('password.reset');
 
+Route::patch('/notificacion/visto/{id}', [NotificacionController::class, 'marcarComoVisto'])->name('notificacion.visto');
+
 Route::resource('notificacion', NotificacionController::class)
     ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->names([

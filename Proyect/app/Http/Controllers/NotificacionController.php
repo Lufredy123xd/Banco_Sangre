@@ -17,6 +17,16 @@ class NotificacionController extends Controller
         return view('notificacion.index', $datos);
     }
 
+    public function marcarComoVisto($id)
+    {
+        $notificacion = Notificacion::findOrFail($id);
+        $notificacion->estado = 'Visto';
+        $notificacion->save();
+
+        return redirect()->back()->with('success', 'Notificación marcada como vista.');
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
