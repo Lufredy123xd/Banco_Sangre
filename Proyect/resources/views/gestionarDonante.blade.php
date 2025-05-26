@@ -2,11 +2,7 @@
 
 @section('content')
     <div class="content__main">
-        @if (session('mensaje'))
-            <div class="alert alert-success">
-                {{ session('mensaje') }}
-            </div>
-        @endif
+
         <div class="content__main">
 
             <div class="table-responsive">
@@ -31,7 +27,8 @@
                             <td>{{ $donante->cedula }}</td>
                             <td>{{ $donante->ABO }}</td>
                             <td>{{ $donante->RH }}</td>
-                            <td>{{ $donante->donaciones->sortByDesc('fecha')->first() ? \Carbon\Carbon::parse($donante->donaciones->sortByDesc('fecha')->first()->fecha)->format('d/m/Y') : 'Sin donaciones' }}</td>
+                            <td>{{ $donante->donaciones->sortByDesc('fecha')->first() ? \Carbon\Carbon::parse($donante->donaciones->sortByDesc('fecha')->first()->fecha)->format('d/m/Y') : 'Sin donaciones' }}
+                            </td>
                             <td>
                                 @if (is_null($agenda))
                                     N/D
@@ -47,6 +44,11 @@
                     </tbody>
                 </table>
 
+                @if (session('mensaje'))
+                    <div class="alert alert-success">
+                        {{ session('mensaje') }}
+                    </div>
+                @endif
 
             </div>
             <div class="d-flex justify-content-center flex-wrap gap-3 mt-1">
@@ -101,7 +103,8 @@
                                             <td>{{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}</td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                                    data-bs-target="#modalDonacion" data-fecha="{{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}"
+                                                    data-bs-target="#modalDonacion"
+                                                    data-fecha="{{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}"
                                                     data-serologia="{{ $donacion->serologia }}"
                                                     data-anticuerpos_irregulares="{{ $donacion->anticuerpos_irregulares }}"
                                                     data-clase_donacion="{{ $donacion->clase_donacion }}">
@@ -135,7 +138,8 @@
                                 @else
                                     @foreach ($diferimientos as $diferimiento)
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($diferimiento->fecha_diferimiento)->format('d/m/Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($diferimiento->fecha_diferimiento)->format('d/m/Y') }}
+                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
                                                     data-bs-target="#modalDiferimiento"
