@@ -2,7 +2,7 @@
 
 @section('auth')
 <header class="header">
-    <img src="{{ asset('imgs/vaccine_icon.png') }}" alt="">
+    <img src="{{ asset('imgs/bloodbank-icon.svg') }}" alt="">
 
     <form action="{{ route('password.reset') }}" method="POST" class="form">
         @csrf
