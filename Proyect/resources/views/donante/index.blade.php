@@ -61,6 +61,13 @@
         </div>
 
         <!-- Tabla de donantes -->
+
+        @if (session('mensaje'))
+            <div class="alert alert-success">
+                {{ session('mensaje') }}
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">

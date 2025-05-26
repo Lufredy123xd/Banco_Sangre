@@ -45,21 +45,31 @@ class UsuarioController extends Controller
     public function showResetForm()
     {
         $UserName = session('user_name');
-        return view('auth.reset-password',compact('UserName')); // crea esta vista
+        return view('auth.reset-password', compact('UserName')); // crea esta vista
     }
 
     public function resetPassword(Request $request)
     {
-        
         $request->validate([
             'new_password' => 'required|string|min:6|max:50|confirmed',
         ]);
 
-        $usuario = session('user_name');
+        // Recuperar nombre de usuario desde la sesión
+        $nombreUsuario = session('user_name');
+
+        // Buscar el usuario en la base de datos
+        $usuario = Usuario::where('user_name', $nombreUsuario)->first();
+
+        // Verificar que se encontró el usuario
+        if (!$usuario) {
+            return redirect()->back()->withErrors(['Usuario no encontrado.']);
+        }
+
+        // Cambiar contraseña
         $usuario->password = Hash::make($request->new_password);
         $usuario->save();
 
-        return redirect()->route('donante.index')->with('mensaje', 'Contraseña actualizada correctamente. Inicie sesión con su nueva contraseña.');
+        return redirect()->route('donante.index')->with('mensaje', 'Contraseña actualizada correctamente.');
     }
 
     /**
@@ -75,7 +85,7 @@ class UsuarioController extends Controller
 
         $usuario = Usuario::where('user_name', $request->user_name)->first();
 
-        
+
 
         if ($usuario && Hash::check($request->password, $usuario->password)) {
             // Validar estado activo
@@ -139,14 +149,14 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
 
         $data = $request->except('_token'); // Elimina el _token del array de datos
-        
+
         if ($data['password'] == null) {
             $data['password'] = $usuario->password; // Mantiene la contraseña actual si no se proporciona una nueva
         } else {
             $data['password'] = Hash::make($data['password']);
         }
-        
-    
+
+
 
         $usuario->update($data);
 

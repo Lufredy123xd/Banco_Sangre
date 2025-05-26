@@ -17,7 +17,7 @@
             <label for="new_password_confirmation">Confirmar Contraseña</label>
             <input type="password" name="new_password_confirmation" required>
         </div>
-        <button class="btn">Restablecer contraseña</button>
+        <button class="btn">Cambiar contraseña</button>
         <a href="{{ route('donante.index') }}" class="reset-btn">Cancelar</a>
     </form>
 
