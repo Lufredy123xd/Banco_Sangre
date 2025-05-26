@@ -3,6 +3,7 @@
 use App\Http\Controllers\DonacionController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\DiferimentoController;
+use App\Http\Controllers\NotificacionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonanteController;
 use App\Http\Controllers\UsuarioController;
@@ -24,11 +25,23 @@ Route::get('/logout', [UsuarioController::class, 'logout'])->name('logout');
 
 Route::middleware(['autenticado'])->group(function () {
 
+
 // Mostrar formulario de recuperación
 Route::get('/reset', [UsuarioController::class, 'showResetForm'])->name('password.form');
 
 // Procesar solicitud de nueva contraseña
 Route::post('/reset', [UsuarioController::class, 'resetPassword'])->name('password.reset');
+
+Route::resource('notificacion', NotificacionController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->names([
+        'index' => 'notificacion.index',
+        'create' => 'notificacion.create',
+        'store' => 'notificacion.store',
+        'edit' => 'notificacion.edit',
+        'update' => 'notificacion.update',
+        'destroy' => 'notificacion.destroy',
+    ]);
 
 //route administrador
 Route::resource('administrador', UsuarioController::class)
