@@ -8,8 +8,14 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('schedule:donantes-para-actualizar', function () {
-    $this->call('notificar:donantes-para-actualizar');
-})->purpose('Notifica donantes en estado ParaActualizar');
+// Comando programado genérico para notificar donantes por estado(s)
+Artisan::command('schedule:donantes-por-estado', function () {
+    // Puedes cambiar los estados aquí según lo que necesites notificar automáticamente
+    $this->call('notificar:donantes-por-estado', [
+        '--estados' => ['Para Actualizar', 'Pendiente'] // Ejemplo: notifica ambos estados
+    ]);
+})->purpose('Notifica donantes en los estados definidos');
 
-app(Schedule::class)->command('notificar:donantes-para-actualizar')->everyFiveMinutes();
+app(Schedule::class)
+    ->command('notificar:donantes-por-estado', ['--estados' => ['Para Actualizar', 'Pendiente']])
+    ->everyFiveMinutes();
