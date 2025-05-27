@@ -18,4 +18,4 @@ Artisan::command('schedule:donantes-por-estado', function () {
 
 app(Schedule::class)
     ->command('notificar:donantes-por-estado', ['--estados' => ['Para Actualizar', 'Pendiente']])
-    ->everyFiveMinutes();
+    ->everyMinute();
