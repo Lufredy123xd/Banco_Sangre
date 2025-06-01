@@ -72,7 +72,24 @@
             <div class="col-12">
                 <div class="table-responsive">
                     <table id="donantesTable" class="table table-striped">
-                        @include('donante.partials.tabla', ['donantes' => $donantes])
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cédula</th>
+                                <th>ABO</th>
+                                <th>RH</th>
+                                <th>Última Donación</th>
+                                <th>Sexo</th>
+                                <th>Editar</th>
+                                <th>Ver más</th>
+                                <th>Gestionar</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @include('donante.partials.tabla', ['donantes' => $donantes])
+                        </tbody>
                     </table>
 
                     <div id="paginacionDonantes">
@@ -82,167 +99,155 @@
             </div>
         </div>
 
-    </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const buscar = document.getElementById('txt_buscar');
+                const estado = document.getElementById('cmb__estado');
+                const sexo = document.getElementById('cmb__sexo');
+                const abo = document.getElementById('cmb__abo');
+                const rh = document.getElementById('cmb__rh');
+                const ordenarPor = document.getElementById('cmb__ordenar');
+                const orden = document.getElementById('cmb__orden');
+                const tabla = document.querySelector('#donantesTable tbody');
+                const paginacion = document.getElementById('paginacionDonantes');
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const buscar = document.getElementById('txt_buscar');
-            const estado = document.getElementById('cmb__estado');
-            const sexo = document.getElementById('cmb__sexo');
-            const abo = document.getElementById('cmb__abo');
-            const rh = document.getElementById('cmb__rh');
-            const ordenarPor = document.getElementById('cmb__ordenar');
-            const orden = document.getElementById('cmb__orden');
-            const tabla = document.querySelector('#donantesTable tbody');
-            const paginacion = document.getElementById('paginacionDonantes');
+                function fetchDonantes(url = null) {
+                    let fetchUrl;
 
-            function fetchDonantes(url = null) {
-                let fetchUrl;
+                    if (url) {
+                        fetchUrl = url;
+                    } else {
+                        const params = new URLSearchParams({
+                            search: buscar.value,
+                            estado: estado.value,
+                            sexo: sexo.value,
+                            abo: abo.value,
+                            rh: rh.value,
+                            ordenar_por: ordenarPor.value,
+                            orden: orden.value,
+                        });
+                        fetchUrl = `/donantes/buscar?${params.toString()}`;
+                    }
 
-                if (url) {
-                    // Si se pasa URL, usarla tal cual (para paginación)
-                    fetchUrl = url;
-                } else {
-                    // Si no, armar URL con filtros
-                    const params = new URLSearchParams({
-                        search: buscar.value,
-                        estado: estado.value,
-                        sexo: sexo.value,
-                        abo: abo.value,
-                        rh: rh.value,
-                        ordenar_por: ordenarPor.value,
-                        orden: orden.value,
-                    });
-
-                    fetchUrl = `/donantes/buscar?${params.toString()}`;
+                    fetch(fetchUrl, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            tabla.innerHTML = data.tabla;
+                            paginacion.innerHTML = data.paginacion;
+                            asignarEventosPaginacion();
+                        })
+                        .catch(err => console.error('Error al buscar donantes:', err));
                 }
 
-                fetch(fetchUrl, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        tabla.innerHTML = data.tabla;
-                        paginacion.innerHTML = data.paginacion;
-
-                        asignarEventosPaginacion();
-                    })
-                    .catch(err => console.error('Error al buscar donantes:', err));
-            }
-
-            function asignarEventosPaginacion() {
-                const links = paginacion.querySelectorAll('a.page-link');
-
-                // Evitar múltiples listeners clonando los links
-                links.forEach(link => {
-                    link.replaceWith(link.cloneNode(true));
-                });
-
-                // Asignar evento click a los links nuevos
-                paginacion.querySelectorAll('a.page-link').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        fetchDonantes(this.href);
+                function asignarEventosPaginacion() {
+                    const links = paginacion.querySelectorAll('a.page-link');
+                    links.forEach(link => {
+                        link.onclick = function(e) {
+                            e.preventDefault();
+                            fetchDonantes(this.href);
+                        };
                     });
+                }
+
+                // Asignar eventos para que al cambiar los filtros haga la búsqueda
+                [buscar, estado, sexo, abo, rh, ordenarPor, orden].forEach(el => {
+                    el.addEventListener('input', () => fetchDonantes());
+                    el.addEventListener('change', () => fetchDonantes());
                 });
-            }
 
-            // Listeners para inputs y selects, actualizan tabla y paginación
-            [buscar, estado, sexo, abo, rh, ordenarPor, orden].forEach(el => {
-                el.addEventListener('input', () => fetchDonantes());
-                el.addEventListener('change', () => fetchDonantes());
+                // Carga inicial con AJAX para asignar eventos y mostrar datos correctos
+                fetchDonantes();
             });
-
-            // Inicializar eventos paginación al cargar la página
-            asignarEventosPaginacion();
-        });
-    </script>
+        </script>
 
 
-    <!-- Modal para Ver Más -->
-    <div class="modal fade" id="verMasModal" tabindex="-1" aria-labelledby="verMasModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="verMasModalLabel">Detalles del Donante</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <!-- Modal para Ver Más -->
+        <div class="modal fade" id="verMasModal" tabindex="-1" aria-labelledby="verMasModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verMasModalLabel">Detalles del Donante</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Nombre:</strong> <span id="detalleNombre"></span></p>
+                        <p><strong>Apellido:</strong> <span id="detalleApellido"></span></p>
+                        <p><strong>Cédula:</strong> <span id="detalleCedula"></span></p>
+                        <p><strong>Sexo:</strong> <span id="detalleSexo"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="detalleTelefono"></span></p>
+                        <p><strong>Fecha de Nacimiento:</strong> <span id="detalleFechaNacimiento"></span></p>
+                        <p><strong>Grupo Sanguíneo (ABO):</strong> <span id="detalleABO"></span></p>
+                        <p><strong>Factor RH:</strong> <span id="detalleRH"></span></p>
+                        <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
+                        <p><strong>Observaciones:</strong> <span id="detalleObservaciones"></span></p>
+                        <p><strong>Cantidad de Donaciones:</strong> <span id="detalleDonaciones"></span></p>
+                        <p><strong>Cantidad de Diferimientos:</strong> <span id="detalleDiferimientos"></span></p>
+                        <p><strong>Modificado por:</strong> <span id="detalleModificadoPor"></span></p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p><strong>Nombre:</strong> <span id="detalleNombre"></span></p>
-                    <p><strong>Apellido:</strong> <span id="detalleApellido"></span></p>
-                    <p><strong>Cédula:</strong> <span id="detalleCedula"></span></p>
-                    <p><strong>Sexo:</strong> <span id="detalleSexo"></span></p>
-                    <p><strong>Teléfono:</strong> <span id="detalleTelefono"></span></p>
-                    <p><strong>Fecha de Nacimiento:</strong> <span id="detalleFechaNacimiento"></span></p>
-                    <p><strong>Grupo Sanguíneo (ABO):</strong> <span id="detalleABO"></span></p>
-                    <p><strong>Factor RH:</strong> <span id="detalleRH"></span></p>
-                    <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
-                    <p><strong>Observaciones:</strong> <span id="detalleObservaciones"></span></p>
-                    <p><strong>Cantidad de Donaciones:</strong> <span id="detalleDonaciones"></span></p>
-                    <p><strong>Cantidad de Diferimientos:</strong> <span id="detalleDiferimientos"></span></p>
-                    <p><strong>Modificado por:</strong> <span id="detalleModificadoPor"></span></p>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
+
+
             </div>
-
-
-
         </div>
-    </div>
 
-    <script>
-        function verMas(donanteId) {
-            // Realiza una solicitud AJAX para obtener los detalles del donante
-            fetch(`/donante/${donanteId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Rellena los datos en el modal
-                    document.getElementById('detalleNombre').textContent = data.nombre;
-                    document.getElementById('detalleApellido').textContent = data.apellido;
-                    document.getElementById('detalleCedula').textContent = data.cedula;
-                    document.getElementById('detalleSexo').textContent = data.sexo === 'M' ? 'Masculino' : 'Femenino';
-                    document.getElementById('detalleTelefono').textContent = data.telefono;
-                    document.getElementById('detalleFechaNacimiento').textContent = data.fecha_nacimiento;
-                    document.getElementById('detalleABO').textContent = data.ABO;
-                    document.getElementById('detalleRH').textContent = data.RH;
-                    document.getElementById('detalleEstado').textContent = data.estado;
-                    document.getElementById('detalleObservaciones').textContent = data.observaciones ||
-                        'Sin observaciones';
-                    document.getElementById('detalleDonaciones').textContent = data.donaciones_count || 0;
-                    document.getElementById('detalleDiferimientos').textContent = data.diferimientos_count || 0;
-
-
-                    document.getElementById('detalleModificadoPor').textContent = data.modificado_por || 'N/A';
+        <script>
+            function verMas(donanteId) {
+                // Realiza una solicitud AJAX para obtener los detalles del donante
+                fetch(`/donante/${donanteId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Rellena los datos en el modal
+                        document.getElementById('detalleNombre').textContent = data.nombre;
+                        document.getElementById('detalleApellido').textContent = data.apellido;
+                        document.getElementById('detalleCedula').textContent = data.cedula;
+                        document.getElementById('detalleSexo').textContent = data.sexo === 'M' ? 'Masculino' : 'Femenino';
+                        document.getElementById('detalleTelefono').textContent = data.telefono;
+                        document.getElementById('detalleFechaNacimiento').textContent = data.fecha_nacimiento;
+                        document.getElementById('detalleABO').textContent = data.ABO;
+                        document.getElementById('detalleRH').textContent = data.RH;
+                        document.getElementById('detalleEstado').textContent = data.estado;
+                        document.getElementById('detalleObservaciones').textContent = data.observaciones ||
+                            'Sin observaciones';
+                        document.getElementById('detalleDonaciones').textContent = data.donaciones_count || 0;
+                        document.getElementById('detalleDiferimientos').textContent = data.diferimientos_count || 0;
 
 
-                    // Muestra el modal
-                    const modal = new bootstrap.Modal(document.getElementById('verMasModal'));
-                    modal.show();
-                })
-                .catch(error => {
-                    console.error('Error al obtener los detalles del donante:', error);
+                        document.getElementById('detalleModificadoPor').textContent = data.modificado_por || 'N/A';
+
+
+                        // Muestra el modal
+                        const modal = new bootstrap.Modal(document.getElementById('verMasModal'));
+                        modal.show();
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener los detalles del donante:', error);
+                    });
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const modalElement = document.getElementById('verMasModal');
+
+                modalElement.addEventListener('hidden.bs.modal', function() {
+                    // Forzar la eliminación del backdrop
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+
+                    // Asegúrate de que el body no tenga la clase 'modal-open'
+                    document.body.classList.remove('modal-open');
+                    document.body.style.overflow = ''; // Restablece el scroll
                 });
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const modalElement = document.getElementById('verMasModal');
-
-            modalElement.addEventListener('hidden.bs.modal', function() {
-                // Forzar la eliminación del backdrop
-                const backdrop = document.querySelector('.modal-backdrop');
-                if (backdrop) {
-                    backdrop.remove();
-                }
-
-                // Asegúrate de que el body no tenga la clase 'modal-open'
-                document.body.classList.remove('modal-open');
-                document.body.style.overflow = ''; // Restablece el scroll
             });
-        });
-    </script>
-@endsection
+        </script>
+    @endsection

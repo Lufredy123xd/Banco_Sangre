@@ -52,7 +52,7 @@ class DonanteController extends Controller
 
     public function buscar(Request $request)
     {
-        $query = Donante::query();
+        $query = Donante::with('donaciones');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -86,13 +86,18 @@ class DonanteController extends Controller
         }
 
         if ($request->filled('ordenar_por')) {
-            $query->orderBy($request->ordenar_por, $request->orden ?? 'asc');
+            if ($request->ordenar_por === 'fecha') {
+                $query->leftJoin('donaciones', 'donantes.id', '=', 'donaciones.donante_id')
+                    ->select('donantes.*')
+                    ->groupBy('donantes.id')
+                    ->orderByRaw('MAX(donaciones.fecha) ' . ($request->orden ?? 'asc'));
+            } else {
+                $query->orderBy($request->ordenar_por, $request->orden ?? 'asc');
+            }
         }
 
-        // IMPORTANTE: appends para mantener filtros en links paginación
         $donantes = $query->paginate(10)->appends($request->all());
 
-        // Retornamos JSON con tabla y paginación
         $tabla = view('donante.partials.tabla', compact('donantes'))->render();
         $paginacion = view('donante.partials.paginacion', compact('donantes'))->render();
 
@@ -101,6 +106,8 @@ class DonanteController extends Controller
             'paginacion' => $paginacion,
         ]);
     }
+
+
 
 
 
