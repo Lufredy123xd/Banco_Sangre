@@ -71,71 +71,95 @@
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">
-                    <table id="donantesTable" class="table table-striped table-bordered">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>CI</th>
-                                <th>ABO</th>
-                                <th>RH</th>
-                                <th>Última Fecha Donación</th>
-                                <th>Sexo</th>
-                                <th>Editar</th>
-                                <th>Ver más</th>
-                                <th>Gestionar donación</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($donantes as $donante)
-                                <tr class="fila-usuario">
-                                    <td class="nombre">{{ $donante->nombre }}</td>
-                                    <td class="apellido">{{ $donante->apellido }}</td>
-                                    <td class="cedula">{{ $donante->cedula }}</td>
-                                    <td class="abo">{{ $donante->ABO }}</td>
-                                    <td class="rh">{{ $donante->RH }}</td>
-                                    <td class="fecha">
-                                        {{ $donante->donaciones->sortByDesc('fecha')->first() ? \Carbon\Carbon::parse($donante->donaciones->sortByDesc('fecha')->first()->fecha)->format('d/m/Y') : 'Sin donaciones' }}
-                                    </td>
-                                    <td class="sexo">{{ $donante->sexo }}</td>
-                                    <td>
-                                        <a href="{{ url('/donante/' . $donante->id . '/edit') }}"
-                                            class="btn btn-sm btn-primary">
-                                            <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar"
-                                                style="width: 20px; height: 20px;">
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info" onclick="verMas({{ $donante->id }})"
-                                            data-bs-toggle="modal" data-bs-target="#verMasModal">
-                                            <img src="{{ asset('imgs/ver_mas_icon.png') }}" alt="Ver más"
-                                                style="width: 20px; height: 20px;">
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('gestionarDonante', ['id' => $donante->id]) }}"
-                                            class="btn btn-sm btn-warning">
-                                            <img src="{{ asset('imgs/gestionar_icon.png') }}" alt="Gestionar"
-                                                style="width: 20px; height: 20px;">
-                                        </a>
-                                    </td>
-                                    <td class="estado {{ strtolower(str_replace(' ', '-', $donante->estado)) }}">
-                                        {{ $donante->estado }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                    <table id="donantesTable" class="table table-striped">
+                        @include('donante.partials.tabla', ['donantes' => $donantes])
                     </table>
 
-                    <div>
-                        {{ $donantes->links('pagination::bootstrap-5') }}
+                    <div id="paginacionDonantes">
+                        @include('donante.partials.paginacion', ['donantes' => $donantes])
                     </div>
                 </div>
             </div>
         </div>
 
-
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buscar = document.getElementById('txt_buscar');
+            const estado = document.getElementById('cmb__estado');
+            const sexo = document.getElementById('cmb__sexo');
+            const abo = document.getElementById('cmb__abo');
+            const rh = document.getElementById('cmb__rh');
+            const ordenarPor = document.getElementById('cmb__ordenar');
+            const orden = document.getElementById('cmb__orden');
+            const tabla = document.querySelector('#donantesTable tbody');
+            const paginacion = document.getElementById('paginacionDonantes');
+
+            function fetchDonantes(url = null) {
+                let fetchUrl;
+
+                if (url) {
+                    // Si se pasa URL, usarla tal cual (para paginación)
+                    fetchUrl = url;
+                } else {
+                    // Si no, armar URL con filtros
+                    const params = new URLSearchParams({
+                        search: buscar.value,
+                        estado: estado.value,
+                        sexo: sexo.value,
+                        abo: abo.value,
+                        rh: rh.value,
+                        ordenar_por: ordenarPor.value,
+                        orden: orden.value,
+                    });
+
+                    fetchUrl = `/donantes/buscar?${params.toString()}`;
+                }
+
+                fetch(fetchUrl, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        tabla.innerHTML = data.tabla;
+                        paginacion.innerHTML = data.paginacion;
+
+                        asignarEventosPaginacion();
+                    })
+                    .catch(err => console.error('Error al buscar donantes:', err));
+            }
+
+            function asignarEventosPaginacion() {
+                const links = paginacion.querySelectorAll('a.page-link');
+
+                // Evitar múltiples listeners clonando los links
+                links.forEach(link => {
+                    link.replaceWith(link.cloneNode(true));
+                });
+
+                // Asignar evento click a los links nuevos
+                paginacion.querySelectorAll('a.page-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        fetchDonantes(this.href);
+                    });
+                });
+            }
+
+            // Listeners para inputs y selects, actualizan tabla y paginación
+            [buscar, estado, sexo, abo, rh, ordenarPor, orden].forEach(el => {
+                el.addEventListener('input', () => fetchDonantes());
+                el.addEventListener('change', () => fetchDonantes());
+            });
+
+            // Inicializar eventos paginación al cargar la página
+            asignarEventosPaginacion();
+        });
+    </script>
+
 
     <!-- Modal para Ver Más -->
     <div class="modal fade" id="verMasModal" tabindex="-1" aria-labelledby="verMasModalLabel" aria-hidden="true">
@@ -170,88 +194,6 @@
 
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const estadoFilter = document.getElementById("cmb__estado");
-            const sexoFilter = document.getElementById("cmb__sexo");
-            const aboFilter = document.getElementById("cmb__abo");
-            const rhFilter = document.getElementById("cmb__rh");
-            const searchInput = document.getElementById("txt_buscar");
-            const ordenarSelect = document.getElementById("cmb__ordenar");
-            const ordenSelect = document.getElementById("cmb__orden");
-            const rows = document.querySelectorAll(".fila-usuario");
-
-            function filterTable() {
-                const estadoValue = estadoFilter.value.toLowerCase().trim();
-                const sexoValue = sexoFilter.value.toLowerCase().trim();
-                const aboValue = aboFilter.value.toLowerCase().trim();
-                const rhValue = rhFilter.value.toLowerCase().trim();
-                const searchValue = searchInput.value.toLowerCase().trim();
-
-                rows.forEach(row => {
-                    const estado = row.querySelector(".estado").textContent.toLowerCase().trim();
-                    const sexo = row.querySelector(".sexo").textContent.toLowerCase().trim();
-                    const abo = row.querySelector(".abo").textContent.toLowerCase().trim();
-                    const rh = row.querySelector(".rh").textContent.toLowerCase().trim();
-                    const nombre = row.querySelector(".nombre").textContent.toLowerCase().trim();
-                    const apellido = row.querySelector(".apellido").textContent.toLowerCase().trim();
-                    const cedula = row.querySelector(".cedula").textContent.toLowerCase().trim();
-
-                    const matchesEstado = !estadoValue || estado === estadoValue;
-                    const matchesSexo = !sexoValue || sexo === sexoValue;
-                    const matchesAbo = !aboValue || abo === aboValue;
-                    const matchesRh = !rhValue || rh === rhValue;
-                    const matchesSearch = !searchValue || nombre.includes(searchValue) || apellido.includes(
-                        searchValue) || cedula.includes(searchValue);
-
-                    if (matchesEstado && matchesSexo && matchesAbo && matchesRh && matchesSearch) {
-                        row.style.display = "table-row";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            }
-
-            function sortTable() {
-                const column = ordenarSelect.value;
-                const ascending = ordenSelect.value === "asc";
-                const tbody = document.querySelector("#donantesTable tbody");
-                const rowsArray = Array.from(rows);
-
-                rowsArray.sort((a, b) => {
-                    const aText = a.querySelector(`.${column}`).textContent.trim().toLowerCase();
-                    const bText = b.querySelector(`.${column}`).textContent.trim().toLowerCase();
-
-                    if (column === "fecha") {
-                        const parseDate = (text) => {
-                            const date = new Date(text);
-                            return isNaN(date) ? new Date(0) : date;
-                        };
-
-                        const aDate = parseDate(aText);
-                        const bDate = parseDate(bText);
-
-                        return ascending ? aDate - bDate : bDate - aDate;
-                    }
-
-                    return ascending ?
-                        aText.localeCompare(bText) :
-                        bText.localeCompare(aText);
-                });
-
-                rowsArray.forEach(row => tbody.appendChild(row));
-            }
-
-            estadoFilter.addEventListener("change", filterTable);
-            sexoFilter.addEventListener("change", filterTable);
-            aboFilter.addEventListener("change", filterTable);
-            rhFilter.addEventListener("change", filterTable);
-            searchInput.addEventListener("input", filterTable);
-            ordenarSelect.addEventListener("change", sortTable);
-            ordenSelect.addEventListener("change", sortTable);
-        });
-    </script>
 
     <script>
         function verMas(donanteId) {

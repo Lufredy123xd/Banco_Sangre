@@ -50,6 +50,61 @@ class DonanteController extends Controller
         return view('donante.index', $datos, compact('donaciones'));
     }
 
+    public function buscar(Request $request)
+    {
+        $query = Donante::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $palabras = explode(' ', $search);
+
+            $query->where(function ($q) use ($palabras) {
+                foreach ($palabras as $palabra) {
+                    $q->where(function ($q2) use ($palabra) {
+                        $q2->where('nombre', 'like', "%{$palabra}%")
+                            ->orWhere('apellido', 'like', "%{$palabra}%")
+                            ->orWhere('cedula', 'like', "%{$palabra}%");
+                    });
+                }
+            });
+        }
+
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        if ($request->filled('sexo')) {
+            $query->where('sexo', $request->sexo);
+        }
+
+        if ($request->filled('abo')) {
+            $query->where('ABO', $request->abo);
+        }
+
+        if ($request->filled('rh')) {
+            $query->where('RH', $request->rh);
+        }
+
+        if ($request->filled('ordenar_por')) {
+            $query->orderBy($request->ordenar_por, $request->orden ?? 'asc');
+        }
+
+        // IMPORTANTE: appends para mantener filtros en links paginación
+        $donantes = $query->paginate(10)->appends($request->all());
+
+        // Retornamos JSON con tabla y paginación
+        $tabla = view('donante.partials.tabla', compact('donantes'))->render();
+        $paginacion = view('donante.partials.paginacion', compact('donantes'))->render();
+
+        return response()->json([
+            'tabla' => $tabla,
+            'paginacion' => $paginacion,
+        ]);
+    }
+
+
+
+
     public function home()
     {
         if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {

@@ -4,7 +4,7 @@
         <!-- Filtros y búsqueda -->
         <div class="row mb-4">
             <div class="col-md-6 col-lg-4 mb-3">
-                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control" placeholder="Ingrese dato a buscar">
+                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control" placeholder="Buscar por nombre, apellido, ci">
             </div>
             <div class="col-md-6 col-lg-3 mb-3">
                 <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
@@ -96,57 +96,36 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const estadoFilter = document.getElementById("cmb__estado");
-            const searchInput = document.getElementById("txt_buscar");
-            const ordenarSelect = document.getElementById("cmb__ordenar");
-            const ordenSelect = document.getElementById("cmb__orden");
-            const rows = document.querySelectorAll(".fila-usuario");
+        document.addEventListener('DOMContentLoaded', function() {
+            const txtBuscar = document.getElementById('txt_buscar');
+            const cmbOrdenar = document.getElementById('cmb__ordenar');
+            const cmbOrden = document.getElementById('cmb__orden');
+            const cmbEstado = document.getElementById('cmb__estado');
+            const tableBody = document.querySelector('#usuariosTable tbody');
 
-            function filterTable() {
-                const estadoValue = estadoFilter ? estadoFilter.value.trim().toLowerCase() : "";
-                const searchValue = searchInput.value.trim().toLowerCase();
-
-                rows.forEach(row => {
-                    const estado = row.querySelector(".estado").textContent.trim().toLowerCase();
-                    const nombre = row.querySelector(".nombre").textContent.trim().toLowerCase();
-                    const apellido = row.querySelector(".apellido").textContent.trim().toLowerCase();
-                    const cedula = row.querySelector(".cedula").textContent.trim().toLowerCase();
-
-                    const matchesEstado = !estadoValue || estado === estadoValue;
-                    const matchesSearch = !searchValue || nombre.includes(searchValue) || apellido.includes(
-                        searchValue) || cedula.includes(searchValue);
-
-                    if (matchesEstado && matchesSearch) {
-                        row.style.display = "table-row";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            }
-
-            function sortTable() {
-                const column = ordenarSelect.value;
-                if (!column) return;
-                const ascending = ordenSelect.value === "asc";
-                const tbody = document.querySelector("#usuariosTable tbody");
-                const rowsArray = Array.from(rows);
-
-                rowsArray.sort((a, b) => {
-                    const aText = a.querySelector(`.${column}`).textContent.trim().toLowerCase();
-                    const bText = b.querySelector(`.${column}`).textContent.trim().toLowerCase();
-                    return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            function fetchUsuarios() {
+                const params = new URLSearchParams({
+                    busqueda_general: txtBuscar.value,
+                    ordenar_por: cmbOrdenar.value,
+                    orden: cmbOrden.value,
+                    estado: cmbEstado.value
                 });
 
-                rowsArray.forEach(row => tbody.appendChild(row));
+                fetch(`/usuarios/buscar?${params}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        tableBody.innerHTML = html;
+                    })
+                    .catch(err => console.error('Error en la búsqueda:', err));
             }
 
-            if (estadoFilter) estadoFilter.addEventListener("change", filterTable);
-            searchInput.addEventListener("input", filterTable);
-            ordenarSelect.addEventListener("change", sortTable);
-            ordenSelect.addEventListener("change", sortTable);
+            txtBuscar.addEventListener('input', fetchUsuarios);
+            cmbOrdenar.addEventListener('change', fetchUsuarios);
+            cmbOrden.addEventListener('change', fetchUsuarios);
+            cmbEstado.addEventListener('change', fetchUsuarios);
         });
     </script>
+
 
     <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
         <div class="modal-dialog">

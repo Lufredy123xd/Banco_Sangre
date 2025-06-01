@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Donacion;
+use App\Models\Donacion;
 
 
 class Donante extends Model

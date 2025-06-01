@@ -21,6 +21,40 @@ class UsuarioController extends Controller
     }
 
 
+    public function buscar(Request $request)
+    {
+        $query = Usuario::query();
+
+        // Búsqueda general (nombre, apellido, nombre completo, cédula)
+        if ($request->filled('busqueda_general')) {
+            $buscar = $request->busqueda_general;
+
+            $query->where(function ($q) use ($buscar) {
+                $q->where('nombre', 'like', "%{$buscar}%")
+                    ->orWhere('apellido', 'like', "%{$buscar}%")
+                    ->orWhere('cedula', 'like', "%{$buscar}%")
+                    ->orWhereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$buscar}%"]);
+            });
+        }
+
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Ordenar por columna
+        if ($request->filled('ordenar_por') && in_array($request->ordenar_por, ['nombre', 'apellido', 'tipo_usuario'])) {
+            $orden = $request->orden === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($request->ordenar_por, $orden);
+        }
+
+        $usuarios = $query->paginate(10);
+
+        return view('usuario.partials.table', compact('usuarios'))->render();
+    }
+
+
+
     public function create()
     {
         if (session('tipo_usuario') !== 'Administrador') {
