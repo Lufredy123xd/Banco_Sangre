@@ -72,7 +72,7 @@
             <div class="col-12">
                 <div class="table-responsive">
                     <table id="donantesTable" class="table table-striped">
-                        <thead>
+                        <thead class="table-dark">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Apellido</th>

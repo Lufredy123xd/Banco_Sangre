@@ -39,7 +39,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">
-                    <table id="usuariosTable" class="table table-striped table-bordered">
+                    <table id="usuariosTable" class="table table-striped">
                         <thead class="table-dark">
                             <tr>
                                 <th>Nombre</th>
