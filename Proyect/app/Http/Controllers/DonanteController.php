@@ -8,10 +8,9 @@ use App\Models\Diferimento;
 use App\Models\Donacion;
 use App\Models\Donante;
 use App\Models\Usuario;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Laravel\Pail\ValueObjects\Origin\Console;
+use Illuminate\Support\Facades\Log;
 
 
 class DonanteController extends Controller
@@ -50,13 +49,21 @@ class DonanteController extends Controller
         return view('donante.index', $datos, compact('donaciones'));
     }
 
+
     public function buscar(Request $request)
     {
+        // Iniciar la consulta básica
         $query = Donante::with('donaciones');
+
+        // Log para verificar los parámetros recibidos
+        Log::info('Parámetros recibidos', $request->all());
 
         if ($request->filled('search')) {
             $search = $request->search;
             $palabras = explode(' ', $search);
+
+            // Log para ver las palabras de búsqueda
+            Log::info('Palabras de búsqueda', $palabras);
 
             $query->where(function ($q) use ($palabras) {
                 foreach ($palabras as $palabra) {
@@ -64,6 +71,13 @@ class DonanteController extends Controller
                         $q2->where('nombre', 'like', "%{$palabra}%")
                             ->orWhere('apellido', 'like', "%{$palabra}%")
                             ->orWhere('cedula', 'like', "%{$palabra}%");
+
+                        // Log para ver las condiciones dentro del loop
+                        Log::info('Condiciones de búsqueda para palabra: ' . $palabra, [
+                            'nombre' => "%{$palabra}%",
+                            'apellido' => "%{$palabra}%",
+                            'cedula' => "%{$palabra}%",
+                        ]);
                     });
                 }
             });
@@ -71,41 +85,64 @@ class DonanteController extends Controller
 
         if ($request->filled('estado')) {
             $query->where('estado', $request->estado);
+            Log::info('Filtro por estado', ['estado' => $request->estado]);
         }
 
         if ($request->filled('sexo')) {
             $query->where('sexo', $request->sexo);
+            Log::info('Filtro por sexo', ['sexo' => $request->sexo]);
         }
 
         if ($request->filled('abo')) {
             $query->where('ABO', $request->abo);
+            Log::info('Filtro por ABO', ['ABO' => $request->abo]);
         }
 
         if ($request->filled('rh')) {
             $query->where('RH', $request->rh);
+            Log::info('Filtro por RH', ['RH' => $request->rh]);
         }
 
         if ($request->filled('ordenar_por')) {
+            Log::info('Ordenar por', ['campo' => $request->ordenar_por, 'orden' => $request->orden ?? 'asc']);
+
             if ($request->ordenar_por === 'fecha') {
-                $query->leftJoin('donaciones', 'donantes.id', '=', 'donaciones.donante_id')
+                $query->leftJoin('donacions', 'donantes.id', '=', 'donacions.id_donante')
                     ->select('donantes.*')
                     ->groupBy('donantes.id')
-                    ->orderByRaw('MAX(donaciones.fecha) ' . ($request->orden ?? 'asc'));
+                    ->orderByRaw('MAX(donacions.fecha) IS NULL ASC') // Primero los que tienen donación
+                    ->orderByRaw('MAX(donacions.fecha) ' . ($request->orden ?? 'asc'));
+
+                // Log para verificar el join y el orden
+                Log::info('Consulta de ordenar por fecha');
             } else {
                 $query->orderBy($request->ordenar_por, $request->orden ?? 'asc');
+
+                // Log para verificar el orden
+                Log::info('Consulta de ordenar general', ['campo' => $request->ordenar_por, 'orden' => $request->orden ?? 'asc']);
             }
         }
 
+        // Mostrar la consulta generada
+        Log::info('Consulta final generada', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
+
+        // Realizar la paginación
         $donantes = $query->paginate(10)->appends($request->all());
 
+        // Ver las vistas parciales de la tabla y paginación
         $tabla = view('donante.partials.tabla', compact('donantes'))->render();
         $paginacion = view('donante.partials.paginacion', compact('donantes'))->render();
 
+        // Log para verificar los resultados finales
+        Log::info('Resultados de la consulta', ['donantes_count' => $donantes->count()]);
+
+        // Retornar la respuesta en formato JSON
         return response()->json([
             'tabla' => $tabla,
             'paginacion' => $paginacion,
         ]);
     }
+
 
 
 

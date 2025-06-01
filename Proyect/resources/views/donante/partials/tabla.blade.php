@@ -5,11 +5,13 @@
         <td class="cedula">{{ $donante->cedula }}</td>
         <td class="abo">{{ $donante->ABO }}</td>
         <td class="rh">{{ $donante->RH }}</td>
+        @php
+            $ultimaDonacion = $donante->donaciones->filter(fn($d) => $d->fecha)->sortByDesc('fecha')->first();
+        @endphp
         <td class="fecha">
-            {{ $donante->donaciones->sortByDesc('fecha')->first()
-                ? \Carbon\Carbon::parse($donante->donaciones->sortByDesc('fecha')->first()->fecha)->format('d/m/Y')
-                : 'Sin donaciones' }}
+            {{ $ultimaDonacion ? \Carbon\Carbon::parse($ultimaDonacion->fecha)->format('d/m/Y') : 'Sin donaciones' }}
         </td>
+
         <td class="sexo">{{ $donante->sexo }}</td>
         <td>
             <a href="{{ url('/donante/' . $donante->id . '/edit') }}" class="btn btn-sm btn-primary">
