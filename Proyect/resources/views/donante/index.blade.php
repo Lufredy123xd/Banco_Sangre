@@ -55,10 +55,45 @@
         </div>
         <!-- Botón registrar -->
 
-        <div class="d-flex justify-content-between">
-            <a href="{{ route('donantes.export.pdf') }}" class="btn btn-danger mb-3">Exportar en PDF</a>
-            <a href="{{ route('donante.create') }}" class="btn btn-success mb-3">Registrar donante</a>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div class="btn-group">
+                        <a href="{{ route('donantes.export.pdf') }}" class="btn btn-outline-danger">
+                            <i class="bi bi-file-earmark-pdf"></i> Exportar en PDF
+                        </a>
+                        <button id="btnImportarDonantes" class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-upload"></i> Importar CSV
+                        </button>
+                    </div>
+                    <a href="{{ route('donante.create') }}" class="btn btn-success">
+                        <i class="bi bi-person-plus"></i> Registrar donante
+                    </a>
+                </div>
+            </div>
         </div>
+
+        <div id="importarCsvDiv" style="display: none;">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form action="{{ route('donante.importCsv') }}" method="POST" enctype="multipart/form-data"
+                        class="mb-3">
+                        @csrf
+                        <div class="input-group">
+                            <input type="file" name="csv_file" class="form-control" accept=".csv" required>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-cloud-arrow-up"></i> Importar CSV
+                            </button>
+                        </div>
+                    </form>
+                    <a href="{{ asset('archivos-csv/Formato para subir donantes.csv') }}" class="btn btn-outline-success"
+                        download="Formato_para_subir_donantes.csv">
+                        <i class="bi bi-download"></i> Descargar formato de donantes
+                    </a>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Tabla de donantes -->
 
@@ -92,12 +127,25 @@
                         </tbody>
                     </table>
 
+
                     <div id="paginacionDonantes">
                         @include('donante.partials.paginacion', ['donantes' => $donantes])
                     </div>
                 </div>
+
             </div>
         </div>
+
+        <script>
+            // Mostrar/ocultar el formulario de importar CSV
+            document.addEventListener('DOMContentLoaded', function() {
+                const btnImportar = document.getElementById('btnImportarDonantes');
+                const importarDiv = document.getElementById('importarCsvDiv');
+                btnImportar.addEventListener('click', function() {
+                    importarDiv.style.display = importarDiv.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {

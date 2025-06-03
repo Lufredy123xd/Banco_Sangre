@@ -4,7 +4,8 @@
         <!-- Filtros y búsqueda -->
         <div class="row mb-4">
             <div class="col-md-6 col-lg-4 mb-3">
-                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control" placeholder="Buscar por nombre, apellido, ci">
+                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control"
+                    placeholder="Buscar por nombre, apellido, ci">
             </div>
             <div class="col-md-6 col-lg-3 mb-3">
                 <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
@@ -30,11 +31,17 @@
             </div>
         </div>
         <!-- Botón registrar -->
-        <div class="row mt-4">
-            <div class="col-12 text-end d-flex justify-content-end">
-                <a href="{{ route('usuario.create') }}" class="btn btn-success">Registrar usuario</a>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h5 class="mb-0">Gestionar usuarios</h5>
+                    <a href="{{ route('usuario.create') }}" class="btn btn-success">
+                        <i class="bi bi-person-plus"></i> Registrar usuario
+                    </a>
+                </div>
             </div>
         </div>
+
         <!-- Tabla de usuarios -->
         <div class="row">
             <div class="col-12">

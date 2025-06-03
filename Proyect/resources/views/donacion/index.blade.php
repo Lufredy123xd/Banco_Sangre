@@ -4,19 +4,26 @@
     <div class="container-fluid py-4">
 
         <!-- Filtros -->
-        <div class="row mb-4">
-            <div class="col-md-4 mb-3">
-                <label for="filtroFecha" class="form-label">Filtrar por:</label>
-                <select id="filtroFecha" class="form-select">
-                    <option value="todas">Todas</option>
-                    <option value="hoy">Hoy</option>
-                    <option value="semana">Esta semana</option>
-                </select>
-            </div>
-            <div class="col-md-8 d-flex align-items-end justify-content-end">
-                <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-danger">Exportar en PDF</a>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="filtroFecha" class="form-label">Filtrar por:</label>
+                        <select id="filtroFecha" class="form-select">
+                            <option value="todas">Todas</option>
+                            <option value="hoy">Hoy</option>
+                            <option value="semana">Esta semana</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 text-md-end">
+                        <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-outline-danger">
+                            <i class="bi bi-file-earmark-pdf"></i> Exportar en PDF
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+
 
         <!-- Tabla -->
         <div class="row">
@@ -37,7 +44,8 @@
                                 <tr class="fila-donacion">
                                     <td>{{ $donacion->id }}</td>
                                     <td>{{ $donacion->donante->nombre }} {{ $donacion->donante->apellido }}</td>
-                                    <td class="fecha-donacion">{{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}</td>
+                                    <td class="fecha-donacion">
+                                        {{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}</td>
                                     <td>{{ $donacion->clase_donacion }}</td>
                                     <td>
                                         <div class="d-flex gap-2">
@@ -74,7 +82,7 @@
     </div>
 
     <script>
-        document.getElementById('filtroFecha').addEventListener('change', function () {
+        document.getElementById('filtroFecha').addEventListener('change', function() {
             const filtro = this.value;
             const filas = document.querySelectorAll('#tablaDonaciones tbody tr');
             const hoy = new Date();

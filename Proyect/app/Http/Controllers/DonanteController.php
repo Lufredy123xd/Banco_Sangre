@@ -31,6 +31,116 @@ class DonanteController extends Controller
         return $pdf->download('donantes.pdf');
     }
 
+    public function importCsv(Request $request)
+    {
+        Log::info('Inicio de importación de CSV de donantes.');
+
+        try {
+            $request->validate([
+                'csv_file' => 'required|file|mimes:csv,txt',
+            ]);
+
+            Log::info('Archivo CSV validado correctamente.');
+
+            $file = $request->file('csv_file');
+
+            if (($handle = fopen($file->getRealPath(), 'r')) !== false) {
+                Log::info('Archivo CSV abierto correctamente.');
+
+                $header = null;
+                $rowsImported = 0;
+                $lineNumber = 0;
+
+                while (($row = fgetcsv($handle, 1000, ',')) !== false) {
+                    $lineNumber++;
+
+                    Log::debug("Procesando línea {$lineNumber}: " . json_encode($row));
+
+                    if (!$header) {
+                        // Eliminar BOM si existe en la primera columna
+                        $row[0] = preg_replace('/^\xEF\xBB\xBF/', '', $row[0]);
+                        $header = $row;
+                        Log::info('Encabezado CSV detectado:', $header);
+                        continue;
+                    }
+
+                    if (count($row) != count($header)) {
+                        Log::warning("Número de columnas incorrecto en línea {$lineNumber}. Esperado " . count($header) . ", encontrado " . count($row));
+                        continue; // saltar fila mal formateada
+                    }
+
+                    $data = array_combine($header, $row);
+
+                    // Limpiar cédula: quitar puntos, guiones y espacios
+                    $cedula = preg_replace('/[^\d]/', '', $data['cedula'] ?? '');
+
+                    // Formatear fecha_nacimiento a Y-m-d
+                    $fecha_nacimiento = null;
+                    if (!empty($data['fecha_nacimiento'])) {
+                        try {
+                            // Intenta varios formatos comunes
+                            $fecha_nacimiento = \Carbon\Carbon::createFromFormat('Y-m-d', $data['fecha_nacimiento']);
+                        } catch (\Exception $e1) {
+                            try {
+                                $fecha_nacimiento = \Carbon\Carbon::createFromFormat('d-m-Y', $data['fecha_nacimiento']);
+                            } catch (\Exception $e2) {
+                                try {
+                                    $fecha_nacimiento = \Carbon\Carbon::createFromFormat('d/m/Y', $data['fecha_nacimiento']);
+                                } catch (\Exception $e3) {
+                                    try {
+                                        $fecha_nacimiento = \Carbon\Carbon::createFromFormat('d-m-y', $data['fecha_nacimiento']);
+                                    } catch (\Exception $e4) {
+                                        Log::error("Formato de fecha inválido en línea {$lineNumber}: " . $data['fecha_nacimiento']);
+                                        $fecha_nacimiento = null;
+                                    }
+                                }
+                            }
+                        }
+                        if ($fecha_nacimiento) {
+                            $fecha_nacimiento = $fecha_nacimiento->format('Y-m-d');
+                        }
+                    }
+
+                    try {
+                        Donante::updateOrCreate(
+                            ['cedula' => $cedula],
+                            [
+                                'nombre' => $data['nombre'] ?? null,
+                                'apellido' => $data['apellido'] ?? null,
+                                'sexo' => $data['sexo'] ?? null,
+                                'telefono' => $data['telefono'] ?? null,
+                                'fecha_nacimiento' => $fecha_nacimiento,
+                                'ABO' => $data['ABO'] ?? null,
+                                'RH' => $data['RH'] ?? null,
+                                'estado' => 'Disponible', // SIEMPRE disponible
+                                'observaciones' => $data['observaciones'] ?? null,
+                                'ultima_modificacion' => now(),
+                                'modificado_por' => session('usuario_id'),
+                            ]
+                        );
+                        $rowsImported++;
+                        Log::info("Donante cédula {$cedula} importado correctamente.");
+                    } catch (\Exception $e) {
+                        Log::error("Error al importar donante cédula {$cedula} en línea {$lineNumber}: " . $e->getMessage() . ' | Data: ' . json_encode($data));
+                        continue;
+                    }
+                }
+
+                fclose($handle);
+
+                Log::info("Importación finalizada. Total de donantes importados: {$rowsImported}");
+
+                return redirect()->route('donante.index')->with('mensaje', "Se importaron {$rowsImported} donantes correctamente.");
+            } else {
+                Log::error('No se pudo abrir el archivo CSV.');
+                return redirect()->route('donante.index')->with('error', 'No se pudo abrir el archivo CSV.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al importar donantes: ' . $e->getMessage());
+            return redirect()->route('donante.index')->with('error', 'Ocurrió un error durante la importación. Verifique el archivo CSV e intente nuevamente.');
+        }
+    }
+
 
     /**
      * Display a listing of the resource.

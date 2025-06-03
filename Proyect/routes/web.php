@@ -34,6 +34,8 @@ Route::middleware(['autenticado'])->group(function () {
 
     Route::get('/donantes/buscar', [App\Http\Controllers\DonanteController::class, 'buscar'])->name('donantes.buscar');
 
+    //-.-.-.-.-.-.-.--.-.RUTAS DE IMPORTACION-.-.-.-.-.-.-.-
+    Route::post('/donante/import-csv', [DonanteController::class, 'importCsv'])->name('donante.importCsv');
 
     //.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 
