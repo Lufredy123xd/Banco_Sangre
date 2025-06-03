@@ -104,6 +104,7 @@ Route::middleware(['autenticado'])->group(function () {
 
     // routes/web.php
 // Route para mostrar la lista de agendas
+
     Route::resource('agenda', AgendaController::class)
         ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
         ->names([

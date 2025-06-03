@@ -10,6 +10,7 @@
             @else
                 <a href="{{ route('donante.index') }}" class="header__nav-link">Gestionar Donantes</a>
             @endif
+             <a href="{{ route('agenda.index') }}" class="header__nav-link">Listar Agendas</a>
             <a href="{{ route('donacion.index') }}" class="header__nav-link">Listar Donaciones</a>
             <a href="{{ route('password.form') }}" class="header__nav-link">Cambiar contraseña</a>
             <a href="{{ route('logout') }}" class="header__nav-link">Cerrar sesión</a>

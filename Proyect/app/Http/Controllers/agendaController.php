@@ -14,9 +14,6 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
-            abort(403, 'Acceso no autorizado.');
-        }
 
         $datos['agendas'] = Agenda::paginate(10);
         return view('agenda.index', $datos);
@@ -27,16 +24,13 @@ class AgendaController extends Controller
      */
     public function create(Request $request)
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
-            abort(403, 'Acceso no autorizado.');
-        }
 
         // Obtenemos el id del donante
         $donanteId = $request->input('donante_id');
 
         // Buscamos el donante por su ID
         $donante = Donante::findOrFail($donanteId);
-        
+
 
         // Pasamos el donante a la vista
         return view('agenda.create', compact('donante'));
@@ -80,11 +74,10 @@ class AgendaController extends Controller
      */
     public function edit($id)
     {
-        if (session('tipo_usuario') !== 'Administrador' &&  session('tipo_usuario') !== 'Estudiante') {
-            abort(403, 'Acceso no autorizado.');
-        }
         $agenda = Agenda::findOrFail($id);
-        $donante = Donante::findOrFail($agenda->donante_id);
+
+        $donante = Donante::findOrFail($agenda->id_donante);
+
         return view('agenda.edit', compact('agenda', 'donante'));
     }
 
@@ -94,7 +87,7 @@ class AgendaController extends Controller
     public function update(Request $request, $id)
     {
         $datosAgenda = request()->except(['_token', '_method']);
-        
+
         Agenda::where('id', '=', $id)->update($datosAgenda);
         $agenda = Agenda::findOrFail($id);
         return redirect()->route('agenda.edit', $id)->with('mensaje', 'Se actualizó correctamente');
@@ -105,7 +98,18 @@ class AgendaController extends Controller
      */
     public function destroy($id)
     {
-        Agenda::destroy($id);
+        $donante = Donante::findOrFail(Agenda::findOrFail($id)->id_donante);
+        if ($donante->estado !== EstadoDonante::Agendado->value) {
+            return redirect('agenda')->with('error', 'El donante no está agendado.');
+        }
+
+        if ($donante) {
+            $donante->estado = EstadoDonante::Disponible->value; // Cambiamos el estado del donante a "Agendado"
+            $donante->save();
+            Agenda::destroy($id);
+        } else {
+            return redirect('agenda')->with('error', 'Donante no encontrado.');
+        }
         return redirect('agenda')->with('mensaje', 'Se elimino correctamente');
     }
 }
