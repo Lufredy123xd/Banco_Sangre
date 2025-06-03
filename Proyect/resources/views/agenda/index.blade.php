@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="tablaAgendas">
+                    <table class="table table-striped" id="tablaAgendas">
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
