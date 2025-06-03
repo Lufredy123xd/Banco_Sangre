@@ -15,11 +15,46 @@ class AgendaController extends Controller
     public function index()
     {
 
-         // Cargamos las agendas junto con los datos del donante relacionado
-    $datos['agendas'] = Agenda::with('donante')->paginate(10);
+        // Cargamos las agendas junto con los datos del donante relacionado
+        $datos['agendas'] = Agenda::with('donante')->paginate(10);
 
         // Retornamos la vista con los datos de las agendas y estados
-    return view('agenda.index', $datos);
+        return view('agenda.index', $datos);
+    }
+
+
+
+
+    public function buscar(Request $request)
+    {
+        \Log::info('Llamada a buscar()', [
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_fin' => $request->fecha_fin,
+            'page' => $request->page,
+        ]);
+
+        $query = Agenda::with('donante');
+
+        if ($request->filled('fecha_inicio')) {
+            \Log::info('Filtrando desde fecha_inicio', ['fecha_agenda >=' => $request->fecha_inicio]);
+            $query->where('fecha_agenda', '>=', $request->fecha_inicio);
+        }
+        if ($request->filled('fecha_fin')) {
+            \Log::info('Filtrando hasta fecha_fin', ['fecha_agenda <=' => $request->fecha_fin]);
+            $query->where('fecha_agenda', '<=', $request->fecha_fin);
+        }
+
+        $agendas = $query->paginate(10);
+
+        \Log::info('Cantidad de agendas encontradas', ['count' => $agendas->count()]);
+
+        $tabla = view('agenda.partials.tabla', compact('agendas'))->render();
+        $paginacion = $agendas->links('pagination::bootstrap-5')->render();
+
+        return response()->json([
+            'tabla' => $tabla,
+            'paginacion' => $paginacion,
+        ]);
     }
 
     /**
