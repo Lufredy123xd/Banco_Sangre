@@ -29,7 +29,7 @@
                                     <td>{{ $agenda->horario }}</td>
                                     <td>{{ $agenda->asistio ? 'Sí' : 'No' }}</td>
                                     <td>
-                                        <div class="d-flex gap-2">
+                                        <div class="d-flex gap-2 justify-content-center">
                                             <a href="{{ url('/agenda/' . $agenda->id . '/edit') }}" class="btn btn-warning btn-sm">
                                                 Editar
                                             </a>
