@@ -13,6 +13,7 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
+                                 <th>Donante</th> <!-- Nueva columna -->
                                 <th>Fecha de la Agenda</th>
                                 <th>Horario</th>
                                 <th>Asistió</th>
@@ -23,6 +24,7 @@
                             @foreach ($agendas as $agenda)
                                 <tr>
                                     <td>{{ $agenda->id }}</td>
+                                    <td>{{ $agenda->donante->nombre ?? 'Sin donante' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>
                                     <td>{{ $agenda->horario }}</td>
                                     <td>{{ $agenda->asistio ? 'Sí' : 'No' }}</td>

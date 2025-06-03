@@ -15,8 +15,11 @@ class AgendaController extends Controller
     public function index()
     {
 
-        $datos['agendas'] = Agenda::paginate(10);
-        return view('agenda.index', $datos);
+         // Cargamos las agendas junto con los datos del donante relacionado
+    $datos['agendas'] = Agenda::with('donante')->paginate(10);
+
+        // Retornamos la vista con los datos de las agendas y estados
+    return view('agenda.index', $datos);
     }
 
     /**
