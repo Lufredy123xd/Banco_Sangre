@@ -22,7 +22,7 @@
 
             <label class="block" for="txt__cedula">Cédula</label>
             <input class="input__div" type="text" name="cedula" id="txt__cedula" required
-                placeholder="Cédula del usuario" maxlength="20" pattern="\d+"
+                placeholder="Cédula del usuario" maxlength="8" pattern="\d+"
                 title="La cédula solo puede contener números.">
 
             <label class="block" for="txt__tipo_usuario">Tipo de usuario</label>
