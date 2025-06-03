@@ -20,6 +20,18 @@
             <!-- ID oculto -->
             <input type="hidden" id="id" name="id" value="{{ old('id') }}">
 
+            @if (session('mensaje'))
+                <div class="alert alert-success">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-warning">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="contenedor__nombre__completo">
                 <div>
                     <label class="block" for="txt__nombre">Nombre</label>
@@ -39,8 +51,8 @@
             <input class="input__div" type="text" name="cedula" id="txt__cedula" required
                 placeholder="Cédula del donante" maxlength="8" pattern="\d{8}"
                 title="La cédula debe contener exactamente 8 dígitos.">
-            
-                
+
+
             <label class="block" for="txt__telefono">Teléfono</label>
             <input class="input__div" type="number" name="telefono" id="txt__telefono" required
                 placeholder="Teléfono del donante" maxlength="15" pattern="\d{7,15}"
@@ -83,13 +95,12 @@
                     @endif
                 @endforeach
             </select>
-            
+
 
             <div class="contenedor__descripcion">
                 <label class="block" for="observaciones">Observaciones</label>
                 <textarea class="input__div" id="observaciones" name="observaciones" rows="3"
-                    placeholder="Escriba sus observaciones..." maxlength="255" 
-                    title="El motivo no puede exceder los 255 caracteres."></textarea>
+                    placeholder="Escriba sus observaciones..." maxlength="255" title="El motivo no puede exceder los 255 caracteres."></textarea>
             </div>
 
             <div class="contenedor__bottom">
@@ -97,12 +108,6 @@
                     class="contenedor__descripcion__porque cancelar">Volver</a>
                 <button type="submit" class="contenedor__descripcion__porque guardar">Registrar</button>
             </div>
-
-            @if (session('mensaje'))
-                <div class="alert alert-success mt-3">
-                    {{ session('mensaje') }}
-                </div>
-            @endif
         </form>
     </section>
 @endsection

@@ -5,6 +5,19 @@
         <h2 class="section__registrar-title">Registrar Usuario</h2>
         <form action="{{ url('/usuario') }}" method="post" class="registrar__formulario">
             {{ csrf_field() }}
+
+            @if (session('mensaje'))
+                <div class="alert alert-success">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-warning">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="contenedor__nombre__completo">
                 <div>
                     <label class="block" for="txt__nombre">Nombre</label>

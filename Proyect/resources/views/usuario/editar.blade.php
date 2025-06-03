@@ -7,6 +7,18 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
 
+            @if (session('mensaje'))
+                <div class="alert alert-success">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-warning">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="contenedor__nombre__completo">
                 <div>
                     <label class="block" for="txt__nombre">Nombre</label>

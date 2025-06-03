@@ -21,6 +21,48 @@ class UsuarioController extends Controller
     }
 
 
+    private function validarCedulaUruguaya($cedula)
+    {
+        // Eliminar cualquier carácter que no sea dígito
+        $cedula = preg_replace('/\D/', '', $cedula);
+
+        // Verificar que la cédula tenga entre 7 y 8 dígitos
+        $length = strlen($cedula);
+        if ($length < 7 || $length > 8) {
+            return false;
+        }
+
+        // Completar con ceros a la izquierda si tiene menos de 8 dígitos
+        $cedula = str_pad($cedula, 8, '0', STR_PAD_LEFT);
+
+        // Opcional: no permitir cédulas con todos los dígitos iguales
+        if (preg_match('/^(\d)\1{7}$/', $cedula)) {
+            return false;
+        }
+
+        // Separar los primeros 7 dígitos y el dígito verificador
+        $numeros = substr($cedula, 0, 7);
+        $verificador = intval($cedula[7]);
+
+        // Factores para el cálculo
+        $factores = [2, 9, 8, 7, 6, 3, 4];
+
+        // Calcular la suma ponderada
+        $suma = 0;
+        for ($i = 0; $i < 7; $i++) {
+            $suma += intval($numeros[$i]) * $factores[$i];
+        }
+
+        // Calcular el dígito verificador esperado
+        $resto = $suma % 10;
+        $digitoCalculado = $resto === 0 ? 0 : 10 - $resto;
+
+        // Comparar con el dígito verificador proporcionado
+        return $verificador === $digitoCalculado;
+    }
+
+
+
     public function buscar(Request $request)
     {
         $query = Usuario::query();
@@ -155,6 +197,11 @@ class UsuarioController extends Controller
     {
         $data = $request->except('_token'); // Elimina el _token del array de datos
 
+        // Validar cédula antes de crear
+        if (!$this->validarCedulaUruguaya($data['cedula'])) {
+            return back()->with('error', 'La cédula ingresada no es válida.')->withInput();
+        }
+
         $data['password'] = Hash::make($data['password']);
 
         Usuario::create($data);
@@ -183,6 +230,12 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
 
         $data = $request->except('_token'); // Elimina el _token del array de datos
+
+        // Validar cédula antes de crear
+        if (!$this->validarCedulaUruguaya($data['cedula'])) {
+            return back()->with('error', 'La cédula ingresada no es válida.')->withInput();
+        }
+
 
         if ($data['password'] == null) {
             $data['password'] = $usuario->password; // Mantiene la contraseña actual si no se proporciona una nueva

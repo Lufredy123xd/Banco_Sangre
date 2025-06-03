@@ -31,6 +31,47 @@ class DonanteController extends Controller
         return $pdf->download('donantes.pdf');
     }
 
+    private function validarCedulaUruguaya($cedula)
+    {
+        // Eliminar cualquier carácter que no sea dígito
+        $cedula = preg_replace('/\D/', '', $cedula);
+
+        // Verificar que la cédula tenga entre 7 y 8 dígitos
+        $length = strlen($cedula);
+        if ($length < 7 || $length > 8) {
+            return false;
+        }
+
+        // Completar con ceros a la izquierda si tiene menos de 8 dígitos
+        $cedula = str_pad($cedula, 8, '0', STR_PAD_LEFT);
+
+        // Opcional: no permitir cédulas con todos los dígitos iguales
+        if (preg_match('/^(\d)\1{7}$/', $cedula)) {
+            return false;
+        }
+
+        // Separar los primeros 7 dígitos y el dígito verificador
+        $numeros = substr($cedula, 0, 7);
+        $verificador = intval($cedula[7]);
+
+        // Factores para el cálculo
+        $factores = [2, 9, 8, 7, 6, 3, 4];
+
+        // Calcular la suma ponderada
+        $suma = 0;
+        for ($i = 0; $i < 7; $i++) {
+            $suma += intval($numeros[$i]) * $factores[$i];
+        }
+
+        // Calcular el dígito verificador esperado
+        $resto = $suma % 10;
+        $digitoCalculado = $resto === 0 ? 0 : 10 - $resto;
+
+        // Comparar con el dígito verificador proporcionado
+        return $verificador === $digitoCalculado;
+    }
+
+
     public function importCsv(Request $request)
     {
         Log::info('Inicio de importación de CSV de donantes.');
@@ -296,6 +337,11 @@ class DonanteController extends Controller
             'observaciones' => 'nullable|string|max:255', // Observaciones opcionales, máximo 255 caracteres
         ]);
 
+        // Verificar cédula uruguaya
+        if (!$this->validarCedulaUruguaya($request->cedula)) {
+            return back()->with('error', 'La cédula ingresada no es válida según las reglas uruguayas.')->withInput();
+        }
+
         // Guardar los datos del donante
         $datosDonante = $request->except('_token');
         Donante::create($datosDonante);
@@ -331,6 +377,11 @@ class DonanteController extends Controller
     public function update($id)
     {
         $datosDonante = request()->except(['_token', '_method']);
+
+        // Verificar cédula uruguaya
+        if (!$this->validarCedulaUruguaya($datosDonante['cedula'])) {
+            return back()->with('error', 'La cédula ingresada no es válida según las reglas uruguayas.')->withInput();
+        }
 
         // Asignar el usuario actual como modificador
         $datosDonante['modificado_por'] = session('usuario_id');

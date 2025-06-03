@@ -22,20 +22,30 @@
             <!-- ID oculto -->
             <input type="hidden" id="id" name="id" value="{{ $donante->id }}">
 
+            @if (session('mensaje'))
+                <div class="alert alert-success">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-warning">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="contenedor__nombre__completo">
                 <div>
                     <label class="block" for="txt__nombre">Nombre</label>
                     <input class="input__div" type="text" name="nombre" id="txt__nombre" required
                         placeholder="Nombre del donante" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
-                        title="El nombre solo puede contener letras y espacios."
-                        value="{{ $donante->nombre }}">
+                        title="El nombre solo puede contener letras y espacios." value="{{ $donante->nombre }}">
                 </div>
                 <div>
                     <label class="block" for="txt__apellido">Apellido</label>
                     <input class="input__div" type="text" name="apellido" id="txt__apellido" required
                         placeholder="Apellido del donante" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
-                        title="El apellido solo puede contener letras y espacios."
-                        value="{{ $donante->apellido }}">
+                        title="El apellido solo puede contener letras y espacios." value="{{ $donante->apellido }}">
                 </div>
             </div>
 
@@ -47,8 +57,7 @@
             <label class="block" for="txt__telefono">Teléfono</label>
             <input class="input__div" type="text" name="telefono" id="txt__telefono" required
                 placeholder="Teléfono del donante" maxlength="15" pattern="\d{7,15}"
-                title="El teléfono debe contener entre 7 y 15 dígitos."
-                value="{{ $donante->telefono }}">
+                title="El teléfono debe contener entre 7 y 15 dígitos." value="{{ $donante->telefono }}">
 
             <label class="block" for="txt__fecha">Fecha de nacimiento</label>
             <input class="input__div" type="date" name="fecha_nacimiento" id="txt__fecha" required
@@ -98,20 +107,14 @@
                 placeholder="Escriba sus observaciones...">{{ $donante->observaciones }}</textarea>
 
             <div class="contenedor__bottom">
-                
-                    
-                        <a href="{{ route('donante.index') }}" type="button"
-                            class="contenedor__descripcion__porque cancelar">Volver</a>
-                        <button type="submit" class="contenedor__descripcion__porque guardar">Guardar</button>
-                    
-                
-            </div>
 
-            @if (session('mensaje'))
-                <div class="alert alert-success mt-3">
-                    {{ session('mensaje') }}
-                </div>
-            @endif
+
+                <a href="{{ route('donante.index') }}" type="button"
+                    class="contenedor__descripcion__porque cancelar">Volver</a>
+                <button type="submit" class="contenedor__descripcion__porque guardar">Guardar</button>
+
+
+            </div>
         </form>
     </section>
 @endsection
