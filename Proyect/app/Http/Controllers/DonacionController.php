@@ -24,7 +24,7 @@ class DonacionController extends Controller
         $donantes = Donante::all();
 
         // Generar el PDF con la vista 'donante.pdf' y pasar los donantes y las donaciones
-        $pdf = Pdf::loadView('donacion.pdf', compact( 'donaciones', 'donantes'));
+        $pdf = Pdf::loadView('donacion.pdf', compact('donaciones', 'donantes'));
 
         // Descargar el archivo PDF
         return $pdf->download('donaciones.pdf');
@@ -39,8 +39,8 @@ class DonacionController extends Controller
         if (session('tipo_usuario') !== 'Administrador' && session('tipo_usuario') !== 'Estudiante') {
             abort(403, 'Acceso no autorizado.');
         }
-        
-        $datos['donaciones'] = Donacion::with('donante')->paginate(10);
+
+        $datos['donaciones'] = Donacion::with('donante')->orderBy('fecha', 'desc')->paginate(10);
 
 
 

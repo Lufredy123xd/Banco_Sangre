@@ -32,33 +32,25 @@
                     <table class="table table-striped" id="tablaDonaciones">
                         <thead class="table-dark">
                             <tr>
-                                <th>#</th>
                                 <th>Donante</th>
                                 <th>Fecha</th>
                                 <th>Clase de Donación</th>
-                                <th>Acciones</th>
+                                <th>Editar</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($donaciones as $donacion)
                                 <tr class="fila-donacion">
-                                    <td>{{ $donacion->id }}</td>
                                     <td>{{ $donacion->donante->nombre }} {{ $donacion->donante->apellido }}</td>
                                     <td class="fecha-donacion">
                                         {{ \Carbon\Carbon::parse($donacion->fecha)->format('d/m/Y') }}</td>
                                     <td>{{ $donacion->clase_donacion }}</td>
                                     <td>
-                                        <div class="d-flex gap-2">
+                                        <div class="d-flex gap-2 justify-content-center">
                                             <a href="{{ url('/donacion/' . $donacion->id . '/edit') }}"
-                                                class="btn btn-warning btn-sm">Editar</a>
-                                            <form action="{{ url('/donacion/' . $donacion->id) }}" method="post">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                                <button type="submit" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta donación?');">
-                                                    Eliminar
-                                                </button>
-                                            </form>
+                                                class="btn btn-primary btn-sm"><img src="{{ asset('imgs/edit_icon.png') }}"
+                                                    alt="Editar" style="width: 20px; height: 20px;"></a>
+
                                         </div>
                                     </td>
                                 </tr>

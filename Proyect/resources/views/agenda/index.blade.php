@@ -24,24 +24,23 @@
                     <table class="table table-striped" id="tablaAgendas">
                         <thead class="table-dark">
                             <tr>
-                                <th>#</th>
                                 <th>Donante</th> <!-- Nueva columna -->
                                 <th>Apellido</th> <!-- Nueva columna -->
                                 <th>Fecha de la Agenda</th>
                                 <th>Horario</th>
                                 <th>Asistió</th>
-                                <th>Acciones</th>
+                                <th>Editar</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($agendas as $agenda)
                                 <tr>
-                                    <td>{{ $agenda->id }}</td>
                                     <td>{{ $agenda->donante->nombre ?? 'Sin donante' }}</td>
                                     <td>{{ $agenda->donante->apellido ?? 'Sin apellido' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>
                                     <td>{{ $agenda->horario }}</td>
-                                    <td>{{ $agenda->asistio ? 'Sí' : 'No' }}</td>
+                                    <td>
+                                        {{ $agenda->asistio ? 'Sí' : 'No' }}</td>
                                     <td>
                                         <div class="d-flex gap-2 justify-content-center">
                                             <a href="{{ url('/agenda/' . $agenda->id . '/edit') }}"
@@ -49,15 +48,17 @@
                                                 <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar"
                                                     style="width: 20px; height: 20px;">
                                             </a>
-                                            <form action="{{ url('/agenda/' . $agenda->id) }}" method="post"
-                                                onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta agenda?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <img src="{{ asset('imgs/delete_icon.png') }}" alt="Editar"
-                                                        style="width: 20px; height: 20px;">
-                                                </button>
-                                            </form>
+                                            @if (!$agenda->asistio)
+                                                <form action="{{ url('/agenda/' . $agenda->id) }}" method="post"
+                                                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta agenda?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <img src="{{ asset('imgs/delete_icon.png') }}" alt="Editar"
+                                                            style="width: 20px; height: 20px;">
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

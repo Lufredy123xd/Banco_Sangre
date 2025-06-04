@@ -16,7 +16,7 @@ class AgendaController extends Controller
     {
 
         // Cargamos las agendas junto con los datos del donante relacionado
-        $datos['agendas'] = Agenda::with('donante')->paginate(10);
+        $datos['agendas'] = Agenda::with('donante')->orderBy('fecha_agenda', 'desc')->paginate(10);
 
         // Retornamos la vista con los datos de las agendas y estados
         return view('agenda.index', $datos);
@@ -43,6 +43,9 @@ class AgendaController extends Controller
             \Log::info('Filtrando hasta fecha_fin', ['fecha_agenda <=' => $request->fecha_fin]);
             $query->where('fecha_agenda', '<=', $request->fecha_fin);
         }
+
+        // Ordenar por fecha_agenda descendente (más recientes primero)
+        $query->orderBy('fecha_agenda', 'desc');
 
         $agendas = $query->paginate(10);
 
