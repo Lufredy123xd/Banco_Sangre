@@ -43,7 +43,7 @@
             </div>-->
 
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <a class="btn btn-warning btn-rm" href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Cancelar</a>
+            <a class="btn btn-warning btn-rm" href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Volver</a>
             
         </form>
 

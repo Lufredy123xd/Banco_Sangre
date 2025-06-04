@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <a href="{{ route('agenda.index') }}" class="btn btn-secondary">Cancelar</a>
+            <a href="{{ route('agenda.index') }}" class="btn btn-secondary">Volver</a>
             <button type="submit" class="btn btn-primary">Guardar</button>
 
         </form>
