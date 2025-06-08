@@ -115,11 +115,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="donante_id" class="form-label">Donante</label>
+                        @php
+                            use App\Enums\EstadoDonante;
+                        @endphp
                         <select class="form-select" id="donante_id" name="id_donante" required>
                             <option value="">Seleccione un donante</option>
-                            @foreach (\App\Models\Donante::orderBy('nombre')->get() as $donante)
-                                <option value="{{ $donante->id }}">{{ $donante->nombre }} {{ $donante->apellido }}
-                                </option>
+                            @foreach (\App\Models\Donante::where('estado', EstadoDonante::Disponible->value)->orderBy('nombre')->get() as $donante)
+                                <option value="{{ $donante->id }}">{{ $donante->nombre }} {{ $donante->apellido }}</option>
                             @endforeach
                         </select>
                     </div>
