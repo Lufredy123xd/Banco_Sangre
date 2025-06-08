@@ -216,37 +216,75 @@
 
         <!-- Modal para Ver Más -->
         <div class="modal fade" id="verMasModal" tabindex="-1" aria-labelledby="verMasModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="verMasModalLabel">Detalles del Donante</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content shadow-lg rounded-4">
+                    <div class="modal-header bg-primary text-white rounded-top">
+                        <h5 class="modal-title" id="verMasModalLabel"><i class="bi bi-person-lines-fill me-2"></i>Detalles
+                            del Donante</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <p><strong>Nombre:</strong> <span id="detalleNombre"></span></p>
-                        <p><strong>Apellido:</strong> <span id="detalleApellido"></span></p>
-                        <p><strong>Cédula:</strong> <span id="detalleCedula"></span></p>
-                        <p><strong>Sexo:</strong> <span id="detalleSexo"></span></p>
-                        <p><strong>Teléfono:</strong> <span id="detalleTelefono"></span></p>
-                        <p><strong>Fecha de Nacimiento:</strong> <span id="detalleFechaNacimiento"></span></p>
-                        <p><strong>Grupo Sanguíneo (ABO):</strong> <span id="detalleABO"></span></p>
-                        <p><strong>Factor RH:</strong> <span id="detalleRH"></span></p>
-                        <p><strong>Estado:</strong> <span id="detalleEstado"></span></p>
-                        <p><strong>Observaciones:</strong> <span id="detalleObservaciones"></span></p>
-                        <p><strong>Cantidad de Donaciones:</strong> <span id="detalleDonaciones"></span></p>
-                        <p><strong>Cantidad de Diferimientos:</strong> <span id="detalleDiferimientos"></span></p>
-                        <p><strong>Modificado por:</strong> <span id="detalleModificadoPor"></span></p>
-
+                    <div class="modal-body bg-light px-4 py-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i
+                                            class="bi bi-person-fill text-primary me-2"></i><strong>Nombre:</strong> <span
+                                            id="detalleNombre"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-person-badge-fill text-primary me-2"></i><strong>Apellido:</strong>
+                                        <span id="detalleApellido"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-credit-card-2-front-fill text-primary me-2"></i><strong>Cédula:</strong>
+                                        <span id="detalleCedula"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-gender-ambiguous text-primary me-2"></i><strong>Sexo:</strong>
+                                        <span id="detalleSexo"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-telephone-fill text-primary me-2"></i><strong>Teléfono:</strong>
+                                        <span id="detalleTelefono"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-calendar-heart-fill text-primary me-2"></i><strong>Fecha de
+                                            Nacimiento:</strong> <span id="detalleFechaNacimiento"></span></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i
+                                            class="bi bi-droplet-half text-danger me-2"></i><strong>Grupo ABO:</strong>
+                                        <span id="detalleABO"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-plus-slash-minus text-danger me-2"></i><strong>Factor RH:</strong>
+                                        <span id="detalleRH"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-check-circle-fill text-success me-2"></i><strong>Estado:</strong>
+                                        <span id="detalleEstado"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-chat-left-text-fill text-secondary me-2"></i><strong>Observaciones:</strong>
+                                        <span id="detalleObservaciones"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-droplet-fill text-danger me-2"></i><strong>Donaciones:</strong>
+                                        <span id="detalleDonaciones"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-x-circle-fill text-warning me-2"></i><strong>Diferimientos:</strong>
+                                        <span id="detalleDiferimientos"></span></li>
+                                    <li class="list-group-item"><i
+                                            class="bi bi-pencil-fill text-info me-2"></i><strong>Modificado por:</strong>
+                                        <span id="detalleModificadoPor"></span></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <div class="modal-footer bg-white rounded-bottom">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Cerrar
+                        </button>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
+
+        
 
         <script>
             function verMas(donanteId) {

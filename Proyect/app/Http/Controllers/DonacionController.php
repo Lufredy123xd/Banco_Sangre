@@ -47,6 +47,28 @@ class DonacionController extends Controller
         return view('donacion.index', $datos);
     }
 
+    public function buscar(Request $request)
+    {
+        $query = Donacion::with('donante');
+
+        if ($request->filled('fecha_inicio')) {
+            $query->where('fecha', '>=', $request->fecha_inicio);
+        }
+        if ($request->filled('fecha_fin')) {
+            $query->where('fecha', '<=', $request->fecha_fin);
+        }
+
+        $query->orderBy('fecha', 'desc');
+        $donaciones = $query->paginate(10);
+
+        $tabla = view('donacion.partials.table', compact('donaciones'))->render();
+        $paginacion = $donaciones->links('pagination::bootstrap-5')->render();
+
+        return response()->json([
+            'tabla' => $tabla,
+            'paginacion' => $paginacion,
+        ]);
+    }
 
 
     /**

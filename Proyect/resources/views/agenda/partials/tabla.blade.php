@@ -1,7 +1,6 @@
 @if ($agendas->count())
     @foreach ($agendas as $agenda)
         <tr>
-            <td>{{ $agenda->id }}</td>
             <td>{{ $agenda->donante->nombre ?? 'Sin donante' }}</td>
             <td>{{ $agenda->donante->apellido ?? 'Sin apellido' }}</td>
             <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>

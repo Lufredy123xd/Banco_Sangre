@@ -6,14 +6,25 @@
         <h1 class="mb-4">Lista de Agendas</h1>
 
         <!-- Filtros de búsqueda -->
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label for="">Fecha inicio</label>
-                <input type="date" id="fecha_inicio" class="form-control" placeholder="Fecha inicio">
-            </div>
-            <div class="col-md-3">
-                <label for="">Fecha fin</label>
-                <input type="date" id="fecha_fin" class="form-control" placeholder="Fecha fin">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label for="fecha_inicio">Fecha inicio</label>
+                        <input type="date" id="fecha_inicio" class="form-control" placeholder="Fecha inicio">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="fecha_fin">Fecha fin</label>
+                        <input type="date" id="fecha_fin" class="form-control" placeholder="Fecha fin">
+                    </div>
+
+                    <div class="col-md-6 text-md-end">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearAgenda">
+                            <i class="bi bi-plus-circle"></i> Agregar Agenda
+                        </a>
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -91,6 +102,46 @@
     </div>
 
 
+
+    <!-- Modal Crear Agenda -->
+    <div class="modal fade" id="modalCrearAgenda" tabindex="-1" aria-labelledby="modalCrearAgendaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="formCrearAgenda" action="{{ url('/agenda') }}" method="POST" class="modal-content">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCrearAgendaLabel">Crear Nueva Agenda</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="donante_id" class="form-label">Donante</label>
+                        <select class="form-select" id="donante_id" name="id_donante" required>
+                            <option value="">Seleccione un donante</option>
+                            @foreach (\App\Models\Donante::orderBy('nombre')->get() as $donante)
+                                <option value="{{ $donante->id }}">{{ $donante->nombre }} {{ $donante->apellido }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_agenda" class="form-label">Fecha de la Agenda</label>
+                        <input type="date" class="form-control" id="fecha_agenda" name="fecha_agenda" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="horario" class="form-label">Horario</label>
+                        <input type="time" class="form-control" id="horario" name="horario" required>
+                    </div>
+                    <input type="hidden" id="asistio" name="asistio" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnGuardarAgenda" class="btn btn-primary">Guardar Agenda</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const fechaInicio = document.getElementById('fecha_inicio');
@@ -133,6 +184,42 @@
 
             fechaInicio.addEventListener('input', () => fetchAgendas());
             fechaFin.addEventListener('input', () => fetchAgendas());
+
+            // AJAX para crear agenda
+            document.getElementById('btnGuardarAgenda').addEventListener('click', function() {
+                const form = document.getElementById('formCrearAgenda');
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cierra el modal
+                        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCrearAgenda'));
+                        modal.hide();
+
+                        // Limpia el formulario
+                        form.reset();
+
+                        // Recarga la tabla de agendas
+                        fetchAgendas();
+
+                        // Opcional: muestra mensaje de éxito
+                        alert(data.mensaje);
+                    }
+                })
+                .catch(err => {
+                    alert('Error al guardar la agenda');
+                    console.error(err);
+                });
+            });
 
             attachPaginationEvents();
         });

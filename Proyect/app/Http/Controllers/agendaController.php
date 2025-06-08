@@ -65,12 +65,14 @@ class AgendaController extends Controller
      */
     public function create(Request $request)
     {
+        if (!$request->has('donante_id')) {
+            // Obtenemos el id del donante
+            $donanteId = $request->input('donante_id');
 
-        // Obtenemos el id del donante
-        $donanteId = $request->input('donante_id');
+            // Buscamos el donante por su ID
+            $donante = Donante::findOrFail($donanteId);
+        }
 
-        // Buscamos el donante por su ID
-        $donante = Donante::findOrFail($donanteId);
 
 
         // Pasamos el donante a la vista
@@ -83,21 +85,17 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
-        // Captura todos los datos menos el token
         $datosAgenda = $request->except('_token');
-
-        // Captura el donante_id desde la URL (query string)
         $donanteId = $request->input('id_donante');
-
-        // Buscamos el donante por su ID
         $donante = Donante::findOrFail($donanteId);
-        $donante->estado = EstadoDonante::Agendado->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->estado = EstadoDonante::Agendado->value;
         $donante->save();
-
-        // Inserta la agenda con los datos
         Agenda::insert($datosAgenda);
 
-        // Redirige a la página de gestionarDonante, pasando el id del donante
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'mensaje' => 'Se agendó correctamente']);
+        }
+
         return redirect()->route('gestionarDonante', ['id' => $donanteId])
             ->with('mensaje', 'Se agendó correctamente');
     }
