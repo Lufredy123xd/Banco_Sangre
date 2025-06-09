@@ -139,7 +139,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="fas fa-users me-2"></i>Listado de Donantes</h5>
-                <span class="badge bg-light text-primary" id="contadorDonantes">{{ $donantes->total() }} registros</span>
+                
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
