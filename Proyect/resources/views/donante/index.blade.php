@@ -12,8 +12,8 @@
                     <div class="col-md-6 col-lg-3">
                         <div class="input-group">
                             <span class="input-group-text bg-light"><i class="fas fa-search"></i></span>
-                            <input type="text" name="txt_buscar" id="txt_buscar" class="form-control shadow-sm" 
-                                   placeholder="Buscar por nombre, apellido o cédula">
+                            <input type="text" name="txt_buscar" id="txt_buscar" class="form-control shadow-sm"
+                                placeholder="Buscar por nombre, apellido o cédula">
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-2">
@@ -94,8 +94,8 @@
                         <button id="btnImportarDonantes" class="btn btn-outline-primary" type="button">
                             <i class="fas fa-file-import me-2"></i> Importar CSV
                         </button>
-                        <a href="{{ asset('archivos-csv/Formato para subir donantes.csv') }}" 
-                           class="btn btn-outline-success" download="Formato_para_subir_donantes.csv">
+                        <a href="{{ asset('archivos-csv/Formato para subir donantes.csv') }}"
+                            class="btn btn-outline-success" download="Formato_para_subir_donantes.csv">
                             <i class="fas fa-file-download me-2"></i> Formato CSV
                         </a>
                     </div>
@@ -154,7 +154,6 @@
                                 <th><i class="fas fa-calendar-alt me-1"></i> Última Donación</th>
                                 <th><i class="fas fa-venus-mars me-1"></i> Sexo</th>
                                 <th><i class="fas fa-info-circle me-1"></i> Estado</th>
-                                <th><i class="fas fa-cog me-1"></i> Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -179,7 +178,8 @@
                         <h5 class="modal-title" id="verMasModalLabel">
                             <i class="fas fa-user-circle me-2"></i>Detalles del Donante
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -190,12 +190,24 @@
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-unstyled">
-                                            <li class="mb-2"><strong><i class="fas fa-user me-2 text-primary"></i>Nombre:</strong> <span id="detalleNombre" class="float-end"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-user me-2 text-primary"></i>Apellido:</strong> <span id="detalleApellido" class="float-end"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-id-card me-2 text-primary"></i>Cédula:</strong> <span id="detalleCedula" class="float-end"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-venus-mars me-2 text-primary"></i>Sexo:</strong> <span id="detalleSexo" class="float-end"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-phone me-2 text-primary"></i>Teléfono:</strong> <span id="detalleTelefono" class="float-end"></span></li>
-                                            <li><strong><i class="fas fa-birthday-cake me-2 text-primary"></i>Fecha Nacimiento:</strong> <span id="detalleFechaNacimiento" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-user me-2 text-primary"></i>Nombre:</strong> <span
+                                                    id="detalleNombre" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-user me-2 text-primary"></i>Apellido:</strong> <span
+                                                    id="detalleApellido" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-id-card me-2 text-primary"></i>Cédula:</strong> <span
+                                                    id="detalleCedula" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-venus-mars me-2 text-primary"></i>Sexo:</strong>
+                                                <span id="detalleSexo" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-phone me-2 text-primary"></i>Teléfono:</strong> <span
+                                                    id="detalleTelefono" class="float-end"></span></li>
+                                            <li><strong><i class="fas fa-birthday-cake me-2 text-primary"></i>Fecha
+                                                    Nacimiento:</strong> <span id="detalleFechaNacimiento"
+                                                    class="float-end"></span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -207,11 +219,21 @@
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-unstyled">
-                                            <li class="mb-2"><strong><i class="fas fa-tint me-2 text-danger"></i>Grupo ABO:</strong> <span id="detalleABO" class="float-end badge bg-danger text-white"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-tint me-2 text-danger"></i>Factor RH:</strong> <span id="detalleRH" class="float-end badge bg-danger text-white"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-info-circle me-2 text-success"></i>Estado:</strong> <span id="detalleEstado" class="float-end"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-comment me-2 text-secondary"></i>Observaciones:</strong> <span id="detalleObservaciones" class="float-end"></span></li>
-                                            <li class="mb-2"><strong><i class="fas fa-history me-2 text-info"></i>Modificado por:</strong> <span id="detalleModificadoPor" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i class="fas fa-tint me-2 text-danger"></i>Grupo
+                                                    ABO:</strong> <span id="detalleABO"
+                                                    class="float-end badge bg-danger text-white"></span></li>
+                                            <li class="mb-2"><strong><i class="fas fa-tint me-2 text-danger"></i>Factor
+                                                    RH:</strong> <span id="detalleRH"
+                                                    class="float-end badge bg-danger text-white"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-info-circle me-2 text-success"></i>Estado:</strong>
+                                                <span id="detalleEstado" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-comment me-2 text-secondary"></i>Observaciones:</strong>
+                                                <span id="detalleObservaciones" class="float-end"></span></li>
+                                            <li class="mb-2"><strong><i
+                                                        class="fas fa-history me-2 text-info"></i>Modificado por:</strong>
+                                                <span id="detalleModificadoPor" class="float-end"></span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -253,7 +275,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const btnImportar = document.getElementById('btnImportarDonantes');
                 const importarDiv = document.getElementById('importarCsvDiv');
-                
+
                 btnImportar.addEventListener('click', function() {
                     importarDiv.style.display = importarDiv.style.display === 'none' ? 'block' : 'none';
                 });
@@ -337,14 +359,28 @@
                         document.getElementById('detalleABO').textContent = data.ABO;
                         document.getElementById('detalleRH').textContent = data.RH;
                         document.getElementById('detalleEstado').textContent = data.estado;
-                        document.getElementById('detalleObservaciones').textContent = data.observaciones || 'Sin observaciones';
+                        document.getElementById('detalleObservaciones').textContent = data.observaciones ||
+                            'Sin observaciones';
                         document.getElementById('detalleDonaciones').textContent = data.donaciones_count || 0;
                         document.getElementById('detalleDiferimientos').textContent = data.diferimientos_count || 0;
                         document.getElementById('detalleModificadoPor').textContent = data.modificado_por || 'N/A';
 
-                        // Muestra el modal
-                        const modal = new bootstrap.Modal(document.getElementById('verMasModal'));
+                        // Obtiene o crea la instancia del modal y lo muestra
+                        const modalEl = document.getElementById('verMasModal');
+                        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                         modal.show();
+
+                        // Asegura que se elimine el backdrop al cerrar
+                        modalEl.addEventListener('hidden.bs.modal', () => {
+                            const backdrop = document.querySelector('.modal-backdrop');
+                            if (backdrop) {
+                                backdrop.remove();
+                                document.body.classList.remove('modal-open');
+                                document.body.style = ''; // Limpia estilos inline como overflow:hidden
+                            }
+                        }, {
+                            once: true
+                        }); // Solo una vez por apertura
                     })
                     .catch(error => {
                         console.error('Error al obtener los detalles del donante:', error);

@@ -1,25 +1,57 @@
 @foreach ($usuarios as $usuario)
-    <tr class="fila-usuario">
-        <td class="nombre">{{ $usuario->nombre }}</td>
-        <td class="apellido">{{ $usuario->apellido }}</td>
-        <td class="cedula">{{ $usuario->cedula }}</td>
-        <td class="tipo_usuario">{{ $usuario->tipo_usuario }}</td>
-        <td class="curso_hemoterapia">{{ $usuario->curso_hemoterapia }}</td>
+    <tr>
+        <td>{{ $usuario->nombre }}</td>
+        <td>{{ $usuario->apellido }}</td>
+        <td>{{ $usuario->cedula }}</td>
+        <td>{{ $usuario->tipo_usuario }}</td>
         <td>
-            <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}" class="btn btn-sm btn-primary">
-                <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar" style="width: 20px; height: 20px;">
-            </a>
+            @php
+                $cursoClass = [
+                    'Completado' => 'bg-success',
+                    'En Progreso' => 'bg-warning',
+                    'Pendiente' => 'bg-secondary',
+                    'No Aplica' => 'bg-info'
+                ][$usuario->curso_hemoterapia] ?? 'bg-light text-dark';
+                
+                $cursoIcon = [
+                    'Completado' => 'fa-check-circle',
+                    'En Progreso' => 'fa-spinner',
+                    'Pendiente' => 'fa-clock',
+                    'No Aplica' => 'fa-minus-circle'
+                ][$usuario->curso_hemoterapia] ?? 'fa-question-circle';
+            @endphp
+            <span class="badge {{ $cursoClass }}">
+                <i class="fas {{ $cursoIcon }} me-1"></i> {{ $usuario->curso_hemoterapia ?: 'No especificado' }}
+            </span>
         </td>
         <td>
-            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalUsuario"
-                data-nombre="{{ $usuario->nombre }}" data-apellido="{{ $usuario->apellido }}"
-                data-cedula="{{ $usuario->cedula }}" data-tipo_usuario="{{ $usuario->tipo_usuario }}"
-                data-curso_hemoterapia="{{ $usuario->curso_hemoterapia }}" data-estado="{{ $usuario->estado }}">
-                <img src="{{ asset('imgs/ver_mas_icon.png') }}" alt="Ver más" style="width: 20px; height: 20px;">
-            </button>
+            <div class="d-flex gap-2">
+                <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}" 
+                   class="btn btn-sm btn-primary" title="Editar">
+                   <i class="fas fa-edit"></i>
+                </a>
+                
+            </div>
         </td>
-        <td class="estado {{ strtolower(str_replace(' ', '-', $usuario->estado)) }}">
-            {{ $usuario->estado }}
+        <td>
+            @php
+                $estadoClass = [
+                    'Activo' => 'bg-success',
+                    'Inactivo' => 'bg-secondary',
+                    'Suspendido' => 'bg-warning',
+                    'Pendiente' => 'bg-info'
+                ][$usuario->estado] ?? 'bg-light text-dark';
+                
+                $estadoIcon = [
+                    'Activo' => 'fa-check-circle',
+                    'Inactivo' => 'fa-times-circle',
+                    'Suspendido' => 'fa-exclamation-circle',
+                    'Pendiente' => 'fa-clock'
+                ][$usuario->estado] ?? 'fa-question-circle';
+            @endphp
+            <span class="badge {{ $estadoClass }}">
+                <i class="fas {{ $estadoIcon }} me-1"></i> {{ $usuario->estado }}
+            </span>
         </td>
     </tr>
 @endforeach

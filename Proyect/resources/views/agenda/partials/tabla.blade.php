@@ -1,31 +1,42 @@
 @if ($agendas->count())
     @foreach ($agendas as $agenda)
         <tr>
-            <td>{{ $agenda->donante->nombre ?? 'Sin donante' }}</td>
-            <td>{{ $agenda->donante->apellido ?? 'Sin apellido' }}</td>
+            <td>{{ $agenda->donante->nombre ?? 'N/A' }}</td>
+            <td>{{ $agenda->donante->apellido ?? 'N/A' }}</td>
             <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>
             <td>{{ $agenda->horario }}</td>
-            <td>{{ $agenda->asistio ? 'Sí' : 'No' }}</td>
             <td>
-                <div class="d-flex gap-2 justify-content-center">
-                    <a href="{{ url('/agenda/' . $agenda->id . '/edit') }}" class="btn btn-sm btn-primary">
-                        <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar" style="width: 20px; height: 20px;">
+                @if($agenda->asistio)
+                    <span class="badge bg-success"><i class="fas fa-check me-1"></i>Sí</span>
+                @else
+                    <span class="badge bg-danger"><i class="fas fa-times me-1"></i>No</span>
+                @endif
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <a href="{{ url('/agenda/' . $agenda->id . '/edit') }}" 
+                       class="btn btn-sm btn-primary" title="Editar">
+                       <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ url('/agenda/' . $agenda->id) }}" method="post"
-                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta agenda?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <img src="{{ asset('imgs/delete_icon.png') }}" alt="Editar"
-                                style="width: 20px; height: 20px;">
-                        </button>
-                    </form>
+                    @if (!$agenda->asistio)
+                        <form action="{{ url('/agenda/' . $agenda->id) }}" method="post"
+                            onsubmit="return confirm('¿Estás seguro de eliminar esta agenda?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </td>
         </tr>
     @endforeach
 @else
     <tr>
-        <td colspan="7" class="text-center">No se encontraron agendas en ese rango de fechas.</td>
+        <td colspan="6" class="text-center py-4">
+            <i class="fas fa-calendar-times fa-2x text-muted mb-2"></i>
+            <p class="mb-0">No se encontraron agendas programadas</p>
+        </td>
     </tr>
 @endif

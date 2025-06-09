@@ -2,71 +2,105 @@
 
 @section('content')
     <div class="container-fluid py-4">
-
-        <h1 class="mb-4">Lista de Agendas</h1>
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Lista de Agendas</h1>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearAgenda">
+                <i class="fas fa-plus-circle me-2"></i> Nueva Agenda
+            </a>
+        </div>
 
         <!-- Filtros de búsqueda -->
-        <div class="card mb-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filtros</h5>
+            </div>
             <div class="card-body">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label for="fecha_inicio">Fecha inicio</label>
-                        <input type="date" id="fecha_inicio" class="form-control" placeholder="Fecha inicio">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-4">
+                        <label for="fecha_inicio" class="form-label">Fecha inicio</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" id="fecha_inicio" class="form-control">
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="fecha_fin">Fecha fin</label>
-                        <input type="date" id="fecha_fin" class="form-control" placeholder="Fecha fin">
+                    <div class="col-md-4">
+                        <label for="fecha_fin" class="form-label">Fecha fin</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input type="date" id="fecha_fin" class="form-control">
+                        </div>
                     </div>
-
-                    <div class="col-md-6 text-md-end">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearAgenda">
-                            <i class="bi bi-plus-circle"></i> Agregar Agenda
-                        </a>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button id="btnLimpiarFiltros" class="btn btn-outline-secondary">
+                            <i class="fas fa-broom me-2"></i>Limpiar
+                        </button>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        <!-- Tabla -->
-        <div class="row">
-            <div class="col-12">
+        <!-- Mensajes -->
+        @if (session('mensaje'))
+            <div class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i> {{ session('mensaje') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Tabla de agendas -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Agendas Programadas</h5>
+                <span class="badge bg-primary">{{ $agendas->total() }} registros</span>
+            </div>
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped" id="tablaAgendas">
-                        <thead class="table-dark">
+                    <table class="table table-hover mb-0" id="tablaAgendas">
+                        <thead class="table-light">
                             <tr>
-                                <th>Donante</th> <!-- Nueva columna -->
-                                <th>Apellido</th> <!-- Nueva columna -->
-                                <th>Fecha de la Agenda</th>
-                                <th>Horario</th>
-                                <th>Asistió</th>
-                                <th>Editar</th>
+                                <th><i class="fas fa-user me-1"></i> Nombre</th>
+                                <th><i class="fas fa-user me-1"></i> Apellido</th>
+                                <th><i class="fas fa-calendar-day me-1"></i> Fecha</th>
+                                <th><i class="fas fa-clock me-1"></i> Horario</th>
+                                <th><i class="fas fa-check-circle me-1"></i> Asistencia</th>
+                                <th><i class="fas fa-cog me-1"></i> Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($agendas as $agenda)
                                 <tr>
-                                    <td>{{ $agenda->donante->nombre ?? 'Sin donante' }}</td>
-                                    <td>{{ $agenda->donante->apellido ?? 'Sin apellido' }}</td>
+                                    <td>{{ $agenda->donante->nombre ?? 'N/A' }}</td>
+                                    <td>{{ $agenda->donante->apellido ?? 'N/A' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>
                                     <td>{{ $agenda->horario }}</td>
                                     <td>
-                                        {{ $agenda->asistio ? 'Sí' : 'No' }}</td>
+                                        @if($agenda->asistio)
+                                            <span class="badge bg-success"><i class="fas fa-check me-1"></i>Sí</span>
+                                        @else
+                                            <span class="badge bg-danger"><i class="fas fa-times me-1"></i>No</span>
+                                        @endif
+                                    </td>
                                     <td>
-                                        <div class="d-flex gap-2 justify-content-center">
-                                            <a href="{{ url('/agenda/' . $agenda->id . '/edit') }}"
-                                                class="btn btn-sm btn-primary">
-                                                <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar"
-                                                    style="width: 20px; height: 20px;">
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ url('/agenda/' . $agenda->id . '/edit') }}" 
+                                               class="btn btn-sm btn-primary" title="Editar">
+                                               <i class="fas fa-edit"></i>
                                             </a>
                                             @if (!$agenda->asistio)
                                                 <form action="{{ url('/agenda/' . $agenda->id) }}" method="post"
-                                                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta agenda?');">
+                                                    onsubmit="return confirm('¿Estás seguro de eliminar esta agenda?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <img src="{{ asset('imgs/delete_icon.png') }}" alt="Editar"
-                                                            style="width: 20px; height: 20px;">
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                                        <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
                                             @endif
@@ -76,80 +110,76 @@
                             @endforeach
                         </tbody>
                     </table>
-
-                    <div>
-                        {{ $agendas->links('pagination::bootstrap-5') }}
-                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    {{ $agendas->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
-
-
-
-        <!-- Mensaje -->
-        @if (session('mensaje'))
-            <div class="alert alert-success mt-3">
-                {{ session('mensaje') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-warning mt-3">
-                {{ session('error') }}
-            </div>
-        @endif
-
     </div>
-
-
 
     <!-- Modal Crear Agenda -->
     <div class="modal fade" id="modalCrearAgenda" tabindex="-1" aria-labelledby="modalCrearAgendaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="formCrearAgenda" action="{{ url('/agenda') }}" method="POST" class="modal-content">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalCrearAgendaLabel">Crear Nueva Agenda</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalCrearAgendaLabel">
+                        <i class="fas fa-calendar-plus me-2"></i>Nueva Agenda
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="donante_id" class="form-label">Donante</label>
-                        @php
-                            use App\Enums\EstadoDonante;
-                        @endphp
-                        <select class="form-select" id="donante_id" name="id_donante" required>
-                            <option value="">Seleccione un donante</option>
-                            @foreach (\App\Models\Donante::where('estado', EstadoDonante::Disponible->value)->orderBy('nombre')->get() as $donante)
-                                <option value="{{ $donante->id }}">{{ $donante->nombre }} {{ $donante->apellido }}</option>
-                            @endforeach
-                        </select>
+                <form id="formCrearAgenda" action="{{ url('/agenda') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="donante_id" class="form-label">
+                                <i class="fas fa-user me-1"></i>Donante
+                            </label>
+                            @php
+                                use App\Enums\EstadoDonante;
+                            @endphp
+                            <select class="form-select" id="donante_id" name="id_donante" required>
+                                <option value="">Seleccione un donante</option>
+                                @foreach (\App\Models\Donante::where('estado', EstadoDonante::Disponible->value)->orderBy('nombre')->get() as $donante)
+                                    <option value="{{ $donante->id }}">{{ $donante->nombre }} {{ $donante->apellido }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_agenda" class="form-label">
+                                <i class="fas fa-calendar-day me-1"></i>Fecha
+                            </label>
+                            <input type="date" class="form-control" id="fecha_agenda" name="fecha_agenda" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="horario" class="form-label">
+                                <i class="fas fa-clock me-1"></i>Horario
+                            </label>
+                            <input type="time" class="form-control" id="horario" name="horario" required>
+                        </div>
+                        <input type="hidden" id="asistio" name="asistio" value="">
                     </div>
-                    <div class="mb-3">
-                        <label for="fecha_agenda" class="form-label">Fecha de la Agenda</label>
-                        <input type="date" class="form-control" id="fecha_agenda" name="fecha_agenda" required>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="button" id="btnGuardarAgenda" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Guardar
+                        </button>
                     </div>
-                    <div class="mb-3">
-                        <label for="horario" class="form-label">Horario</label>
-                        <input type="time" class="form-control" id="horario" name="horario" required>
-                    </div>
-                    <input type="hidden" id="asistio" name="asistio" value="">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="btnGuardarAgenda" class="btn btn-primary">Guardar Agenda</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const fechaInicio = document.getElementById('fecha_inicio');
             const fechaFin = document.getElementById('fecha_fin');
+            const btnLimpiar = document.getElementById('btnLimpiarFiltros');
             const tablaBody = document.querySelector('#tablaAgendas tbody');
 
+            // Función para cargar agendas con AJAX
             function fetchAgendas(page = 1) {
                 const params = new URLSearchParams({
                     fecha_inicio: fechaInicio.value,
@@ -161,8 +191,7 @@
                     .then(response => response.json())
                     .then(data => {
                         tablaBody.innerHTML = data.tabla;
-                        // Selecciona el div de paginación después de actualizar el DOM
-                        const paginacionDiv = document.querySelector('.table-responsive > div');
+                        const paginacionDiv = document.querySelector('.card-footer');
                         if (paginacionDiv) {
                             paginacionDiv.innerHTML = data.paginacion;
                             attachPaginationEvents();
@@ -171,21 +200,16 @@
                     .catch(err => console.error('Error en la búsqueda:', err));
             }
 
-            function attachPaginationEvents() {
-                const paginacionDiv = document.querySelector('.table-responsive > div');
-                if (!paginacionDiv) return;
-                paginacionDiv.querySelectorAll('.pagination a').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const url = new URL(link.href);
-                        const page = url.searchParams.get('page') || 1;
-                        fetchAgendas(page);
-                    });
-                });
-            }
+            // Limpiar filtros
+            btnLimpiar.addEventListener('click', function() {
+                fechaInicio.value = '';
+                fechaFin.value = '';
+                fetchAgendas();
+            });
 
-            fechaInicio.addEventListener('input', () => fetchAgendas());
-            fechaFin.addEventListener('input', () => fetchAgendas());
+            // Eventos para los filtros
+            fechaInicio.addEventListener('change', () => fetchAgendas());
+            fechaFin.addEventListener('change', () => fetchAgendas());
 
             // AJAX para crear agenda
             document.getElementById('btnGuardarAgenda').addEventListener('click', function() {
@@ -203,26 +227,43 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Cierra el modal
                         const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalCrearAgenda'));
                         modal.hide();
-
-                        // Limpia el formulario
                         form.reset();
-
-                        // Recarga la tabla de agendas
                         fetchAgendas();
-
-                        // Opcional: muestra mensaje de éxito
-                        alert(data.mensaje);
+                        
+                        // Mostrar notificación de éxito
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                        alertDiv.innerHTML = `
+                            <i class="fas fa-check-circle me-2"></i>${data.mensaje}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        document.querySelector('.container-fluid').prepend(alertDiv);
+                        
+                        // Eliminar la alerta después de 5 segundos
+                        setTimeout(() => alertDiv.remove(), 5000);
                     }
                 })
                 .catch(err => {
-                    alert('Error al guardar la agenda');
                     console.error(err);
+                    alert('Error al guardar la agenda');
                 });
             });
 
+            // Manejar eventos de paginación
+            function attachPaginationEvents() {
+                document.querySelectorAll('.pagination a').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const url = new URL(link.href);
+                        const page = url.searchParams.get('page') || 1;
+                        fetchAgendas(page);
+                    });
+                });
+            }
+
+            // Inicializar eventos de paginación
             attachPaginationEvents();
         });
     </script>

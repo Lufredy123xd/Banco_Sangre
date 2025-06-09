@@ -1,77 +1,116 @@
-{{-- filepath: resources/views/donacion/create.blade.php --}}
-<!DOCTYPE html>
-<html lang="es">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Donación</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+@section('content')
+<div class="container py-4">
+    <!-- Tarjeta de registro -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Registrar Nueva Donación</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url('/donacion') }}" method="POST">
+                @csrf
 
-<body>
-    <div class="container mt-5">
-        <h1 class="mb-4 text-center">Registrar Donación</h1>
-        <form action="{{ url('/donacion') }}" method="POST" class="p-4 border rounded shadow">
-            {{ csrf_field() }}
-
-            <div class="mb-3 border rounded p-3">
-                <label class="form-label">Datos del Donante:</label>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control"
-                            value="{{ $donante->nombre }} {{ $donante->apellido }}" readonly>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Cédula</label>
-                        <input type="text" class="form-control" value="{{ $donante->cedula }}" readonly>
+                <!-- Información del donante -->
+                <div class="mb-4">
+                    <h5 class="text-primary"><i class="fas fa-user-tag me-2"></i>Datos del Donante</h5>
+                    <hr class="mt-1">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" 
+                                       value="{{ $donante->nombre }} {{ $donante->apellido }}" 
+                                       id="donanteNombre" readonly>
+                                <label for="donanteNombre">Nombre Completo</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" 
+                                       value="{{ $donante->cedula }}" 
+                                       id="donanteCedula" readonly>
+                                <label for="donanteCedula">Cédula</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <input type="hidden" name="id_donante" value="{{ $donante->id }}">
 
-            <input type="hidden" name="id_donante" value="{{ $donante->id }}">
+                <!-- Detalles de la donación -->
+                <div class="mb-4">
+                    <h5 class="text-primary"><i class="fas fa-tint me-2"></i>Detalles de la Donación</h5>
+                    <hr class="mt-1">
+                    <div class="row g-3">
+                        <!-- Fecha -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="fecha" name="fecha" required>
+                                <label for="fecha">Fecha de Donación</label>
+                            </div>
+                        </div>
 
-            <div class="mb-3">
-                <label for="fecha" class="form-label">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" required>
-            </div>
+                        <!-- Clase de Donación -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select id="clase_donacion" name="clase_donacion" class="form-select" required>
+                                    @foreach (App\Enums\TipoDonacion::cases() as $tipo)
+                                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="clase_donacion">Clase de Donación</label>
+                            </div>
+                        </div>
 
-            <div class="mb-3">
-                <label for="serologia" class="form-label">Serología:</label>
-                <select id="serologia" name="serologia" class="form-control" required>
-                    @foreach (App\Enums\TipoSerologia::cases() as $tipo)
-                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
-                    @endforeach
-                </select>
-            </div>
+                        <!-- Serología -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select id="serologia" name="serologia" class="form-select" required>
+                                    @foreach (App\Enums\TipoSerologia::cases() as $tipo)
+                                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="serologia">Serología</label>
+                            </div>
+                        </div>
 
-            <div class="mb-3">
-                <label for="anticuerpos_irregulares" class="form-label">Anticuerpos Irregulares:</label>
-                <select id="anticuerpos_irregulares" name="anticuerpos_irregulares" class="form-control" required>
-                    @foreach (App\Enums\TipoAnticuerposIrregulares::cases() as $tipo)
-                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
-                    @endforeach
-                </select>
-            </div>
+                        <!-- Anticuerpos Irregulares -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select id="anticuerpos_irregulares" name="anticuerpos_irregulares" class="form-select" required>
+                                    @foreach (App\Enums\TipoAnticuerposIrregulares::cases() as $tipo)
+                                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="anticuerpos_irregulares">Anticuerpos Irregulares</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="mb-3">
-                <label for="clase_donacion" class="form-label">Clase de Donación:</label>
-                <select id="clase_donacion" name="clase_donacion" class="form-control" required>
-                    @foreach (App\Enums\TipoDonacion::cases() as $tipo)
-                        <option value="{{ $tipo->value }}">{{ $tipo->value }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <a class="btn btn-warning btn-rm"
-                    href="{{ route('gestionarDonante', ['id' => $donante->id]) }}">Cancelar</a>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-
-        </form>
+                <!-- Botones de acción -->
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <a href="{{ route('gestionarDonante', ['id' => $donante->id]) }}" 
+                       class="btn btn-outline-secondary">
+                       <i class="fas fa-arrow-left me-2"></i> Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i> Registrar Donación
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
+</div>
 
-</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Establecer la fecha actual como valor predeterminado
+    const fechaInput = document.getElementById('fecha');
+    const today = new Date().toISOString().split('T')[0];
+    fechaInput.value = today;
+    
+    // Validación para no permitir fechas futuras
+    fechaInput.max = today;
+});
+</script>
+@endsection

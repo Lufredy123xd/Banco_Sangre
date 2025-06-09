@@ -1,106 +1,149 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="container-fluid py-4">
         <!-- Filtros y búsqueda -->
-        <div class="row mb-4">
-            <div class="col-md-6 col-lg-4 mb-3">
-                <input type="text" name="txt_buscar" id="txt_buscar" class="form-control"
-                    placeholder="Buscar por nombre, apellido, ci">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filtros de Búsqueda</h5>
             </div>
-            <div class="col-md-6 col-lg-3 mb-3">
-                <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
-                    <option value="" selected>Ordenar por</option>
-                    <option value="nombre">Nombre</option>
-                    <option value="apellido">Apellido</option>
-                    <option value="tipo_usuario">Tipo de Usuario</option>
-                </select>
-            </div>
-            <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__orden" id="cmb__orden" class="form-select">
-                    <option value="asc" selected>Ascendente</option>
-                    <option value="desc">Descendente</option>
-                </select>
-            </div>
-            <div class="col-md-6 col-lg-2 mb-3">
-                <select name="cmb__estado" id="cmb__estado" class="form-select">
-                    <option value="">Todos los estados</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                    <option value="Suspendido">Suspendido</option>
-                </select>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-search"></i></span>
+                            <input type="text" name="txt_buscar" id="txt_buscar" class="form-control"
+                                placeholder="Buscar por nombre, apellido o cédula">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-sort"></i></span>
+                            <select name="cmb__ordenar" id="cmb__ordenar" class="form-select">
+                                <option value="" selected>Ordenar por</option>
+                                <option value="nombre">Nombre</option>
+                                <option value="apellido">Apellido</option>
+                                <option value="tipo_usuario">Tipo de Usuario</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-sort-alpha-down"></i></span>
+                            <select name="cmb__orden" id="cmb__orden" class="form-select">
+                                <option value="asc" selected>Ascendente</option>
+                                <option value="desc">Descendente</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="fas fa-info-circle"></i></span>
+                            <select name="cmb__estado" id="cmb__estado" class="form-select">
+                                <option value="">Todos los estados</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                                <option value="Suspendido">Suspendido</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Botón registrar -->
-        <div class="card mb-4">
+
+        <!-- Encabezado y botón de registro -->
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <h5 class="mb-0">Gestionar usuarios</h5>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <h5 class="mb-0"><i class="fas fa-users-cog me-2"></i>Gestión de Usuarios</h5>
                     <a href="{{ route('usuario.create') }}" class="btn btn-success">
-                        <i class="bi bi-person-plus"></i> Registrar usuario
+                        <i class="fas fa-user-plus me-2"></i> Registrar Usuario
                     </a>
                 </div>
             </div>
         </div>
 
         <!-- Tabla de usuarios -->
-        <div class="row">
-            <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Listado de Usuarios</h5>
+                <span class="badge bg-primary">{{ $usuarios->total() }} registros</span>
+            </div>
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="usuariosTable" class="table table-striped">
-                        <thead class="table-dark">
+                    <table id="usuariosTable" class="table table-hover mb-0">
+                        <thead class="table-light">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>CI</th>
-                                <th>Tipo de Usuario</th>
-                                <th>Curso hemoterapia</th>
-                                <th>Editar</th>
-                                <th>Ver más</th>
-                                <th>Estado</th>
+                                <th><i class="fas fa-user me-1"></i> Nombre</th>
+                                <th><i class="fas fa-user me-1"></i> Apellido</th>
+                                <th><i class="fas fa-id-card me-1"></i> Cédula</th>
+                                <th><i class="fas fa-user-tag me-1"></i> Tipo</th>
+                                <th><i class="fas fa-certificate me-1"></i> Curso Hemoterapia</th>
+                                <th><i class="fas fa-cog me-1"></i> Acciones</th>
+                                <th><i class="fas fa-circle me-1"></i> Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($usuarios as $usuario)
-                                <tr class="fila-usuario">
-                                    <td class="nombre">{{ $usuario->nombre }}</td>
-                                    <td class="apellido">{{ $usuario->apellido }}</td>
-                                    <td class="cedula">{{ $usuario->cedula }}</td>
-                                    <td class="tipo_usuario">{{ $usuario->tipo_usuario }}</td>
-                                    <td class="curso_hemoterapia">{{ $usuario->curso_hemoterapia }}</td>
+                                <tr>
+                                    <td>{{ $usuario->nombre }}</td>
+                                    <td>{{ $usuario->apellido }}</td>
+                                    <td>{{ $usuario->cedula }}</td>
+                                    <td>{{ $usuario->tipo_usuario }}</td>
                                     <td>
-                                        <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}"
-                                            class="btn btn-sm btn-primary">
-                                            <img src="{{ asset('imgs/edit_icon.png') }}" alt="Editar"
-                                                style="width: 20px; height: 20px;">
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#modalUsuario" data-nombre="{{ $usuario->nombre }}"
-                                            data-apellido="{{ $usuario->apellido }}" data-cedula="{{ $usuario->cedula }}"
-                                            data-tipo_usuario="{{ $usuario->tipo_usuario }}"
-                                            data-curso_hemoterapia="{{ $usuario->curso_hemoterapia }}"
-                                            data-estado="{{ $usuario->estado }}">
-                                            <img src="{{ asset('imgs/ver_mas_icon.png') }}" alt="Ver más"
-                                                style="width: 20px; height: 20px;">
-                                        </button>
-                                    </td>
+                                        @php
+                                            $cursoClass =
+                                                [
+                                                    'Completado' => 'bg-success',
+                                                    'En Progreso' => 'bg-warning',
+                                                    'Pendiente' => 'bg-secondary',
+                                                    'No Aplica' => 'bg-info',
+                                                ][$usuario->curso_hemoterapia] ?? 'bg-light text-dark';
 
-                                    <td class="estado {{ strtolower(str_replace(' ', '-', $usuario->estado)) }}">
-                                        {{ $usuario->estado }}</td>
+                                            $cursoIcon =
+                                                [
+                                                    'Completado' => 'fa-check-circle',
+                                                    'En Progreso' => 'fa-spinner',
+                                                    'Pendiente' => 'fa-clock',
+                                                    'No Aplica' => 'fa-minus-circle',
+                                                ][$usuario->curso_hemoterapia] ?? 'fa-question-circle';
+                                        @endphp
+                                        <span class="badge {{ $cursoClass }}">
+                                            <i class="fas {{ $cursoIcon }} me-1"></i>
+                                            {{ $usuario->curso_hemoterapia ?: 'No especificado' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}"
+                                                class="btn btn-sm btn-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $estadoClass =
+                                                [
+                                                    'Activo' => 'bg-success',
+                                                    'Inactivo' => 'bg-secondary',
+                                                    'Suspendido' => 'bg-warning',
+                                                ][$usuario->estado] ?? 'bg-light text-dark';
+                                        @endphp
+                                        <span class="badge {{ $estadoClass }}">{{ $usuario->estado }}</span>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <div>
-                        {{ $usuarios->links('pagination::bootstrap-5') }}
-                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    {{ $usuarios->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
-
-
     </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -131,32 +174,7 @@
             cmbOrden.addEventListener('change', fetchUsuarios);
             cmbEstado.addEventListener('change', fetchUsuarios);
         });
-    </script>
 
-
-    <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalUsuarioLabel">Detalle del Usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Nombre:</strong> <span id="usuarioNombre"></span></p>
-                    <p><strong>Apellido:</strong> <span id="usuarioApellido"></span></p>
-                    <p><strong>Cédula:</strong> <span id="usuarioCedula"></span></p>
-                    <p><strong>Tipo de Usuario:</strong> <span id="usuarioTipo"></span></p>
-                    <p><strong>Curso Hemoterapia:</strong> <span id="usuarioCurso"></span></p>
-                    <p><strong>Estado:</strong> <span id="usuarioEstado"></span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
         const modalUsuario = document.getElementById('modalUsuario');
         modalUsuario.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
@@ -172,8 +190,20 @@
             modalUsuario.querySelector('#usuarioApellido').textContent = apellido;
             modalUsuario.querySelector('#usuarioCedula').textContent = cedula;
             modalUsuario.querySelector('#usuarioTipo').textContent = tipoUsuario;
-            modalUsuario.querySelector('#usuarioCurso').textContent = cursoHemoterapia;
-            modalUsuario.querySelector('#usuarioEstado').textContent = estado;
+
+            const cursoBadge = cursoHemoterapia ?
+                '<span class="badge bg-success">Completado</span>' :
+                '<span class="badge bg-secondary">Pendiente</span>';
+            modalUsuario.querySelector('#usuarioCurso').innerHTML = cursoBadge;
+
+            const estadoClass = {
+                'Activo': 'bg-success',
+                'Inactivo': 'bg-secondary',
+                'Suspendido': 'bg-warning'
+            } [estado] || 'bg-light text-dark';
+
+            modalUsuario.querySelector('#usuarioEstado').innerHTML =
+                `<span class="badge ${estadoClass}">${estado}</span>`;
         });
     </script>
 @endsection
