@@ -93,23 +93,34 @@ class DonacionController extends Controller
         $datosDonacion = $request->validate([
             'id_donante' => 'required|exists:donantes,id',
             'fecha' => 'required|date',
-            'clase_donacion' => 'required|in:' . implode(',', array_column(TipoDonacion::cases(), 'value')), // Validar enum
-            'serologia' => 'required|in:' . implode(',', array_column(TipoSerologia::cases(), 'value')), // Validar enum
-            'anticuerpos_irregulares' => 'required|in:' . implode(',', array_column(TipoAnticuerposIrregulares::cases(), 'value')), // Validar enum
+            'clase_donacion' => 'required|in:' . implode(',', array_column(TipoDonacion::cases(), 'value')),
+            'serologia' => 'required|in:' . implode(',', array_column(TipoSerologia::cases(), 'value')),
+            'anticuerpos_irregulares' => 'required|in:' . implode(',', array_column(TipoAnticuerposIrregulares::cases(), 'value')),
         ]);
 
+        // Crear la donación
         Donacion::create($datosDonacion);
 
         $donanteId = $request->input('id_donante');
 
-        // Buscamos el donante por su ID
+        // Actualizar la agenda más reciente del donante
+        $agenda = Agenda::where('id_donante', $donanteId)
+            ->whereNull('asistio') // Solo agendas sin registro de asistencia
+            ->orderBy('fecha_agenda', 'desc')
+            ->first();
+
+        if ($agenda) {
+            $agenda->asistio = true; // Marcar como asistió
+            $agenda->save();
+        }
+
+        // Actualizar el estado del donante
         $donante = Donante::findOrFail($donanteId);
-        $donante->estado = EstadoDonante::No_Disponible->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->estado = EstadoDonante::No_Disponible->value;
         $donante->save();
 
         return redirect()->route('gestionarDonante', ['id' => $donanteId])
             ->with('mensaje', 'Donación registrada correctamente');
-
     }
 
     /**

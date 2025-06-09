@@ -65,15 +65,12 @@ class AgendaController extends Controller
      */
     public function create(Request $request)
     {
-        if (!$request->has('donante_id')) {
-            // Obtenemos el id del donante
-            $donanteId = $request->input('donante_id');
 
-            // Buscamos el donante por su ID
-            $donante = Donante::findOrFail($donanteId);
-        }
+        // Obtenemos el id del donante
+        $donanteId = $request->input('donante_id');
 
-
+        // Buscamos el donante por su ID
+        $donante = Donante::findOrFail($donanteId);
 
         // Pasamos el donante a la vista
         return view('agenda.create', compact('donante'));
