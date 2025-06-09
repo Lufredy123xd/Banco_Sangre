@@ -71,6 +71,8 @@ class AgendaController extends Controller
 
         // Buscamos el donante por su ID
         $donante = Donante::findOrFail($donanteId);
+        $donante->estado = EstadoDonante::Agendado->value; // Aseguramos que el estado sea "Disponible"
+        $donante->save();
 
         // Pasamos el donante a la vista
         return view('agenda.create', compact('donante'));
