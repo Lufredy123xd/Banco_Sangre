@@ -6,9 +6,40 @@ use App\Enums\EstadoDonante;
 use App\Models\Agenda;
 use App\Models\Donante;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AgendaController extends Controller
 {
+    public function exportarPDF(Request $request)
+    {
+        $query = Agenda::with('donante');
+
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+
+        if ($fechaInicio) {
+            $query->where('fecha_agenda', '>=', $fechaInicio);
+        }
+
+        if ($fechaFin) {
+            $query->where('fecha_agenda', '<=', $fechaFin);
+        }
+
+        $agendas = $query->orderBy('fecha_agenda', 'desc')->get();
+
+        // Generar mensaje del rango
+        $rangoFechas = null;
+        if ($fechaInicio && $fechaFin) {
+            $rangoFechas = 'Agendas entre el ' . date('d/m/Y', strtotime($fechaInicio)) . ' y el ' . date('d/m/Y', strtotime($fechaFin));
+        } elseif ($fechaInicio) {
+            $rangoFechas = 'Agendas desde el ' . date('d/m/Y', strtotime($fechaInicio));
+        } elseif ($fechaFin) {
+            $rangoFechas = 'Agendas hasta el ' . date('d/m/Y', strtotime($fechaFin));
+        }
+
+        $pdf = Pdf::loadView('agenda.pdf', compact('agendas', 'rangoFechas'));
+        return $pdf->download('agendas.pdf');
+    }
     /**
      * Display a listing of the resource.
      */

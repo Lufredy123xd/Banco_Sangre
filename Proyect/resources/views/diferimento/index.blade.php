@@ -5,6 +5,10 @@
         <!-- Encabezado -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0"><i class="fas fa-calendar-xmark me-2"></i>Lista de Diferimientos</h1>
+            <a id="btnExportarPDF" class="btn btn-danger">
+                <i class="fas fa-file-pdf me-2"></i> Exportar PDF
+            </a>
+
         </div>
 
         <!-- Filtros de búsqueda -->
@@ -133,6 +137,17 @@
 
             // Inicializar eventos de paginación
             attachPaginationEvents();
+
+            document.getElementById('btnExportarPDF').addEventListener('click', function() {
+                const fechaInicio = document.getElementById('fecha_inicio').value;
+                const fechaFin = document.getElementById('fecha_fin').value;
+
+                let url = new URL("{{ route('diferimentos.exportar.pdf') }}", window.location.origin);
+                if (fechaInicio) url.searchParams.append('fecha_inicio', fechaInicio);
+                if (fechaFin) url.searchParams.append('fecha_fin', fechaFin);
+
+                window.location.href = url;
+            });
         });
     </script>
 @endsection

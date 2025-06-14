@@ -7,9 +7,41 @@ use App\Models\Agenda;
 use App\Models\Diferimento;
 use App\Models\Donante;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DiferimentoController extends Controller
 {
+    public function exportarPDF(Request $request)
+    {
+        $query = Diferimento::with('donante');
+
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+
+        if ($fechaInicio) {
+            $query->where('fecha_diferimiento', '>=', $fechaInicio);
+        }
+
+        if ($fechaFin) {
+            $query->where('fecha_diferimiento', '<=', $fechaFin);
+        }
+
+        $diferimentos = $query->orderBy('fecha_diferimiento', 'desc')->get();
+
+        // Generar mensaje del rango
+        $rangoFechas = null;
+        if ($fechaInicio && $fechaFin) {
+            $rangoFechas = 'Diferimientos entre el ' . date('d/m/Y', strtotime($fechaInicio)) . ' y el ' . date('d/m/Y', strtotime($fechaFin));
+        } elseif ($fechaInicio) {
+            $rangoFechas = 'Diferimientos desde el ' . date('d/m/Y', strtotime($fechaInicio));
+        } elseif ($fechaFin) {
+            $rangoFechas = 'Diferimientos hasta el ' . date('d/m/Y', strtotime($fechaFin));
+        }
+
+        $pdf = Pdf::loadView('diferimento.pdf', compact('diferimentos', 'rangoFechas'));
+        return $pdf->download('diferimentos.pdf');
+    }
+
     /**
      * Display a listing of the resource.
      */

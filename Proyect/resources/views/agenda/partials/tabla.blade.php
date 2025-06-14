@@ -3,6 +3,7 @@
         <tr>
             <td>{{ $agenda->donante->nombre ?? 'N/A' }}</td>
             <td>{{ $agenda->donante->apellido ?? 'N/A' }}</td>
+            <td>{{ $agenda->donante->cedula ?? 'N/A' }}</td>
             <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>
             <td>{{ $agenda->horario }}</td>
             <td>

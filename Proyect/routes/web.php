@@ -11,6 +11,10 @@ use App\Http\Controllers\UsuarioController;
 Route::get('/donantes/export/pdf', [DonanteController::class, 'exportPdf'])->name('donantes.export.pdf');
 Route::get('/donaciones/export/pdf', [DonacionController::class, 'exportPdf'])->name('donaciones.export.pdf');
 Route::get('/donaciones/exportar-pdf', [DonacionController::class, 'exportarPDF']);
+Route::get('/diferimentos/exportar/pdf', [DiferimentoController::class, 'exportarPDF'])->name('diferimentos.exportar.pdf');
+Route::get('/agenda/exportar/pdf', [AgendaController::class, 'exportarPDF'])->name('agenda.exportar.pdf');
+
+
 // routes/web.php
 
 Route::get('/', function () {

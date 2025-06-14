@@ -5,9 +5,14 @@
         <!-- Encabezado -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Lista de Agendas</h1>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearAgenda">
-                <i class="fas fa-plus-circle me-2"></i> Nueva Agenda
-            </a>
+            <div class="btn-group">
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearAgenda">
+                    <i class="fas fa-plus-circle me-2"></i> Nueva Agenda
+                </a>
+                <a id="btnExportarPDF" class="btn btn-danger">
+                    <i class="fas fa-file-pdf me-2"></i> Exportar PDF
+                </a>
+            </div>
         </div>
 
         <!-- Filtros de búsqueda -->
@@ -68,6 +73,7 @@
                             <tr>
                                 <th><i class="fas fa-user me-1"></i> Nombre</th>
                                 <th><i class="fas fa-user me-1"></i> Apellido</th>
+                                <th><i class="fas fa-id-card me-1"></i> Cédula</th>
                                 <th><i class="fas fa-calendar-day me-1"></i> Fecha</th>
                                 <th><i class="fas fa-clock me-1"></i> Horario</th>
                                 <th><i class="fas fa-check-circle me-1"></i> Asistencia</th>
@@ -79,6 +85,7 @@
                                 <tr>
                                     <td>{{ $agenda->donante->nombre ?? 'N/A' }}</td>
                                     <td>{{ $agenda->donante->apellido ?? 'N/A' }}</td>
+                                    <td>{{ $agenda->donante->cedula ?? 'N/A' }}</td>
                                     <td>{{ \Carbon\Carbon::parse($agenda->fecha_agenda)->format('d/m/Y') }}</td>
                                     <td>{{ $agenda->horario }}</td>
                                     <td>
@@ -266,5 +273,17 @@
             // Inicializar eventos de paginación
             attachPaginationEvents();
         });
+
+        // Exportar a PDF
+        document.getElementById('btnExportarPDF').addEventListener('click', function() {
+                const fechaInicio = document.getElementById('fecha_inicio').value;
+                const fechaFin = document.getElementById('fecha_fin').value;
+
+                let url = new URL("{{ route('agenda.exportar.pdf') }}", window.location.origin);
+                if (fechaInicio) url.searchParams.append('fecha_inicio', fechaInicio);
+                if (fechaFin) url.searchParams.append('fecha_fin', fechaFin);
+
+                window.location.href = url;
+            });
     </script>
 @endsection
