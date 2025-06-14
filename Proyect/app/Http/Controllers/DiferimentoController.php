@@ -22,6 +22,31 @@ class DiferimentoController extends Controller
         return view('diferimento.index', $datos);
     }
 
+    public function buscar(Request $request)
+    {
+        $query = Diferimento::with('donante');
+
+        if ($request->filled('fecha_inicio')) {
+            $query->whereDate('fecha_diferimiento', '>=', $request->fecha_inicio);
+        }
+
+        if ($request->filled('fecha_fin')) {
+            $query->whereDate('fecha_diferimiento', '<=', $request->fecha_fin);
+        }
+
+        $query->orderBy('fecha_diferimiento', 'desc');
+        $diferimentos = $query->paginate(10);
+
+        $tabla = view('diferimento.partials.table', compact('diferimentos'))->render();
+        $paginacion = $diferimentos->links('pagination::bootstrap-5')->render();
+
+        return response()->json([
+            'tabla' => $tabla,
+            'paginacion' => $paginacion,
+        ]);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -60,9 +85,9 @@ class DiferimentoController extends Controller
 
         // Buscamos el donante por su ID
         $donante = Donante::findOrFail($donanteId);
-        $donante->estado = EstadoDonante::No_Disponible->value; // Cambiamos el estado del donante a "Agendado"
+        $donante->estado = EstadoDonante::DiferidoPermanente->value; // Cambiamos el estado del donante a "Diferido Permanente"
         $donante->save();
-        
+
         return redirect()->route('gestionarDonante', ['id' => $donanteId])
             ->with('mensaje', 'Se diferio correctamente');
     }
@@ -84,7 +109,7 @@ class DiferimentoController extends Controller
             abort(403, 'Acceso no autorizado.');
         }
         $diferimento = Diferimento::findOrFail($id);
-        $donante = Donante::findOrFail($diferimento->donante_id);
+        $donante = Donante::findOrFail($diferimento->id_donante);
         return view('diferimento.edit', compact('diferimento', 'donante'));
     }
 
@@ -95,8 +120,8 @@ class DiferimentoController extends Controller
     {
         $datosDiferimento = request()->except(['_token', '_method']);
         Diferimento::where('id', '=', $id)->update($datosDiferimento);
-        
-        return redirect('diferimento.edit')->with('mensaje', 'Se actualizo correctamente');
+
+        return redirect()->route('diferimento.index')->with('mensaje', 'Se actualizo correctamente');
     }
 
     /**
@@ -105,7 +130,7 @@ class DiferimentoController extends Controller
     public function destroy($id)
     {
         Diferimento::destroy($id);
-        
-        return redirect('diferimento')->with('mensaje', 'Se elimino correctamente');
+
+        return redirect('diferimento.index')->with('mensaje', 'Se elimino correctamente');
     }
 }

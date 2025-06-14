@@ -10,7 +10,7 @@ use App\Http\Controllers\UsuarioController;
 
 Route::get('/donantes/export/pdf', [DonanteController::class, 'exportPdf'])->name('donantes.export.pdf');
 Route::get('/donaciones/export/pdf', [DonacionController::class, 'exportPdf'])->name('donaciones.export.pdf');
-
+Route::get('/donaciones/exportar-pdf', [DonacionController::class, 'exportarPDF']);
 // routes/web.php
 
 Route::get('/', function () {
@@ -37,6 +37,8 @@ Route::middleware(['autenticado'])->group(function () {
     Route::get('/agenda/buscar', [App\Http\Controllers\AgendaController::class, 'buscar'])->name('agenda.buscar');
 
     Route::get('/donacion/buscar', [DonacionController::class, 'buscar'])->name('donacion.buscar');
+
+    Route::get('/diferimento/buscar', [DiferimentoController::class, 'buscar'])->name('diferimento.buscar');
 
     //-.-.-.-.-.-.-.--.-.RUTAS DE IMPORTACION-.-.-.-.-.-.-.-
     Route::post('/donante/import-csv', [DonanteController::class, 'importCsv'])->name('donante.importCsv');

@@ -17,16 +17,25 @@ class DonacionController extends Controller
 {
 
 
-    public function exportPdf()
+    public function exportarPDF(Request $request)
     {
-        // Obtener todas las donaciones, sin necesidad de "eager loading" en este caso
-        $donaciones = Donacion::all();
-        $donantes = Donante::all();
+        $query = Donacion::with('donante');
 
-        // Generar el PDF con la vista 'donante.pdf' y pasar los donantes y las donaciones
-        $pdf = Pdf::loadView('donacion.pdf', compact('donaciones', 'donantes'));
+        if ($request->filled('fecha_inicio')) {
+            $query->whereDate('fecha', '>=', $request->fecha_inicio);
+        }
 
-        // Descargar el archivo PDF
+        if ($request->filled('fecha_fin')) {
+            $query->whereDate('fecha', '<=', $request->fecha_fin);
+        }
+
+        $query->orderBy('fecha', 'desc');
+        $donaciones = $query->get();
+
+        $fechaInicio = $request->fecha_inicio;
+        $fechaFin = $request->fecha_fin;
+
+        $pdf = Pdf::loadView('donacion.pdf', compact('donaciones', 'fechaInicio', 'fechaFin'));
         return $pdf->download('donaciones.pdf');
     }
 
@@ -157,9 +166,18 @@ class DonacionController extends Controller
             'anticuerpos_irregulares' => 'required|in:' . implode(',', array_column(TipoAnticuerposIrregulares::cases(), 'value')), // Validar enum
         ]);
 
-        Donacion::where('id', '=', $id)->update($datosDonacion);
+        $donacion = Donacion::findOrFail($id);
+        $donacion->update($datosDonacion);
+        //Donacion::where('id', '=', $id)->update($datosDonacion);
 
-        return redirect('donacion')->with('mensaje', 'Donación actualizada correctamente');
+        $return = $request->input('return');
+        if ($return === 'gestionarDonante') {
+            return redirect()->route('gestionarDonante', ['id' => $donacion->id_donante])
+                ->with('mensaje', 'Donación actualizada correctamente');
+        } else {
+            return redirect()->route('donacion.index')
+                ->with('mensaje', 'Donación actualizada correctamente');
+        }
     }
 
     /**
@@ -198,6 +216,4 @@ class DonacionController extends Controller
 
         return view('gestionarDonante', compact('donante', 'agenda', 'diferimientos', 'donaciones'));
     }
-
-
 }

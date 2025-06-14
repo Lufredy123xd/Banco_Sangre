@@ -15,7 +15,7 @@ class Diferimento extends Model
         'tiempo_en_meses',
     ];
 
-    public function donantes()
+    public function donante()
     {
         return $this->belongsTo(Donante::class, 'id_donante');
     }

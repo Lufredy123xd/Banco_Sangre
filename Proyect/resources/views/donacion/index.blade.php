@@ -5,8 +5,8 @@
         <!-- Encabezado y botón de exportación -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0"><i class="fas fa-tint me-2"></i>Registro de Donaciones</h1>
-            <a href="{{ route('donaciones.export.pdf') }}" class="btn btn-danger">
-                <i class="fas fa-file-pdf me-2"></i> Exportar PDF
+            <a href="#" onclick="exportarPDF()" class="btn btn-danger mb-3">
+                <i class="fas fa-file-pdf me-2"></i> Exportar a PDF
             </a>
         </div>
 
@@ -135,5 +135,16 @@
             // Inicializar eventos de paginación
             attachPaginationEvents();
         });
+
+        function exportarPDF() {
+            const fechaInicio = document.getElementById('fecha_inicio').value;
+            const fechaFin = document.getElementById('fecha_fin').value;
+
+            const url = new URL("{{ url('/donaciones/exportar-pdf') }}");
+            if (fechaInicio) url.searchParams.append('fecha_inicio', fechaInicio);
+            if (fechaFin) url.searchParams.append('fecha_fin', fechaFin);
+
+            window.location.href = url;
+        }
     </script>
 @endsection

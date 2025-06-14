@@ -153,6 +153,7 @@
                                 <th><i class="fas fa-tint me-1"></i> RH</th>
                                 <th><i class="fas fa-calendar-alt me-1"></i> Última Donación</th>
                                 <th><i class="fas fa-venus-mars me-1"></i> Sexo</th>
+                                <th><i class="fa-solid fa-sliders me-1"></i> Acciones</th>
                                 <th><i class="fas fa-info-circle me-1"></i> Estado</th>
                             </tr>
                         </thead>
@@ -319,8 +320,9 @@
                         .then(data => {
                             tabla.innerHTML = data.tabla;
                             paginacion.innerHTML = data.paginacion;
-                            contador.textContent = `${data.total} registros`;
                             asignarEventosPaginacion();
+                            contador.textContent = `${data.total} registros`;
+                            
                         })
                         .catch(err => console.error('Error al buscar donantes:', err));
                 }
