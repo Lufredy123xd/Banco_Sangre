@@ -96,7 +96,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" name="nombre_usuario" id="txt__nombre_usuario" required
+                                <input type="text" class="form-control" name="user_name" id="txt__nombre_usuario" required
                                     placeholder="Nombre de usuario" maxlength="50" pattern="[A-Za-z0-9_]+"
                                     title="Letras, números y guiones bajos">
                                 <label for="txt__nombre_usuario">Nombre de Usuario</label>
