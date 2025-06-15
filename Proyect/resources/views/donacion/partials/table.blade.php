@@ -8,8 +8,7 @@
         <td>
             <div class="d-flex gap-2 justify-content-center">
                 <a href="{{ url('/donacion/' . $donacion->id . '/edit') }}"
-                    class="btn btn-primary btn-sm"><img src="{{ asset('imgs/edit_icon.png') }}"
-                        alt="Editar" style="width: 20px; height: 20px;"></a>
+                    class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
             </div>
         </td>
     </tr>

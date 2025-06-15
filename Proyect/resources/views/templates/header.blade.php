@@ -5,16 +5,35 @@
         </button>
         <nav class="header__nav" id="menu">
             @if (session('tipo_usuario') === 'Administrador')
-                <a href="{{ route('usuario.index') }}" class="header__nav-link">Gestionar Usuarios</a>
-                <a href="{{ route('donante.index') }}" class="header__nav-link">Gestionar Donantes</a>
+                <a href="{{ route('usuario.index') }}" class="header__nav-link">
+                    <i class="fas fa-users-cog"></i> Gestionar Usuarios
+                </a>
+                <a href="{{ route('donante.index') }}" class="header__nav-link">
+                    <i class="fas fa-hand-holding-heart"></i> Gestionar Donantes
+                </a>
             @else
-                <a href="{{ route('donante.index') }}" class="header__nav-link">Gestionar Donantes</a>
+                <a href="{{ route('donante.index') }}" class="header__nav-link">
+                    <i class="fas fa-hand-holding-heart"></i> Gestionar Donantes
+                </a>
             @endif
-            <a href="{{ route('agenda.index') }}" class="header__nav-link">Listar Agendas</a>
-            <a href="{{ route('donacion.index') }}" class="header__nav-link">Listar Donaciones</a>
-            <a href="{{ route('diferimento.index') }}" class="header__nav-link">Listar Diferimientos</a>
-            <a href="{{ route('password.form') }}" class="header__nav-link">Cambiar contraseña</a>
-            <a href="{{ route('logout') }}" class="header__nav-link">Cerrar sesión</a>
+            <a href="{{ route('agenda.index') }}" class="header__nav-link">
+                <i class="fas fa-calendar-alt"></i> Listar Agendas
+            </a>
+            <a href="{{ route('donacion.index') }}" class="header__nav-link">
+                <i class="fas fa-tint"></i> Listar Donaciones
+            </a>
+            <a href="{{ route('diferimento.index') }}" class="header__nav-link">
+                <i class="fas fa-clock"></i> Listar Diferimientos
+            </a>
+            <a href="{{ route('estadisticas.index') }}" class="header__nav-link">
+                <i class="fas fa-chart-bar"></i> Estadísticas
+            </a>
+            <a href="{{ route('password.form') }}" class="header__nav-link">
+                <i class="fas fa-key"></i> Cambiar contraseña
+            </a>
+            <a href="{{ route('logout') }}" class="header__nav-link">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </a>
         </nav>
     </div>
 

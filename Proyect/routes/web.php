@@ -7,12 +7,16 @@ use App\Http\Controllers\NotificacionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonanteController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\EstadisticaController;
 
 Route::get('/donantes/export/pdf', [DonanteController::class, 'exportPdf'])->name('donantes.export.pdf');
 Route::get('/donaciones/export/pdf', [DonacionController::class, 'exportPdf'])->name('donaciones.export.pdf');
 Route::get('/donaciones/exportar-pdf', [DonacionController::class, 'exportarPDF']);
 Route::get('/diferimentos/exportar/pdf', [DiferimentoController::class, 'exportarPDF'])->name('diferimentos.exportar.pdf');
 Route::get('/agenda/exportar/pdf', [AgendaController::class, 'exportarPDF'])->name('agenda.exportar.pdf');
+
+Route::get('/estadisticas', [EstadisticaController::class, 'index'])->name('estadisticas.index');
+
 
 
 // routes/web.php
@@ -35,6 +39,7 @@ Route::middleware(['autenticado'])->group(function () {
     Route::get('/usuarios/buscar', [UsuarioController::class, 'buscar'])->name('usuario.buscar');
     Route::get('/donantes/buscar', [DonanteController::class, 'buscar'])->name('donantes.buscar');
     Route::get('/donantes/buscar', [DonanteController::class, 'buscar'])->name('donantes.buscar');
+    Route::get('/estadisticas/buscar', [EstadisticaController::class, 'buscar'])->name('estadisticas.buscar');
 
     Route::get('/donantes/buscar', [App\Http\Controllers\DonanteController::class, 'buscar'])->name('donantes.buscar');
 
