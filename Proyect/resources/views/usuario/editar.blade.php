@@ -1,149 +1,174 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
-    <!-- Encabezado -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0"><i class="fas fa-user-edit me-2"></i>Editar Usuario</h1>
-    </div>
-
-    <!-- Mensajes -->
-    @if (session('mensaje'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="fas fa-check-circle me-2"></i> {{ session('mensaje') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container py-4">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0"><i class="fas fa-user-edit me-2"></i>Editar Usuario</h1>
         </div>
-    @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+        <!-- Mensajes -->
+        @if (session('mensaje'))
+            <div class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i> {{ session('mensaje') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-    <!-- Formulario -->
-    <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Datos del Usuario</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{ url('/usuario/' . $usuario->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-                <!-- Sección 1: Información Básica -->
-                <div class="mb-4">
-                    <h5 class="text-primary mb-3"><i class="fas fa-id-card me-2"></i>Información Personal</h5>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" name="nombre" id="txt__nombre" required
-                                    placeholder="Nombre" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
-                                    title="Solo letras y espacios" value="{{ $usuario->nombre }}">
-                                <label for="txt__nombre">Nombre</label>
+        <!-- Formulario -->
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Datos del Usuario</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url('/usuario/' . $usuario->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <!-- Sección 1: Información Básica -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3"><i class="fas fa-id-card me-2"></i>Información Personal</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="nombre" id="txt__nombre" required
+                                        placeholder="Nombre" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                                        title="Solo letras y espacios" value="{{ $usuario->nombre }}">
+                                    <label for="txt__nombre">Nombre</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" name="apellido" id="txt__apellido" required
-                                    placeholder="Apellido" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
-                                    title="Solo letras y espacios" value="{{ $usuario->apellido }}">
-                                <label for="txt__apellido">Apellido</label>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="apellido" id="txt__apellido" required
+                                        placeholder="Apellido" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                                        title="Solo letras y espacios" value="{{ $usuario->apellido }}">
+                                    <label for="txt__apellido">Apellido</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" name="cedula" id="txt__cedula" required
-                                    placeholder="Cédula" maxlength="8" pattern="\d+"
-                                    title="Solo números" value="{{ $usuario->cedula }}">
-                                <label for="txt__cedula">Cédula</label>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="cedula" id="txt__cedula" required
+                                        placeholder="Cédula" maxlength="8" pattern="\d+" title="Solo números"
+                                        value="{{ $usuario->cedula }}">
+                                    <label for="txt__cedula">Cédula</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="date" class="form-control" name="fecha_nacimiento" id="txt__fecha_nacimiento" required
-                                    max="{{ date('Y-m-d') }}" title="Fecha no puede ser posterior a hoy"
-                                    value="{{ $usuario->fecha_nacimiento }}">
-                                <label for="txt__fecha_nacimiento">Fecha de Nacimiento</label>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" name="fecha_nacimiento"
+                                        id="txt__fecha_nacimiento" required max="{{ date('Y-m-d') }}"
+                                        title="Fecha no puede ser posterior a hoy" value="{{ $usuario->fecha_nacimiento }}">
+                                    <label for="txt__fecha_nacimiento">Fecha de Nacimiento</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sección 2: Datos de Cuenta -->
-                <div class="mb-4">
-                    <h5 class="text-primary mb-3"><i class="fas fa-user-shield me-2"></i>Datos de Cuenta</h5>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select" name="tipo_usuario" id="txt__tipo_usuario" required>
-                                    <option value="" disabled>Seleccione un tipo</option>
-                                    @foreach (App\Enums\TipoUsuario::cases() as $tipo)
-                                        <option value="{{ $tipo->value }}" {{ $usuario->tipo_usuario == $tipo->value ? 'selected' : '' }}>
-                                            {{ $tipo->value }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label for="txt__tipo_usuario">Tipo de Usuario</label>
+                    <!-- Sección 2: Datos de Cuenta -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3"><i class="fas fa-user-shield me-2"></i>Datos de Cuenta</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select" name="tipo_usuario" id="tipo_usuario" required>
+                                        <option value="" disabled>Seleccione un tipo</option>
+                                        @foreach (App\Enums\TipoUsuario::cases() as $tipo)
+                                            <option value="{{ $tipo->value }}"
+                                                {{ $usuario->tipo_usuario == $tipo->value ? 'selected' : '' }}>
+                                                {{ $tipo->value }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="tipo_usuario">Tipo de Usuario</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select" name="curso_hemoterapia" id="txt__curso">
-                                    <option value="">Seleccione un curso</option>
-                                    @foreach (App\Enums\Curso::cases() as $curso)
-                                        <option value="{{ $curso->value }}" {{ $usuario->curso_hemoterapia == $curso->value ? 'selected' : '' }}>
-                                            {{ $curso->value }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label for="txt__curso">Curso (para estudiantes)</label>
+                            <div class="col-md-6" id="curso_group">
+                                <div class="form-floating">
+                                    <select class="form-select" name="curso_hemoterapia" id="txt__curso">
+                                        <option value="" disabled selected>Seleccione un curso</option>
+                                        @foreach (App\Enums\Curso::cases() as $curso)
+                                            <option value="{{ $curso->value }}"
+                                                {{ $usuario->curso_hemoterapia == $curso->value ? 'selected' : '' }}>
+                                                {{ $curso->value }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="txt__curso">Curso (para estudiantes)</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" name="nombre_usuario" id="txt__nombre_usuario" required
-                                    placeholder="Nombre de usuario" maxlength="50" pattern="[A-Za-z0-9_]+"
-                                    title="Letras, números y guiones bajos" value="{{ $usuario->user_name }}">
-                                <label for="txt__nombre_usuario">Nombre de Usuario</label>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="user_name"
+                                        id="txt__nombre_usuario" required placeholder="Nombre de usuario" maxlength="50"
+                                        pattern="[A-Za-z0-9_]+" title="Letras, números y guiones bajos"
+                                        value="{{ $usuario->user_name }}">
+                                    <label for="txt__nombre_usuario">Nombre de Usuario</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="password" class="form-control" name="password" id="txt__password"
-                                    minlength="8" maxlength="20" pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
-                                    title="Mínimo 8 caracteres con letras y números">
-                                <label for="txt__password">Nueva Contraseña</label>
-                                <small class="text-muted">Dejar en blanco para mantener la actual</small>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" name="password" id="txt__password"
+                                        minlength="8" maxlength="20" pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
+                                        title="Mínimo 8 caracteres con letras y números">
+                                    <label for="txt__password">Nueva Contraseña</label>
+                                    <small class="text-muted">Dejar en blanco para mantener la actual</small>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select" name="estado" id="txt__estado" required>
-                                    @foreach (App\Enums\EstadoUsuario::cases() as $estado)
-                                        <option value="{{ $estado->value }}" {{ $usuario->estado == $estado->value ? 'selected' : '' }}>
-                                            {{ $estado->value }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label for="txt__estado">Estado</label>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-select" name="estado" id="txt__estado" required>
+                                        @foreach (App\Enums\EstadoUsuario::cases() as $estado)
+                                            <option value="{{ $estado->value }}"
+                                                {{ $usuario->estado == $estado->value ? 'selected' : '' }}>
+                                                {{ $estado->value }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="txt__estado">Estado</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Botones -->
-                <div class="d-flex justify-content-end gap-3 mt-4">
-                    <a href="{{ route('usuario.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i> Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i> Guardar Cambios
-                    </button>
-                </div>
-            </form>
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-end gap-3 mt-4">
+                        <a href="{{ route('usuario.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+    <script>
+        document.getElementById('tipo_usuario').addEventListener('change', function() {
+            const tipo = this.value;
+            const cursoGroup = document.getElementById('curso_group');
+            const cursoSelect = document.getElementById('txt__curso');
+            const opcionesCurso = cursoSelect.options;
+            if (tipo === 'Administrador') {
+                cursoGroup.style.display = 'none';
+                cursoSelect.value = 'No Aplica';
+            } else {
+                cursoGroup.style.display = '';
+                cursoSelect.setAttribute("required", true)
+                if (cursoSelect.value === 'No Aplica') {
+                    cursoSelect.value = '';
+                }
+            }
+        });
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('tipo_usuario').dispatchEvent(new Event('change'));
+        });
+    </script>
 @endsection

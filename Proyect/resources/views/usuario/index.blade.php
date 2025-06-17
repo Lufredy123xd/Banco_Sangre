@@ -94,22 +94,16 @@
                                         @php
                                             $cursoClass =
                                                 [
-                                                    'Completado' => 'bg-success',
-                                                    'En Progreso' => 'bg-warning',
-                                                    'Pendiente' => 'bg-secondary',
+                                                    'Hemoterapia I' => 'bg-success',
+                                                    'Hemoterapia II' => 'bg-warning',
+                                                    'Hemoterapia III' => 'bg-secondary',
+                                                    'Hemoterapia IV' => 'bg-danger',
                                                     'No Aplica' => 'bg-info',
                                                 ][$usuario->curso_hemoterapia] ?? 'bg-light text-dark';
 
-                                            $cursoIcon =
-                                                [
-                                                    'Completado' => 'fa-check-circle',
-                                                    'En Progreso' => 'fa-spinner',
-                                                    'Pendiente' => 'fa-clock',
-                                                    'No Aplica' => 'fa-minus-circle',
-                                                ][$usuario->curso_hemoterapia] ?? 'fa-question-circle';
                                         @endphp
                                         <span class="badge {{ $cursoClass }}">
-                                            <i class="fas {{ $cursoIcon }} me-1"></i>
+                                            
                                             {{ $usuario->curso_hemoterapia ?: 'No especificado' }}
                                         </span>
                                     </td>
