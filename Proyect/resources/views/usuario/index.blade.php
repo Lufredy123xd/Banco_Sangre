@@ -108,7 +108,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <div class="d-flex gap-2">
+                                        <div class="align-items-center gap-2">
                                             <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}"
                                                 class="btn btn-sm btn-primary" title="Editar">
                                                 <i class="fas fa-edit"></i>

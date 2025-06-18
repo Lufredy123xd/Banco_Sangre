@@ -374,21 +374,28 @@ class DonanteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $datosDonante = request()->except(['_token', '_method']);
+        $donante = Donante::findOrFail($id);
 
-        // Verificar cédula uruguaya
-        if (!$this->validarCedulaUruguaya($datosDonante['cedula'])) {
-            return back()->with('error', 'La cédula ingresada no es válida según las reglas uruguayas.')->withInput();
+        $request->validate([
+            'nombre'    => 'required|string|max:50',
+            'apellido'  => 'required|string|max:50',
+            'cedula'    => 'required|digits:8|unique:donantes,cedula,' . $donante->id,
+            'email'     => 'required|email|unique:donantes,email,' . $donante->id,
+            'telefono'  => 'nullable|digits_between:7,15',
+            'fecha_nacimiento' => 'required|date|before_or_equal:today', // Fecha de nacimiento obligatoria y no puede ser futura
+            'observaciones' => 'nullable|string|max:255', // Observaciones opcionales, máximo 255 caracteres
+        ]);
+
+        // Validación personalizada de cédula (si aplica)
+        if (!$this->validarCedulaUruguaya($request->cedula)) {
+            return back()->with('error', 'La cédula ingresada no es válida.')->withInput();
         }
 
-        // Asignar el usuario actual como modificador
-        $datosDonante['modificado_por'] = session('usuario_id');
+        $donante->update($request->all());
 
-        Donante::where('id', '=', $id)->update($datosDonante);
-        $donante = Donante::findOrFail($id);
-        return redirect()->route('donante.edit', $id)->with('mensaje', 'Donante actualizado correctamente');
+        return redirect()->route('donante.index')->with('mensaje', 'Donante actualizado correctamente.');
     }
 
     /**

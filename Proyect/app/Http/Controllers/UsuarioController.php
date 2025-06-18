@@ -195,7 +195,18 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token'); // Elimina el _token del array de datos
+        // Validaciones
+        $request->validate([
+            'nombre'       => 'required|string|max:50',
+            'apellido'     => 'required|string|max:50',
+            'cedula'       => 'required|digits:8|unique:usuarios,cedula',
+            'user_name'    => 'required|string|max:50|unique:usuarios,user_name',
+            'password'     => 'required|string|min:6|max:50',
+            'tipo_usuario' => 'required|in:Administrador,Estudiante',
+            'estado'       => 'required|in:Activo,Inactivo',
+        ]);
+
+        $data = $request->except('_token');
 
         // Validar cédula antes de crear
         if (!$this->validarCedulaUruguaya($data['cedula'])) {
@@ -229,21 +240,29 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::findOrFail($id);
 
-        $data = $request->except('_token'); // Elimina el _token del array de datos
+        // Validaciones
+        $request->validate([
+            'nombre'       => 'required|string|max:50',
+            'apellido'     => 'required|string|max:50',
+            'cedula'       => 'required|digits:8|unique:usuarios,cedula,' . $usuario->id,
+            'user_name'    => 'required|string|max:50|unique:usuarios,user_name,' . $usuario->id,
+            'password'     => 'nullable|string|min:6|max:50',
+            'tipo_usuario' => 'required|in:Administrador,Estudiante',
+            'estado'       => 'required|in:Activo,Inactivo',
+        ]);
 
-        // Validar cédula antes de crear
+        $data = $request->except('_token');
+
+        // Validar cédula antes de actualizar
         if (!$this->validarCedulaUruguaya($data['cedula'])) {
             return back()->with('error', 'La cédula ingresada no es válida.')->withInput();
         }
 
-
-        if ($data['password'] == null) {
-            $data['password'] = $usuario->password; // Mantiene la contraseña actual si no se proporciona una nueva
+        if (empty($data['password'])) {
+            $data['password'] = $usuario->password;
         } else {
             $data['password'] = Hash::make($data['password']);
         }
-
-
 
         $usuario->update($data);
 

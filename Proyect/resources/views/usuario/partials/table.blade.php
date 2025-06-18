@@ -6,52 +6,38 @@
         <td>{{ $usuario->tipo_usuario }}</td>
         <td>
             @php
-                $cursoClass = [
-                    'Completado' => 'bg-success',
-                    'En Progreso' => 'bg-warning',
-                    'Pendiente' => 'bg-secondary',
-                    'No Aplica' => 'bg-info'
-                ][$usuario->curso_hemoterapia] ?? 'bg-light text-dark';
-                
-                $cursoIcon = [
-                    'Completado' => 'fa-check-circle',
-                    'En Progreso' => 'fa-spinner',
-                    'Pendiente' => 'fa-clock',
-                    'No Aplica' => 'fa-minus-circle'
-                ][$usuario->curso_hemoterapia] ?? 'fa-question-circle';
+                $cursoClass =
+                    [
+                        'Hemoterapia I' => 'bg-success',
+                        'Hemoterapia II' => 'bg-warning',
+                        'Hemoterapia III' => 'bg-secondary',
+                        'Hemoterapia IV' => 'bg-danger',
+                        'No Aplica' => 'bg-info',
+                    ][$usuario->curso_hemoterapia] ?? 'bg-light text-dark';
+
             @endphp
             <span class="badge {{ $cursoClass }}">
-                <i class="fas {{ $cursoIcon }} me-1"></i> {{ $usuario->curso_hemoterapia ?: 'No especificado' }}
+
+                {{ $usuario->curso_hemoterapia ?: 'No especificado' }}
             </span>
         </td>
         <td>
-            <div class="d-flex gap-2">
-                <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}" 
-                   class="btn btn-sm btn-primary" title="Editar">
-                   <i class="fas fa-edit"></i>
+            <div class="align-items-center gap-2">
+                <a href="{{ url('/usuario/' . $usuario->id . '/edit') }}" class="btn btn-sm btn-primary" title="Editar">
+                    <i class="fas fa-edit"></i>
                 </a>
-                
             </div>
         </td>
         <td>
             @php
-                $estadoClass = [
-                    'Activo' => 'bg-success',
-                    'Inactivo' => 'bg-secondary',
-                    'Suspendido' => 'bg-warning',
-                    'Pendiente' => 'bg-info'
-                ][$usuario->estado] ?? 'bg-light text-dark';
-                
-                $estadoIcon = [
-                    'Activo' => 'fa-check-circle',
-                    'Inactivo' => 'fa-times-circle',
-                    'Suspendido' => 'fa-exclamation-circle',
-                    'Pendiente' => 'fa-clock'
-                ][$usuario->estado] ?? 'fa-question-circle';
+                $estadoClass =
+                    [
+                        'Activo' => 'bg-success',
+                        'Inactivo' => 'bg-secondary',
+                        'Suspendido' => 'bg-warning',
+                    ][$usuario->estado] ?? 'bg-light text-dark';
             @endphp
-            <span class="badge {{ $estadoClass }}">
-                <i class="fas {{ $estadoIcon }} me-1"></i> {{ $usuario->estado }}
-            </span>
+            <span class="badge {{ $estadoClass }}">{{ $usuario->estado }}</span>
         </td>
     </tr>
 @endforeach

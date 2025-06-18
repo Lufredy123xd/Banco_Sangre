@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->integer('cedula')->unique();
-            $table->enum('tipo_usuario', array_column(TipoUsuario::cases(), 'value')); // Tipo de usuario: Administrador, Donante, etc.
+            $table->enum('tipo_usuario', array_column(TipoUsuario::cases(), 'value')); // Tipo de usuario: Administrador, Estudiante.
             $table->date('fecha_nacimiento');
             $table->enum('curso_hemoterapia', array_column(Curso::cases(), 'value'))->nullable(); // Curso de hemoterapia
             $table->string('user_name')->unique();
