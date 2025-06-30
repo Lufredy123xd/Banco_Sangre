@@ -107,7 +107,7 @@
         position: absolute;
         top: 50%;
         left: 10%;
-        min-width: 210px;
+        min-width: 300px;
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
