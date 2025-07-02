@@ -343,66 +343,41 @@
         </div>
     </div>
 
-    <!-- Modal de Diferimiento -->
-    <div class="modal fade" id="modalDiferimiento" tabindex="-1" aria-labelledby="modalDiferimientoLabel"
-        aria-hidden="true">
+    <!-- Modal de Diferimiento (solo para visualizar) -->
+    <div class="modal fade" id="modalDiferimiento" tabindex="-1" aria-labelledby="modalDiferimientoLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="modalDiferimientoLabel">
                         <i class="fas fa-clock me-2"></i>Detalle del Diferimiento
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <form id="formDiferirDonante" action="{{ url('/diferimento') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3 border rounded p-3">
-                            <label class="form-label">Datos del Donante</label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="form-label">Nombre</label>
-                                    <input type="text" class="form-control"
-                                        value="{{ $donante->nombre }} {{ $donante->apellido }}" readonly>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Cédula</label>
-                                    <input type="text" class="form-control" value="{{ $donante->cedula }}" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="id_donante" value="{{ $donante->id }}">
-                        <div class="mb-3">
-                            <label for="motivo" class="form-label">Motivo</label>
-                            <input type="text" class="form-control" id="motivo" name="motivo" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fechaDiferimiento" class="form-label">Fecha de Diferimiento</label>
-                            <input type="date" class="form-control" id="fechaDiferimiento" name="fecha_diferimiento"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tipo_diferimiento" class="form-label">Tipo de diferimiento</label>
-                            <select id="tipo_diferimiento" name="tipo" class="form-select" required>
-                                <option value="Permanente">Permanente</option>
-                                <option value="Temporal">Temporal</option>
-                            </select>
-                        </div>
-                        <div class="mb-3" id="tiempoEnMesesContainer">
-                            <label for="tiempoEnMeses" class="form-label">Tiempo en Meses</label>
-                            <input type="number" class="form-control" id="tiempoEnMeses" name="tiempo_en_meses">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i>Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-save me-2"></i>Guardar
-                        </button>
-                    </div>
-                </form>
+                <div class="modal-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-calendar-day me-2"></i>Fecha:</strong>
+                            <span id="modalFecha" class="float-end"></span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-comment me-2"></i>Motivo:</strong>
+                            <span id="modalMotivo" class="float-end"></span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-tag me-2"></i>Tipo:</strong>
+                            <span id="modalTipo" class="float-end"></span>
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-clock me-2"></i>Tiempo en Meses:</strong>
+                            <span id="modalTiempo" class="float-end"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cerrar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -448,20 +423,23 @@
     </div>
 
     <script>
-        const modal = document.getElementById('modalDiferimiento');
-        modal.addEventListener('show.bs.modal', function(event) {
+        // Configuración del modal de diferimiento
+        const modalDiferimiento = document.getElementById('modalDiferimiento');
+        modalDiferimiento.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const fecha = button.getAttribute('data-fecha');
             const motivo = button.getAttribute('data-motivo');
             const tipo = button.getAttribute('data-tipo');
             const tiempo_en_meses = button.getAttribute('data-tiempo_en_meses');
 
-            modal.querySelector('#modalFecha').textContent = fecha;
-            modal.querySelector('#modalMotivo').textContent = motivo;
-            modal.querySelector('#modalTipo').textContent = tipo;
-            modal.querySelector('#modalTiempo').textContent = tiempo_en_meses;
+            // Actualiza el contenido del modal
+            document.getElementById('modalFecha').textContent = fecha;
+            document.getElementById('modalMotivo').textContent = motivo;
+            document.getElementById('modalTipo').textContent = tipo;
+            document.getElementById('modalTiempo').textContent = tiempo_en_meses || 'N/A';
         });
 
+        // Configuración del modal de donación
         const modalDonacion = document.getElementById('modalDonacion');
         modalDonacion.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
@@ -511,7 +489,6 @@
 
             // Add change event listener
             document.getElementById('tipo_diferimiento').addEventListener('change', toggleTiempoEnMeses);
-
         });
     </script>
 @endsection
